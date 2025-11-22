@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PITSIKY - طلب مخصص</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #F8FE4F 0%, #FF5A00 100%);
+            --secondary-gradient: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
+            --accent-gradient: linear-gradient(135deg, #F8FE4F 0%, #00FE9C 100%);
+            --gold-gradient: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            --neon-blue: orange;
+            --neon-purple: #b537f2;
+            --neon-pink: #ff006e;
+            --neon-green: #FF5A00;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("images/161.png") center/cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Modern Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            height: 60px;
+            background: rgba(0, 0, 0, 0.95);
+        }
+        
+        .logo {
+            height: 50px;
+            transition: height 0.3s ease;
+        }
+        
+        .header.scrolled .logo {
+            height: 40px;
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.12);
+            color: gold;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+        }
+
+        .header-icon:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            background: var(--neon-pink);
+            color: white;
+            font-size: 0.7rem;
+            z-index: 999;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: bounce 2s infinite;
+            transform: translate(30%, -30%);
+            border: 1px solid #0c0c0c;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        .cart-icon.shake { animation: shake 0.5s ease; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .main-content {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #fff 0%, orange 50%, gold 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        /* أنماط القائمة الجانبية */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100%;
+            background: BLACK;
+            backdrop-filter: blur(90px);
+            z-index: 1500;
+            transition: right 0.4s ease;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar.show {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            color: orange;
+            font-size: 1.5rem;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: red;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .sidebar-link i {
+            margin-left: 15px;
+            width: 30px;
+            font-size: 1.3rem;
+            color: YELLOW;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-10px);
+            color: ORANGE;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            z-index: 1499;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+
+        /* أنماط النموذج المعدلة */
+        .custom-order-form {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--neon-blue);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .size-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .size-option input[type="radio"] {
+            display: none;
+        }
+
+        .size-option label {
+            display: block;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--glass-border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .size-option input[type="radio"]:checked + label {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--neon-blue);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: 1;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .whatsapp-info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(37, 211, 102, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-info h3 {
+            color: #25D366;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-info p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+.car-brands {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .brand-logo {
+            width: 100px;
+            height: 100px;
+            background: var(--glass-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .brand-logo:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 12px 25px rgba(248, 213, 104, 0.3);
+            border-color: rgba(248, 213, 104, 0.4);
+        }
+        .process-steps {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--glass-border);
+            z-index: 1;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--glass-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            position: relative;
+        }
+
+        .step.active .step-icon {
+            background: var(--neon-blue);
+            color: white;
+        }
+
+        .step-title {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .step-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* أنماط الفوتر */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 4rem 2rem 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: right;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 220px;
+        }
+        
+        .footer-section h4 {
+            text-align: center;
+            color: rgba(239, 255, 211, 0.94);
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 2px;
+            background: #eee;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: orange;
+            line-height: 1.8;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 2px;
+            color: orange;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+        
+        .footer-section .logo {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .social-icons {
+            color: rgba(255, 248, 172, 0.9);
+            font-size: 1.6rem;
+            text-align: center;
+            justify-content: center;
+            margin-left: 1rem;
+            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+            text-shadow: 0 0 5px rgba(255, 255, 172, 0.8),
+                0 0 10px rgba(255, 240, 123, 0.7),
+                0 0 20px rgba(255, 246, 172, 0.6);
+        }
+        
+        .social-icons:hover {
+            color: #FFE83E;
+            transform: scale(1.2);
+            text-shadow: 0 0 10px rgba(255, 216, 25, 1),
+                0 0 15px rgba(255, 213, 91, 0.9),
+                0 0 40px rgba(248, 239, 139, 0.8);
+        }
+        .social-icons a {
+            color: rgba(255, 238, 73, 1);
+            font-size: 1.6rem;
+            text-align: center;
+            justify-content: center;
+            margin-left: 1rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--neon-pink);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .process-steps {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .process-steps::before {
+                display: none;
+            }
+            
+            .size-options {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .sidebar {
+                width: 250px;
+            }
+        }
+        a {
+          text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <header class="header" id="header">
+      <a href="pdc.html" class="header-icon"><i class="fas fa-arrow-right"></i></a>
+        <a href="index.html"><img src="./images/ptk.png" alt="PITSIKY Logo" class="logo"></a>
+    </header>
+
+    
+    <div id="overlay" class="overlay"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>طلب تصميم مخصص</h1>
+            <p class="subtitle">اخلق لوحة فنية فريدة تعبر عن شخصيتك وأسلوبك</p>
+            <div class="car-brands">
+             <div class="step active">
+   <div class="step-icon">
+     <i class="fas fa-pencil-alt"></i>
+   </div>
+   <h3 class="step-title">أخبرنا عن فكرتك</h3>
+   <p class="step-desc">صِف التصميم الذي تريده</p>
+ </div>
+ <div class="step">
+  <div class="step-icon">
+    <i class="fas fa-comment"></i>
+  </div>
+  <h3 class="step-title">تواصل عبر واتساب</h3>
+  <p class="step-desc">أرسل الطلب مباشرة إلى واتساب</p>
+</div>
+        
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="step-title">التنفيذ</h3>
+                    <p class="step-desc">ننفذ تصميمك بدقة</p>
+                </div>
+            <div class="custom-order-form">
+                <form id="customOrderForm">
+                    <div class="form-group">
+                        <label for="name">الاسم الكامل</label>
+                        <input type="text" id="name" class="form-control" placeholder="اسمك الكامل" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">رقم الهاتف</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="رقم هاتفك للتواصل" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="carType">نوع السيارة</label>
+                        <input type="text" id="carType" class="form-control" placeholder="مثال: BMW M5, Mercedes AMG" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">وصف التصميم المطلوب</label>
+                        <textarea id="description" class="form-control" placeholder="صِف لنا التصميم الذي تريده بالتفصيل (الألوان، الخلفية، النص الإضافي، أي تفاصيل خاصة، إلخ...)" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>حجم اللوحة</label>
+                        <div class="size-options">
+                            <div class="size-option">
+                                <input type="radio" id="size-small" name="size" value="صغير (50x30 سم) - 250 درهم">
+                                <label for="size-small">صغير (50x30 سم)<br>250 درهم</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="radio" id="size-medium" name="size" value="متوسط (120x70 سم) - 750 درهم" checked>
+                                <label for="size-medium">متوسط (120x70 سم)<br>750 درهم</label>
+                            </div>
+                            <div class="size-option">
+                                <input type="radio" id="size-large" name="size" value="كبير (160x90 سم) - 1450 درهم">
+                                <label for="size-large">كبير (160x90 سم)<br>1450 درهم</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fab fa-whatsapp"></i> إرسال الطلب  
+                    </button>
+                </form>
+                
+                <div class="whatsapp-info">
+                    <h3><i class="fab fa-whatsapp"></i>       في واتساب</h3>
+                    <p>سنقوم بالرد عليك في أقرب وقت ممكن لمناقشة التفاصيل الإضافية</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="./images/ptk.png" alt="PITSIKY Logo" class="logo">
+                <p style="font-size: 1rem; color: white;">وجهتك الجديدة، والصحيحة لترقية جدارك إلى مستوى جديد يناسب ذوقك.</p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="pdc.html">المنتجات</a></li>
+                    <li><a href="#">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> في كل مكان، المغرب</li>
+                    <li><i class="fas fa-phone"></i>212-700-720-490+</li>
+                    <li><i class="fas fa-envelope"></i> contact@pitsiky.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="social-icons">
+  <a href="https://www.instagram.com/pitsiky" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.tiktok.com/@pitsiky?_r=1&_t=ZM-91cIkxxetJ6" target="_blank"><i class="fab fa-tiktok"></i></a>
+  <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+</div>
+        <div class="footer-bottom">
+            <p>PITSIKY 2025 - جميع الحقوق محفوظة ©</p>
+        </div>
+    </footer>
+    
+    <script>
+        // تحميل السلة من localStorage
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('artGalleryCart');
+            if (savedCart) {
+                const cart = JSON.parse(savedCart);
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                document.querySelector('.cart-count').textContent = count;
+            }
+        }
+        
+        // إرسال النموذج عبر واتساب
+        const orderForm = document.getElementById('customOrderForm');
+        
+        orderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // جمع بيانات النموذج
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const carType = document.getElementById('carType').value;
+            const description = document.getElementById('description').value;
+            const size = document.querySelector('input[name="size"]:checked').value;
+            
+            // تكوين رسالة واتساب
+            const whatsappMessage = `مرحباً، أريد طلب تصميم مخصص:%0A%0A
+الاسم: ${name}%0A
+رقم الهاتف: ${phone}%0A
+نوع السيارة: ${carType}%0A
+حجم اللوحة: ${size}%0A
+وصف التصميم: ${description}%0A%0A
+أرغب في مناقشة التفاصيل الإضافية.`;
+            
+            // إنشاء رابط واتساب
+            const whatsappURL = `https://wa.me/212700720490?text=${whatsappMessage}`;
+            
+            // فتح واتساب في نافذة جديدة
+            window.open(whatsappURL, '_blank');
+        });
+        
+        // إنشاء جسيمات متحركة للخلفية
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                
+                const colors = ['var(--neon-blue)', 'var(--neon-purple)', 'var(--neon-pink)', 'var(--neon-green)'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = color;
+                particle.style.boxShadow = `0 0 10px ${color}`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // إضافة تأثير التمرير للهيدر
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // إدارة القائمة الجانبية
+        function openSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.add('show');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.remove('show');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            loadCartFromStorage();
+            
+            // إعداد أحداث القائمة الجانبية
+            const sidebar = document.getElementById('sidebar');
+            const openBtn = document.getElementById('sidebar-open');
+            const closeBtn = document.getElementById('sidebar-close');
+            const overlay = document.getElementById('overlay');
+            
+            if (sidebar && openBtn && closeBtn && overlay) {
+                openBtn.addEventListener('click', openSidebar);
+                closeBtn.addEventListener('click', closeSidebar);
+                overlay.addEventListener('click', closeSidebar);
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && sidebar.classList.contains('show')) {
+                        closeSidebar();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

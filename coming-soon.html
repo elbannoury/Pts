@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قريباً - موقعنا قيد التطوير</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2DC7CE, #1C1C1C, orange);
+            background-size: 400% 400%;
+            animation: gradientBG 5s ease infinite;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    .himg {
+      text-align: center;
+      justify-items: center;
+      width: 100px;
+      height: 100px;
+      background: #eee;
+      border-radius: 50%;
+      top: 30px;
+      position: absolute;
+      margin-bottom: 30px;
+      z-index: 20;
+    }
+    .himg img {
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      text-align: center;
+    }
+       .coming-soon-container {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    margin-top: 150px;
+    margin-bottom: 150px;
+}
+
+/* الخلفية مع blur */
+.coming-soon-container::before {
+    content: "";
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('./images/255.png') no-repeat center center/cover;
+    filter: blur(1px); /* درجة الغبش */
+    opacity: 1;       /* الشفافية */
+    border-radius: 20px;
+    border: 2px solid black;
+    z-index: 0;
+    padding: 0;
+}
+
+/* خلي النص فوق */
+.coming-soon-container * {
+    position: relative;
+    z-index: 1;
+}
+
+        .logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .logo h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            color: #fdbb2d;
+            text-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+        }
+
+        .logo p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2.5rem 0;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.2rem;
+            min-width: 90px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .countdown-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fdbb2d;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .message {
+            margin: 2rem 0;
+            line-height: 1.6;
+        }
+
+        .message h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fdbb2d;
+        }
+
+        .message p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 10px;
+            width: 75%;
+            background: linear-gradient(90deg, #1a2a6c, #fdbb2d);
+            border-radius: 10px;
+            animation: progressAnimation 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes progressAnimation {
+            0% { width: 70%; }
+            100% { width: 80%; }
+        }
+
+        .notify-form {
+            margin: 2rem 0;
+        }
+
+        .notify-form h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .form-group input {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            width: 60%;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            background: #fdbb2d;
+            color: #1a2a6c;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background: #ffcc5c;
+        }
+
+        .social-icons {
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #fdbb2d;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* إضافة أنماط للرسائل */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification.success {
+            background-color: #4CAF50;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification.error {
+            background-color: #f44336;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .coming-soon-container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            
+            .logo h1 {
+                font-size: 2.2rem;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+                gap: 0.7rem;
+            }
+            
+            .countdown-item {
+                min-width: 70px;
+                padding: 1rem 0.7rem;
+            }
+            
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+            
+            .form-group {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .form-group input,
+            .form-group button {
+                width: 80%;
+                border-radius: 30px;
+            }
+
+            .notification {
+                right: 10px;
+                left: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="himg"> <img src="./images/aaa.png"></div>
+  
+    <div class="coming-soon-container">
+      
+        <div class="logo">
+            <h1>قريباً</h1>
+            <p>  لوحات في الصميم ليك و للي<strong> عزيز عليك</strong></p>
+        </div>
+        
+        <div class="countdown">
+            
+            
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">seconds</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">hours</div>
+            </div>
+            <div class="countdown-item">
+    <div class="countdown-number" id="days">00</div>
+    <div class="countdown-label">Days</div>
+</div>
+
+        </div>
+        
+        <div class="message">
+            <h2 style=" margin-bottom: 4px; background: black; padding: 0; border-radius: 0 30px 0 30px; border: 2px solid #eee">مابقا والو</h2>
+            <h2 style=" background: none;
+          border: 2px solid #eee;   border-radius: 30px 0 30px 0; widty: 50px; max-width: 220px;"> coming soon </h2>
+        </div>
+    
+        
+        <div class="notify-form" style="margin-top: 80px;">
+            <h3> دخل رقمك باش تكون من الأوائل وتستافد من عروضنا </h3>
+            <div class="form-group">
+                <input type="tel" id="phoneNumber" placeholder="أدخل رقم هاتفك">
+                <button type="button" id="notifyBtn">اخبرني</button>
+            </div>
+            <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
+                  من الأحسن يكون فيه واتساب ! 
+            </p>
+        </div>
+        
+        <div class="social-icons">
+         <!--   <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>-->
+            <a href="https://instagram.com/pitsiky"><i class="fab fa-instagram"></i></a>
+           <!-- <a href="#"><i class="fab fa-linkedin-in"></i></a>-->
+        </div>
+        
+        <div class="copyright"> PITSIKY
+            &copy; 2025 جميع الحقوق محفوظة
+        </div>
+    </div>
+
+    <script>
+        // تاريخ الإطلاق (اضبطه حسب حاجتك)
+        const launchDate = new Date("2025-10-10T23:59:59").getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeLeft = launchDate - now;
+            
+            if (timeLeft <= 0) {
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+                return;
+            }
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }
+        
+        // تحديث العداد كل ثانية
+        setInterval(updateCountdown, 1000);
+        
+        // التهيئة الأولية
+        updateCountdown();
+
+        // دالة لإظهار الإشعارات
+        function showNotification(message, isSuccess = true) {
+            // إزالة أي إشعارات سابقة
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = isSuccess ? 'notification success' : 'notification error';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 4000);
+        }
+
+        // إضافة event listener لزر الإشعار
+        document.getElementById('notifyBtn').addEventListener('click', async function() {
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const btn = document.getElementById('notifyBtn');
+            const originalText = btn.textContent;
+            
+            // التحقق من صحة رقم الهاتف
+            if (!phoneNumber) {
+                showNotification('يرجى إدخال رقم الهاتف', false);
+                return;
+            }
+            
+            if (phoneNumber.length < 9) {
+                showNotification('يرجى إدخال رقم هاتف صحيح', false);
+                return;
+            }
+            
+            // عرض حالة التحميل
+            btn.innerHTML = '<span class="loader"></span> جاري الإرسال...';
+            btn.disabled = true;
+            
+            try {
+                // إعداد بيانات CallMeBot
+                // استبدل YOUR_PHONE_NUMBER_HERE برقم الهاتف الذي تريد استقبال الرسائل عليه
+                const phone = "212700720490"; // رقم الهاتف المستلم مع رمز الدولة (مثال: 212123456789)
+                
+                // نص الرسالة
+                const message = `طلب اشتراك جديد!%0Aرقم الهاتف: ${phoneNumber}%0Aتاريخ الطلب: ${new Date().toLocaleString('ar-MA')}`;
+                
+                // إنشاء رابط callmebot لـ WhatsApp
+                const callmebotURL = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${message}&apikey=8589862`;
+                
+                // استخدام صورة غير مرئية لتنفيذ الطلب (لتجنب مشاكل CORS)
+                const img = new Image();
+                img.src = callmebotURL;
+                
+                // انتظر قليلاً قبل عرض رسالة النجاح
+                setTimeout(() => {
+                    showNotification('تم إرسال رقمك بنجاح! سنقوم بالإشعار عند الإطلاق.');
+                    document.getElementById('phoneNumber').value = '';
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 1500);
+                
+            } catch (error) {
+                showNotification('حدث خطأ أثناء الإرسال. يرجى المحاولة لاحقاً.', false);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // السماح بالإرسال عند الضغط على Enter
+        document.getElementById('phoneNumber').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('notifyBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>
