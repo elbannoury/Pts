@@ -26,8 +26,8 @@ const productsData = [
         ],
         // إضافة خيارات التخصيص
         sizes: [
-            { id: "s1", name: "متوسط (90×50 سم)", price: 200 },
-            { id: "s2", name: "كبير (120×65 سم)", price: 100 }
+            { id: "s1", name: "متوسط (90×50 سم)", price: 100 },
+            { id: "s2", name: "كبير (120×65 سم)", price: 200 }
         ],
         frames: [
             { 
