@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PITSIKY - Pay 💳</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #F8FE4F 0%, #FF5A00 100%);
+            --secondary-gradient: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
+            --neon-blue: #00d4ff;
+            --neon-purple: #b537f2;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        .header-icon {
+            color: gold;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .payment-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFB400 50%, #F2EB37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .payment-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #25D366;
+            margin-bottom: 1rem;
+        }
+
+        .payment-method {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 1rem;
+        }
+
+        .order-id {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+
+        .payment-amount {
+            font-size: 2rem;
+            color: gold;
+            margin: 1rem 0;
+        }
+
+        .payment-instructions {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            text-align: right;
+        }
+
+        .payment-instructions ol {
+            padding-right: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .payment-instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+        }
+
+        .binance-btn {
+            background: var(--primary-gradient);
+            color: #1a1a2e;
+        }
+
+        .home-btn {
+            background: var(--secondary-gradient);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 3rem 2rem 1rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .social-icons {
+            margin: 1rem 0;
+        }
+
+        .social-icons a {
+            color: gold;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-gradient);
+            color: #1a1a2e;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="header-icon"><i class="fas fa-arrow-left"></i></a>
+        <a href="index.html"><img src="./images/ptk.png" alt="PITSIKY Logo" class="logo"></a>
+        <a href="crt.html" class="header-icon"><i class="fas fa-shopping-cart"></i></a>
+    </div>
+
+    <div class="container">
+        <h1 class="payment-title"><i class="fas fa-credit-card"></i> إتمام الدفع</h1>
+        
+        <div class="payment-container">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h2>تم استلام طلبك بنجاح! ✅</h2>
+            
+            <div class="order-id" id="orderId">رقم الطلب: ...</div>
+            
+            <div class="payment-method" id="paymentMethod">طريقة الدفع: ...</div>
+            
+            <div class="payment-amount" id="paymentAmount">المبلغ: ...</div>
+            
+            <div class="payment-instructions" id="paymentInstructions">
+                <!-- سيتم ملء التعليمات حسب طريقة الدفع -->
+            </div>
+            
+            <div class="action-buttons" id="actionButtons">
+                <!-- سيتم ملء الأزرار حسب طريقة الدفع -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <img src="./images/ptk.png" alt="PITSIKY Logo" class="logo" style="height: 60px; margin-bottom: 1rem;">
+        <p>وجهتك الجديدة لترقية جدارك إلى مستوى جديد يناسب ذوقك</p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/pitsiky" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@pitsiky" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p>PITSIKY 2025 - جميع الحقوق محفوظة ©</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تمت العملية بنجاح</span>
+    </div>
+
+    <script>
+        // تهيئة الصفحة
+        function initPaymentPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            const method = urlParams.get('method');
+            
+            if (!orderId || !method) {
+                showError('بيانات غير كافية');
+                return;
+            }
+            
+            const order = loadOrder(orderId);
+            if (!order) {
+                showError('لم يتم العثور على الطلب');
+                return;
+            }
+            
+            displayOrderInfo(order, method);
+            showToast('✅ تم استلام طلبك بنجاح!');
+        }
+
+        // تحميل بيانات الطلب
+        function loadOrder(orderId) {
+            try {
+                const orders = JSON.parse(localStorage.getItem('pitsikyOrders') || '[]');
+                return orders.find(order => order.id === orderId);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        // عرض معلومات الطلب
+        function displayOrderInfo(order, method) {
+            // معلومات أساسية
+            document.getElementById('orderId').textContent = `رقم الطلب: ${order.id}`;
+            document.getElementById('paymentMethod').textContent = `طريقة الدفع: ${getPaymentMethodName(method)}`;
+            
+            if (method === 'binance') {
+                const usdtAmount = (order.total / 10).toFixed(2);
+                document.getElementById('paymentAmount').textContent = `المبلغ: ${usdtAmount} USDT`;
+                
+                // تعليمات بينانس
+                document.getElementById('paymentInstructions').innerHTML = `
+                    <h3>تعليمات الدفع عبر بينانس:</h3>
+                    <ol>
+                        <li>انقر على زر "الدفع عبر بينانس" أدناه</li>
+                        <li>ستتم توجيهك إلى صفحة الدفع الآمنة</li>
+                        <li>أدخل مبلغ ${usdtAmount} USDT</li>
+                        <li>أكمل عملية الدفع</li>
+                        <li>ستصلك رسالة تأكيد خلال 24 ساعة</li>
+                    </ol>
+                    <p>أو يمكنك إرسال <strong>${usdtAmount} USDT</strong> مباشرة إلى:</p>
+                    <p style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; font-family: monospace; direction: ltr;">
+                        Binance ID: 408606033
+                    </p>
+                `;
+                
+                // أزرار بينانس
+                document.getElementById('actionButtons').innerHTML = `
+                    <a href="https://www.binance.com/en/pay/request?amount=${usdtAmount}&currency=USDT&merchantTradeNo=${order.id}" 
+                       class="action-btn binance-btn" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> الدفع عبر بينانس
+                    </a>
+                    <a href="https://wa.me/212700720490?text=لقد قمت بالدفع عبر بينانس للطلب ${order.id}" 
+                       class="action-btn whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> تأكيد الدفع عبر واتساب
+                    </a>
+                    <a href="index.html" class="action-btn home-btn">
+                        <i class="fas fa-home"></i> العودة للرئيسية
+                    </a>
+                `;
+            } else {
+                // طريقة الدفع الأخرى (whatsapp50)
+                const amount50 = (order.total * 0.5).toFixed(2);
+                document.getElementById('paymentAmount').textContent = `المبلغ: ${amount50} درهم (50%)`;
+                
+                document.getElementById('paymentInstructions').innerHTML = `
+                    <h3>تعليمات الدفع:</h3>
+                    <ol>
+                        <li>انقر على زر "الدفع عبر واتساب" أدناه</li>
+                        <li>ستتم توجيهك إلى محادثة واتساب</li>
+                        <li>أرسل مبلغ ${amount50} درهم (50% من الإجمالي)</li>
+                        <li>ادفع المبلغ المتبقي (${amount50} درهم) عند استلام الطلب</li>
+                        <li>ستصلك رسالة تأكيد خلال 24 ساعة</li>
+                    </ol>
+                `;
+                
+                document.getElementById('actionButtons').innerHTML = `
+                    <a href="https://wa.me/212700720490?text=أريد دفع 50% من طلبي ${order.id} وقيمته ${amount50} درهم" 
+                       class="action-btn whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> الدفع عبر واتساب
+                    </a>
+                    <a href="index.html" class="action-btn home-btn">
+                        <i class="fas fa-home"></i> العودة للرئيسية
+                    </a>
+                `;
+            }
+        }
+
+        // اسم طريقة الدفع
+        function getPaymentMethodName(method) {
+            const methods = {
+                'whatsapp50': 'ادفع 50% على واتساب و 50% عند الاستلام',
+                'binance': 'بينانس'
+            };
+            return methods[method] || method;
+        }
+
+        // عرض خطأ
+        function showError(message) {
+            document.querySelector('.payment-container').innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; color: #ff4444; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2>${message}</h2>
+                    <p style="margin: 1rem 0;">يرجى التحقق من الرابط أو العودة إلى صفحة الطلب</p>
+                    <a href="index.html" class="action-btn home-btn" style="display: inline-flex;">
+                        <i class="fas fa-home"></i> العودة للرئيسية
+                    </a>
+                </div>
+            `;
+        }
+
+        // عرض إشعار
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // بدء التطبيق
+        document.addEventListener('DOMContentLoaded', initPaymentPage);
+    </script>
+</body>
+</html>
