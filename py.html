@@ -14,6 +14,9 @@
             --neon-purple: #b537f2;
             --glass-bg: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
+            --success-color: #25D366;
+            --error-color: #ff4444;
+            --warning-color: #ffbb33;
         }
 
         * {
@@ -78,6 +81,12 @@
             margin-bottom: 1rem;
         }
 
+        .warning-icon {
+            font-size: 4rem;
+            color: var(--warning-color);
+            margin-bottom: 1rem;
+        }
+
         .payment-method {
             font-size: 1.5rem;
             color: var(--neon-blue);
@@ -90,6 +99,8 @@
             border-radius: 10px;
             margin: 1rem 0;
             font-family: monospace;
+            direction: ltr;
+            text-align: center;
         }
 
         .payment-amount {
@@ -115,6 +126,26 @@
             margin-bottom: 0.5rem;
         }
 
+        .binance-info {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid gold;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .binance-address {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 1rem 0;
+            direction: ltr;
+            font-size: 1.2rem;
+        }
+
         .action-buttons {
             display: flex;
             flex-direction: column;
@@ -132,6 +163,8 @@
             justify-content: center;
             gap: 0.5rem;
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
 
         .whatsapp-btn {
@@ -144,13 +177,29 @@
             color: #1a1a2e;
         }
 
+        .binance-web-btn {
+            background: linear-gradient(135deg, #F8B400 0%, #F8FE4F 100%);
+            color: #1a1a2e;
+        }
+
         .home-btn {
             background: var(--secondary-gradient);
             color: white;
         }
 
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
         .action-btn:hover {
             transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         footer {
@@ -189,6 +238,69 @@
 
         .toast.show {
             transform: translateX(0);
+        }
+
+        .qr-code {
+            max-width: 200px;
+            margin: 1rem auto;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid gold;
+            padding: 10px;
+            background: white;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: auto;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .payment-option {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            flex: 1;
+            min-width: 120px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .payment-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-option.active {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .payment-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .binance-id-section {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .binance-id {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: gold;
+            margin: 0.5rem 0;
+            direction: ltr;
         }
     </style>
 </head>
@@ -249,13 +361,13 @@
             const method = urlParams.get('method');
             
             if (!orderId || !method) {
-                showError('بيانات غير كافية');
+                showError('بيانات غير كافية. يرجى العودة إلى صفحة الطلب والمحاولة مرة أخرى.');
                 return;
             }
             
             const order = loadOrder(orderId);
             if (!order) {
-                showError('لم يتم العثور على الطلب');
+                showError('لم يتم العثور على الطلب. قد يكون الطلب منتهي الصلاحية أو تم إلغاؤه.');
                 return;
             }
             
@@ -269,6 +381,7 @@
                 const orders = JSON.parse(localStorage.getItem('pitsikyOrders') || '[]');
                 return orders.find(order => order.id === orderId);
             } catch (error) {
+                console.error('Error loading order:', error);
                 return null;
             }
         }
@@ -280,72 +393,137 @@
             document.getElementById('paymentMethod').textContent = `طريقة الدفع: ${getPaymentMethodName(method)}`;
             
             if (method === 'binance') {
-                const usdtAmount = (order.total / 10).toFixed(2);
-                document.getElementById('paymentAmount').textContent = `المبلغ: ${usdtAmount} USDT`;
-                
-                // تعليمات بينانس
-                document.getElementById('paymentInstructions').innerHTML = `
-                    <h3>تعليمات الدفع عبر بينانس:</h3>
-                    <ol>
-                        <li>انقر على زر "الدفع عبر بينانس" أدناه</li>
-                        <li>ستتم توجيهك إلى صفحة الدفع الآمنة</li>
-                        <li>أدخل مبلغ ${usdtAmount} USDT</li>
-                        <li>أكمل عملية الدفع</li>
-                        <li>ستصلك رسالة تأكيد خلال 24 ساعة</li>
-                    </ol>
-                    <p>أو يمكنك إرسال <strong>${usdtAmount} USDT</strong> مباشرة إلى:</p>
-                    <p style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; font-family: monospace; direction: ltr;">
-                        Binance ID: 408606033
-                    </p>
-                `;
-                
-                // أزرار بينانس
-                document.getElementById('actionButtons').innerHTML = `
-                    <a href="https://www.binance.com/en/pay/request?amount=${usdtAmount}&currency=USDT&merchantTradeNo=${order.id}" 
-                       class="action-btn binance-btn" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> الدفع عبر بينانس
-                    </a>
-                    <a href="https://wa.me/212700720490?text=لقد قمت بالدفع عبر بينانس للطلب ${order.id}" 
-                       class="action-btn whatsapp-btn" target="_blank">
-                        <i class="fab fa-whatsapp"></i> تأكيد الدفع عبر واتساب
-                    </a>
-                    <a href="index.html" class="action-btn home-btn">
-                        <i class="fas fa-home"></i> العودة للرئيسية
-                    </a>
-                `;
+                displayBinancePayment(order);
             } else {
                 // طريقة الدفع الأخرى (whatsapp50)
-                const amount50 = (order.total * 0.5).toFixed(2);
-                document.getElementById('paymentAmount').textContent = `المبلغ: ${amount50} درهم (50%)`;
-                
-                document.getElementById('paymentInstructions').innerHTML = `
-                    <h3>تعليمات الدفع:</h3>
-                    <ol>
-                        <li>انقر على زر "الدفع عبر واتساب" أدناه</li>
-                        <li>ستتم توجيهك إلى محادثة واتساب</li>
-                        <li>أرسل مبلغ ${amount50} درهم (50% من الإجمالي)</li>
-                        <li>ادفع المبلغ المتبقي (${amount50} درهم) عند استلام الطلب</li>
-                        <li>ستصلك رسالة تأكيد خلال 24 ساعة</li>
-                    </ol>
-                `;
-                
-                document.getElementById('actionButtons').innerHTML = `
-                    <a href="https://wa.me/212700720490?text=أريد دفع 50% من طلبي ${order.id} وقيمته ${amount50} درهم" 
-                       class="action-btn whatsapp-btn" target="_blank">
-                        <i class="fab fa-whatsapp"></i> الدفع عبر واتساب
-                    </a>
-                    <a href="index.html" class="action-btn home-btn">
-                        <i class="fas fa-home"></i> العودة للرئيسية
-                    </a>
-                `;
+                displayWhatsAppPayment(order);
             }
+        }
+
+        // عرض خيار الدفع عبر بينانس
+        function displayBinancePayment(order) {
+            const usdtAmount = (order.total / 10).toFixed(2);
+            document.getElementById('paymentAmount').textContent = `المبلغ: ${usdtAmount} USDT`;
+            
+            // تعليمات بينانس المحسنة
+            document.getElementById('paymentInstructions').innerHTML = `
+                <h3>تعليمات الدفع عبر بينانس:</h3>
+                <ol>
+                    <li>اختر أحد الخيارات أدناه لفتح بينانس</li>
+                    <li>أدخل المبلغ: <strong>${usdtAmount} USDT</strong></li>
+                    <li>انسخ عنوان المحفظة أدناه أو استخدم رمز QR</li>
+                    <li>أكمل عملية التحويل</li>
+                    <li>احفظ إشعار التحويل كدليل على الدفع</li>
+                    <li>انقر على زر "تأكيد الدفع عبر واتساب" بعد الانتهاء</li>
+                </ol>
+                
+                <div class="binance-info">
+                    <h4>معلومات التحويل:</h4>
+                    <p>أرسل <strong>${usdtAmount} USDT</strong> إلى العنوان التالي:</p>
+                    
+                    <div class="binance-id-section">
+                        <p>Binance Pay ID:</p>
+                        <div class="binance-id">408606033</div>
+                        <button class="action-btn copy-btn" onclick="copyBinanceAddress()">
+                            <i class="fas fa-copy"></i> نسخ العنوان
+                        </button>
+                    </div>
+                    
+                    <div class="qr-code">
+                        <p>مسح رمز QR للدفع السريع:</p>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=binance://pay/transfer?recipient=408606033&amount=${usdtAmount}&currency=USDT&memo=${order.id}" alt="Binance QR Code">
+                    </div>
+                </div>
+            `;
+            
+            // أزرار بينانس المحسنة
+            document.getElementById('actionButtons').innerHTML = `
+                <a href="https://www.binance.com/en/pay/request?amount=${usdtAmount}&currency=USDT&merchantTradeNo=${order.id}&orderId=${order.id}" 
+                   class="action-btn binance-web-btn" target="_blank">
+                    <i class="fas fa-globe"></i> فتح موقع بينانس
+                </a>
+                
+                <a href="binance://pay/transfer?recipient=408606033&amount=${usdtAmount}&currency=USDT&memo=${order.id}" 
+                   class="action-btn binance-btn" id="binanceAppLink">
+                    <i class="fas fa-mobile-alt"></i> فتح تطبيق بينانس
+                </a>
+                
+                <a href="https://wa.me/212700720490?text=لقد قمت بالدفع عبر بينانس للطلب ${order.id} بمبلغ ${usdtAmount} USDT" 
+                   class="action-btn whatsapp-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> تأكيد الدفع عبر واتساب
+                </a>
+                
+                <a href="index.html" class="action-btn home-btn">
+                    <i class="fas fa-home"></i> العودة للرئيسية
+                </a>
+            `;
+
+            // إضافة حل بديل إذا لم يعمل رابط التطبيق
+            document.getElementById('binanceAppLink').addEventListener('click', function(e) {
+                // محاولة فتح التطبيق
+                window.location.href = `binance://pay/transfer?recipient=408606033&amount=${usdtAmount}&currency=USDT&memo=${order.id}`;
+                
+                // إذا لم يفتح التطبيق خلال 2 ثانية، افتح صفحة الويب
+                setTimeout(function() {
+                    if (!document.webkitHidden && !document.hidden) {
+                        window.open(`https://www.binance.com/en/pay/request?amount=${usdtAmount}&currency=USDT&merchantTradeNo=${order.id}&orderId=${order.id}`, '_blank');
+                    }
+                }, 2000);
+                
+                e.preventDefault();
+            });
+        }
+
+        // عرض خيار الدفع عبر واتساب
+        function displayWhatsAppPayment(order) {
+            const amount50 = (order.total * 0.5).toFixed(2);
+            document.getElementById('paymentAmount').textContent = `المبلغ: ${amount50} درهم (50%)`;
+            
+            document.getElementById('paymentInstructions').innerHTML = `
+                <h3>تعليمات الدفع:</h3>
+                <ol>
+                    <li>انقر على زر "الدفع عبر واتساب" أدناه</li>
+                    <li>ستتم توجيهك إلى محادثة واتساب</li>
+                    <li>أرسل مبلغ ${amount50} درهم (50% من الإجمالي)</li>
+                    <li>ادفع المبلغ المتبقي (${amount50} درهم) عند استلام الطلب</li>
+                    <li>ستصلك رسالة تأكيد خلال 24 ساعة</li>
+                </ol>
+            `;
+            
+            document.getElementById('actionButtons').innerHTML = `
+                <a href="https://wa.me/212700720490?text=أريد دفع 50% من طلبي ${order.id} وقيمته ${amount50} درهم" 
+                   class="action-btn whatsapp-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> الدفع عبر واتساب
+                </a>
+                <a href="index.html" class="action-btn home-btn">
+                    <i class="fas fa-home"></i> العودة للرئيسية
+                </a>
+            `;
+        }
+
+        // نسخ عنوان بينانس
+        function copyBinanceAddress() {
+            const binanceAddress = "408606033";
+            navigator.clipboard.writeText(binanceAddress).then(() => {
+                showToast('تم نسخ عنوان بينانس بنجاح');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // طريقة بديلة للنسخ
+                const textArea = document.createElement("textarea");
+                textArea.value = binanceAddress;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                showToast('تم نسخ العنوان بنجاح');
+            });
         }
 
         // اسم طريقة الدفع
         function getPaymentMethodName(method) {
             const methods = {
                 'whatsapp50': 'ادفع 50% على واتساب و 50% عند الاستلام',
-                'binance': 'بينانس'
+                'binance': 'BINANCE'
             };
             return methods[method] || method;
         }
@@ -354,14 +532,19 @@
         function showError(message) {
             document.querySelector('.payment-container').innerHTML = `
                 <div style="text-align: center; padding: 2rem;">
-                    <div style="font-size: 4rem; color: #ff4444; margin-bottom: 1rem;">
+                    <div class="warning-icon">
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <h2>${message}</h2>
                     <p style="margin: 1rem 0;">يرجى التحقق من الرابط أو العودة إلى صفحة الطلب</p>
-                    <a href="index.html" class="action-btn home-btn" style="display: inline-flex;">
-                        <i class="fas fa-home"></i> العودة للرئيسية
-                    </a>
+                    <div class="action-buttons">
+                        <a href="index.html" class="action-btn home-btn">
+                            <i class="fas fa-home"></i> العودة للرئيسية
+                        </a>
+                        <a href="crt.html" class="action-btn binance-btn">
+                            <i class="fas fa-shopping-cart"></i> العودة إلى سلة التسوق
+                        </a>
+                    </div>
                 </div>
             `;
         }
