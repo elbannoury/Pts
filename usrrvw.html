@@ -1823,5 +1823,13 @@
         });
     });
 </script>
+    <script>
+// إعادة التوجيه مع إزالة .html
+if (window.location.pathname.includes('.html')) {
+    const newPath = window.location.pathname.replace('.html', '');
+    const newURL = window.location.origin + newPath + window.location.search;
+    window.history.replaceState({}, '', newURL);
+}
+    </script>
 </body>
   </html>
