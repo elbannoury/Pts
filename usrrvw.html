@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PITSIKY - آراء الزبائن</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #F8FE4F 0%, #FF5A00 100%);
+            --secondary-gradient: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
+            --accent-gradient: linear-gradient(135deg, #F8FE4F 0%, #00FE9C 100%);
+            --gold-gradient: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            --neon-blue: #FFC300;
+            --neon-purple: #b537f2;
+            --neon-pink: #ff006e;
+            --neon-green: #FF5A00;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("images/161.png") center/cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Modern Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            height: 60px;
+            background: rgba(0, 0, 0, 0.95);
+        }
+        
+        .logo {
+            height: 50px;
+            transition: height 0.3s ease;
+        }
+        
+        .header.scrolled .logo {
+            height: 40px;
+        }
+
+        .brand-name {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(79, 172, 254, 0.5);
+            position: relative;
+        }
+
+        .brand-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scaleX(1); }
+            50% { opacity: 1; transform: scaleX(1.1); }
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.12);
+            color: gold;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+        }
+
+        .header-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--neon-green);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .header-icon:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-icon:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .header-icon i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, orange 50%, gold 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+            text-align: center;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.2); }
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 2rem 1rem;
+            text-align: center;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: right;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 220px;
+        }
+        
+        .footer-section h4 {
+          text-align: center;
+            color: rgba(239, 255, 211, 0.94);
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 2px;
+            background: #eee;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: orange;
+            line-height: 1.8;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-section ul {
+            list-style: none; /* إزالة النقاط من القوائم */
+            padding: 2px;
+            color: orange;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+        
+        .footer-section .logo {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+      
+        .social-icons {
+          color: rgba(255, 248, 172, 0.9);
+          font-size: 1.6rem;
+          text-align: center;
+          justify-content: center;
+          margin-left: 1rem;
+          transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+          text-shadow: 0 0 5px rgba(255, 255, 172, 0.8),
+            0 0 10px rgba(255, 240, 123, 0.7),
+            0 0 20px rgba(255, 246, 172, 0.6);
+        }
+        
+        .social-icons:hover {
+          color: #FFE83E;
+          transform: scale(1.2);
+          text-shadow: 0 0 10px rgba(255, 216, 25, 1),
+            0 0 15px rgba(255, 213, 91, 0.9),
+            0 0 40px rgba(248, 239, 139, 0.8);
+        }
+        
+        .social-icons a {
+            color: rgba(255, 238, 73, 1);
+            font-size: 1.6rem;
+            text-align: center;
+            justify-content: center;
+            margin-left: 1rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--neon-pink);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--neon-blue);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        /* أنماط قسم آراء الزبائن المحسن */
+        .testimonials-section {
+            margin-top: 60px;
+            padding: 40px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #fff 0%, orange 50%, gold 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100px;
+            height: 3px;
+            background: var(--neon-blue);
+            border-radius: 2px;
+        }
+
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .testimonial-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card::before {
+            content: '''';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.1);
+            font-family: Arial;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .client-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--neon-blue);
+            margin-left: 15px;
+        }
+
+        .client-info h3 {
+            color: white;
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .rating {
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-content {
+            color: #ddd;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* أنماط الوسائط المتعددة المحسنة */
+        .media-container {
+            margin: 15px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .media-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .media-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .media-item.video::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .media-item.audio::after {
+            content: '♪';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .media-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .media-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-content img, .modal-content video, .modal-content audio {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+
+        .modal-content audio {
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* تفاعلات المستخدم */
+        .testimonial-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #ddd;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--neon-blue);
+        }
+
+        .action-btn.liked {
+            color: var(--neon-pink);
+        }
+
+        .testimonial-date {
+            color: #999;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        .view-more-btn {
+            display: block;
+            margin: 30px auto 0;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            max-width: 250px;
+        }
+
+        .view-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* أنماط القسم الترويجي */
+        .promo-banner {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid orange;
+            border-style: dashed;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .promo-banner h3 {
+            color: orange;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .promo-banner p {
+            color: #ddd;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .promo-code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 10px 0;
+            border: 1px dashed var(--neon-green);
+        }
+
+        .promo-code span {
+            color: var(--neon-green);
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        /* تصفية آراء العملاء */
+        .testimonials-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-controls, .sort-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn, .sort-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: #ddd;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .sort-btn.active {
+            background: var(--neon-blue);
+            color: #0c0c0c;
+            border-color: var(--neon-blue);
+        }
+
+        .filter-btn:hover, .sort-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-testimonials {
+            position: relative;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .search-testimonials input {
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            border-radius: 25px;
+            border: 1px solid orange;
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-testimonials input:focus {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 8px rgba(181, 55, 242, 0.6);
+            outline: none;
+        }
+
+        .search-testimonials input::placeholder {
+            color: #aaa;
+        }
+
+        .search-testimonials i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: gold;
+        }
+
+        /* تحسينات للصفحة المخصصة */
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .testimonials-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--glass-bg);
+            border-radius: 10px;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--neon-blue);
+        }
+
+        .stat-label {
+            color: #ddd;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .promo-banner h3 {
+                font-size: 1.5rem;
+            }
+            
+            .media-container {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+            
+            .testimonials-controls {
+                flex-direction: column;
+            }
+            
+            .testimonials-stats {
+                gap: 15px;
+            }
+            
+            .stat-item {
+                min-width: 100px;
+            }
+        }
+         a {
+           text-decoration: none;
+         }
+    </style>
+</head>
+     
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="header" id="header">
+        <a href="pdc.html" class="header-icon"><i class="fas fa-arrow-right"></i></a>
+        <a href="index.html"><img src="./images/ptk.png" alt="PITSIKY Logo" class="logo"></a>
+        <!-- تم إزالة أيقونة السلة كما طلبت -->
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="testimonials-header">
+                <h1><i class="fas fa-comments"></i> آراء عملائنا</h1>
+                <p>استمع إلى تجارب عملائنا السعداء مع منتجاتنا</p>
+                
+                <div class="testimonials-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">متوسط التقييم</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">127</div>
+                        <div class="stat-label">رأي مقدم</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">عملاء راضون</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonials-controls">
+                <div class="filter-controls">
+                    <button class="filter-btn active" data-filter="all">الكل</button>
+                    <button class="filter-btn" data-filter="5">5 نجوم</button>
+                    <button class="filter-btn" data-filter="4">4 نجوم</button>
+                    <button class="filter-btn" data-filter="3">3 نجوم</button>
+                </div>
+                
+                <div class="sort-controls">
+                    <button class="sort-btn active" data-sort="newest">الأحدث</button>
+                    <button class="sort-btn" data-sort="oldest">الأقدم</button>
+                    <button class="sort-btn" data-sort="highest">الأعلى تقييماً</button>
+                </div>
+                
+                <div class="search-testimonials">
+                    <input type="text" id="searchTestimonials" placeholder="ابحث في الآراء...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+
+            <div class="testimonials-container" id="testimonialsContainer">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+            
+            <div class="load-more-container">
+                <button id="loadMoreBtn" class="view-more-btn"><i class="fas fa-chevron-left"></i> تحميل المزيد من الآراء</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- قسم ترويجي -->
+    <div class="container">
+        <div class="promo-banner">
+            <h3>شاركنا رأيك في منتجاتنا !</h3>
+            <p>اكتب رأيك عن تجربتك مع منتجاتنا من اجل التحسين ، و احصل على خصم في طلبيتك القادمة .</p>
+            <a href="contact.html" class="view-more-btn">شارك برأيك الآن</a>
+        </div>
+    </div>
+
+    <!-- مودال الوسائط -->
+    <div class="media-modal" id="mediaModal">
+        <div class="modal-content" id="modalContent">
+            <span class="close-modal" id="closeModal">&times;</span>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="./images/ptk.png" alt="PITSIKY Logo" class="logo">
+                <p style="font-size: 1rem; color: white;"> وجهتك الجديدة ، و الصحيحة لترقية جدارك الى مستوى جديد يناسب ذوقك. </p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="pdc.html">المنتجات</a></li>
+                    <li><a href="antr.html">طلب مخصص</a></li>
+                    <li><a href="#">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> في كل مكان، المغرب</li>
+                    <li><i class="fas fa-phone"></i>212-700-720-490+</li>
+                    <li><i class="fas fa-envelope"></i> contact@pitsiky.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/pitsiky" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        </div>
+        <div class="footer-bottom">
+            <p>PITSIKY 2025 - جميع الحقوق محفوظة ©</p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تم الإعجاب بالرأي</span>
+    </div>
+
+    <!--   <script>
+        // بيانات آراء العملاء الوهمية الموسعة مع وسائط متعددة
+        const testimonialsData = [
+            {
+                id: 1,
+                clientName: "أحمد الشاوي",
+                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                rating: 5,
+                content: "جودة اللوحات رائعة وتفوق التوقعات! التفاصيل دقيقة جداً والألوان زاهية. الشحن كان سريعاً والتغليف متقن. سأطلب بالتأكيد مرة أخرى.",
+                date: "2023-10-15",
+                media: [
+                    { type: "image", url: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+                    { type: "image", url: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+                ],
+                likes: 12,
+                isLiked: false
+            },
+            {
+                id: 2,
+                clientName: "فاطمة الزهرائي",
+                avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+                rating: 4,
+                content: "اللوحة جميلة وتضيف لمسة أنيقة لغرفة المعيشة. خدمة العملاء كانت محترفة وساعدوني في اختيار التصميم المناسب. أنصح بالتجربة.",
+                date: "2023-11-02",
+                media: [
+                    { type: "image", url: "./gif/GIF_20250927_013001_350.gif" },
+                    { type: "audio", url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", thumbnail: "https://cdn-icons-png.flaticon.com/512/727/727241.png" }
+                ],
+                likes: 8,
+                isLiked: false
+            },
+            {
+                id: 3,
+                clientName: "عمر الدكالي",
+                avatar: "https://randomuser.me/api/portraits/men/22.jpg",
+                rating: 5,
+                content: "اشتريت لوحة BMW M5 وكانت هدية مثالية لصديقي في عيد ميلاده. التفاصيل مذهلة والجودة عالية. الشحن وصل في الوقت المحدد.",
+                date: "2023-09-28",
+                media: [
+                    { type: "video", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", thumbnail: "https://images.unsplash.com/photo-1532581140115-3e355d1ed1de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+                ],
+                likes: 15,
+                isLiked: false
+            },
+            {
+                id: 4,
+                clientName: "سارة العلوي",
+                avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+                rating: 5,
+                content: "تجربة رائعة من البداية إلى النهاية! التصميم كان كما طلبت تماماً والجودة ممتازة. شكراً لفريق PITSIKY على الاهتمام بالتفاصيل.",
+                date: "2023-12-10",
+                media: [
+                    { type: "image", url: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+                    { type: "video", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+                ],
+                likes: 20,
+                isLiked: false
+            },
+            {
+                id: 5,
+                clientName: "يوسف البكري",
+                avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+                rating: 4,
+                content: "المنتج جيد لكن الشحن استغرق وقتاً أطول من المتوقع. جودة الطباعة ممتازة والألوان حية. أنصح بالشراء مع الأخذ في الاعتبار وقت الشحن.",
+                date: "2023-11-25",
+                media: [],
+                likes: 6,
+                isLiked: false
+            },
+            {
+                id: 6,
+                clientName: "نورة الفاسي",
+                avatar: "https://randomuser.me/api/portraits/women/26.jpg",
+                rating: 5,
+                content: "لا أملك إلا كلمات الشكر لفريق PITSIKY. اللوحة كانت هدية لزوجي وأعجب بها كثيراً. الجودة فائقة والتسليم كان في الوقت المحدد.",
+                date: "2023-10-05",
+                media: [
+                    { type: "audio", url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", thumbnail: "https://cdn-icons-png.flaticon.com/512/727/727241.png" }
+                ],
+                likes: 18,
+                isLiked: false
+            },
+            {
+                id: 7,
+                clientName: "خالد الراشدي",
+                avatar: "https://randomuser.me/api/portraits/men/41.jpg",
+                rating: 3,
+                content: "التجربة كانت مقبولة. الجودة جيدة لكن السعر مرتفع قليلاً مقارنة بالمنتجات المماثلة في السوق. الشحن كان ضمن الوقت الموعود.",
+                date: "2023-09-15",
+                media: [],
+                likes: 3,
+                isLiked: false
+            },
+            {
+                id: 8,
+                clientName: "لمياء التونسي",
+                avatar: "https://randomuser.me/api/portraits/women/53.jpg",
+                rating: 5,
+                content: "رائعة! رائعة! رائعة! هذا كل ما يمكنني قوله. اللوحة أضفت جمالاً لغرفتي واستلمتها قبل الموعد المحدد. شكراً جزيلاً!",
+                date: "2023-12-18",
+                media: [
+                    { type: "image", url: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+                    { type: "image", url: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+                ],
+                likes: 25,
+                isLiked: false
+            }
+        ];
+
+        // المتغيرات للتحكم في العرض
+        let currentFilter = 'all';
+        let currentSort = 'newest';
+        let currentSearch = '';
+        let displayedCount = 4;
+        const testimonialsPerLoad = 4;
+
+        // دالة لعرض آراء العملاء
+        function renderTestimonials() {
+            const testimonialsContainer = document.getElementById('testimonialsContainer');
+            if (!testimonialsContainer) return;
+            
+            // تصفية البيانات حسب الفلتر والبحث
+            let filteredTestimonials = testimonialsData.filter(testimonial => {
+                // التصفية حسب التقييم
+                if (currentFilter !== 'all' && testimonial.rating !== parseInt(currentFilter)) {
+                    return false;
+                }
+                
+                // التصفية حسب البحث
+                if (currentSearch && !testimonial.content.includes(currentSearch)) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // ترتيب البيانات
+            filteredTestimonials.sort((a, b) => {
+                if (currentSort === 'newest') {
+                    return new Date(b.date) - new Date(a.date);
+                } else if (currentSort === 'oldest') {
+                    return new Date(a.date) - new Date(b.date);
+                } else if (currentSort === 'highest') {
+                    return b.rating - a.rating || b.likes - a.likes;
+                }
+                return 0;
+            });
+            
+            // تحديد عدد العناصر المعروضة
+            const testimonialsToShow = filteredTestimonials.slice(0, displayedCount);
+            
+            testimonialsContainer.innerHTML = '';
+            
+            if (testimonialsToShow.length === 0) {
+                testimonialsContainer.innerHTML = `
+                    <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+                        <i class="fas fa-comment-slash" style="font-size: 4rem; color: rgba(248, 213, 104, 0.3); margin-bottom: 20px;"></i>
+                        <h3 style="color: orange; margin-bottom: 15px;">لا توجد آراء تطابق معايير البحث</h3>
+                        <p style="color: #ddd;">جرب تغيير الفلتر أو كلمات البحث</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            testimonialsToShow.forEach(testimonial => {
+                const testimonialCard = document.createElement('div');
+                testimonialCard.className = 'testimonial-card';
+                testimonialCard.dataset.id = testimonial.id;
+                
+                // إنشاء نجوم التقييم
+                let stars = '';
+                for (let i = 0; i < 5; i++) {
+                    stars += i < testimonial.rating 
+                        ? '<i class="fas fa-star"></i>' 
+                        : '<i class="far fa-star"></i>';
+                }
+                
+                // إنشاء وسائط متعددة إذا كانت موجودة
+                let mediaHTML = '';
+                if (testimonial.media && testimonial.media.length > 0) {
+                    mediaHTML = '<div class="media-container">';
+                    testimonial.media.forEach(item => {
+                        if (item.type === 'image') {
+                            mediaHTML += `
+                                <div class="media-item" data-type="image" data-src="${item.url}">
+                                    <img src="${item.url}" alt="صورة العميل">
+                                </div>
+                            `;
+                        } else if (item.type === 'video') {
+                            mediaHTML += `
+                                <div class="media-item video" data-type="video" data-src="${item.url}">
+                                    <img src="${item.thumbnail}" alt="فيديو العميل">
+                                </div>
+                            `;
+                        } else if (item.type === 'audio') {
+                            mediaHTML += `
+                                <div class="media-item audio" data-type="audio" data-src="${item.url}">
+                                    <img src="${item.thumbnail}" alt="مقطع صوتي">
+                                </div>
+                            `;
+                        }
+                    });
+                    mediaHTML += '</div>';
+                }
+                
+                testimonialCard.innerHTML = `
+                    <div class="testimonial-header">
+                        <img src="${testimonial.avatar}" alt="${testimonial.clientName}" class="client-avatar">
+                        <div class="client-info">
+                            <h3>${testimonial.clientName}</h3>
+                            <div class="rating">${stars}</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-content">${testimonial.content}</p>
+                    ${mediaHTML}
+                    <div class="testimonial-actions">
+                        <button class="action-btn ${testimonial.isLiked ? 'liked' : ''}" data-action="like">
+                            <i class="${testimonial.isLiked ? 'fas' : 'far'} fa-heart"></i>
+                            <span class="like-count">${testimonial.likes}</span>
+                        </button>
+                        <button class="action-btn" data-action="share">
+                            <i class="fas fa-share-alt"></i> مشاركة
+                        </button>
+                    </div>
+                    <div class="testimonial-date">${formatDate(testimonial.date)}</div>
+                `;
+                
+                testimonialsContainer.appendChild(testimonialCard);
+            });
+            
+            // التحكم في زر تحميل المزيد
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (filteredTestimonials.length <= displayedCount) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+            
+            // إضافة أحداث النقر على الوسائط
+            setupMediaEvents();
+            
+            // إضافة أحداث الأزرار
+            setupActionButtons();
+        }
+        
+        // إعداد أحداث الوسائط
+        function setupMediaEvents() {
+            const mediaItems = document.querySelectorAll('.media-item');
+            const mediaModal = document.getElementById('mediaModal');
+            const modalContent = document.getElementById('modalContent');
+            const closeModal = document.getElementById('closeModal');
+            
+            mediaItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    const src = this.dataset.src;
+                    
+                    if (type === 'image') {
+                        modalContent.innerHTML = `
+                            <span class="close-modal">&times;</span>
+                            <img src="${src}" alt="صورة العميل">
+                        `;
+                    } else if (type === 'video') {
+                        modalContent.innerHTML = `
+                            <span class="close-modal">&times;</span>
+                            <video controls autoplay>
+                                <source src="${src}" type="video/mp4">
+                                متصفحك لا يدعم تشغيل الفيديو.
+                            </video>
+                        `;
+                    } else if (type === 'audio') {
+                        modalContent.innerHTML = `
+                            <span class="close-modal">&times;</span>
+                            <audio controls autoplay>
+                                <source src="${src}" type="audio/wav">
+                                متصفحك لا يدعم تشغيل المقطع الصوتي.
+                            </audio>
+                        `;
+                    }
+                    
+                    mediaModal.classList.add('show');
+                });
+            });
+            
+            // إغلاق المودال
+            closeModal.addEventListener('click', function() {
+                mediaModal.classList.remove('show');
+            });
+            
+            mediaModal.addEventListener('click', function(e) {
+                if (e.target === mediaModal) {
+                    mediaModal.classList.remove('show');
+                }
+            });
+        }
+        
+        // إعداد أحداث الأزرار
+        function setupActionButtons() {
+            const actionButtons = document.querySelectorAll('.action-btn');
+            
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.dataset.action;
+                    const testimonialCard = this.closest('.testimonial-card');
+                    const testimonialId = parseInt(testimonialCard.dataset.id);
+                    
+                    if (action === 'like') {
+                        toggleLike(testimonialId, this);
+                    } else if (action === 'share') {
+                        shareTestimonial(testimonialId);
+                    }
+                });
+            });
+        }
+        
+        // تبديل الإعجاب
+        function toggleLike(testimonialId, button) {
+            const testimonial = testimonialsData.find(t => t.id === testimonialId);
+            if (!testimonial) return;
+            
+            testimonial.isLiked = !testimonial.isLiked;
+            
+            if (testimonial.isLiked) {
+                testimonial.likes++;
+                button.classList.add('liked');
+                button.querySelector('i').classList.replace('far', 'fas');
+                showToast('تم الإعجاب بالرأي');
+            } else {
+                testimonial.likes--;
+                button.classList.remove('liked');
+                button.querySelector('i').classList.replace('fas', 'far');
+                showToast('تم إلغاء الإعجاب بالرأي');
+            }
+            
+            button.querySelector('.like-count').textContent = testimonial.likes;
+        }
+        
+        // مشاركة الرأي
+        function shareTestimonial(testimonialId) {
+            // هنا يمكن تنفيذ وظائف المشاركة المختلفة
+            if (navigator.share) {
+                navigator.share({
+                    title: 'رأي عميل PITSIKY',
+                    text: 'اقرأ هذا الرأي الرائع عن منتجات PITSIKY',
+                    url: window.location.href + '?testimonial=' + testimonialId
+                })
+                .then(() => console.log('تمت المشاركة بنجاح'))
+                .catch((error) => console.log('خطأ في المشاركة', error));
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const tempInput = document.createElement('input');
+                tempInput.value = window.location.href + '?testimonial=' + testimonialId;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast('تم نسخ رابط الرأي للمشاركة!');
+            }
+        }
+        
+        // دالة لتنسيق التاريخ
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-EG', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        // دالة لعرض الإشعارات
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // إنشاء جسيمات متحركة للخلفية
+       function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animation = `float ${Math.random() * 3 + 3}s infinite ease-in-out`;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                
+                const colors = ['var(--neon-blue)', 'var(--neon-purple)', 'var(--neon-pink)', 'var(--neon-green)'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = color;
+                particle.style.boxShadow = `0 0 10px ${color}`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // إضافة animation للجسيمات
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0) translateX(0); }
+                    25% { transform: translateY(-20px) translateX(10px); }
+                    50% { transform: translateY(-40px) translateX(0); }
+                    75% { transform: translateY(-20px) translateX(-10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // إضافة تأثير التمرير للهيدر
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // نستدعي هذه الدالة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            renderTestimonials();
+            
+            // إعداد أحداث الفلترة
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    displayedCount = 4; // إعادة تعيين العدد المعروض
+                    renderTestimonials();
+                });
+            });
+            
+            // إعداد أحداث الترتيب
+            const sortButtons = document.querySelectorAll('.sort-btn');
+            sortButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    sortButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    currentSort = this.dataset.sort;
+                    renderTestimonials();
+                });
+            });
+            
+            // إعداد حدث البحث
+            const searchInput = document.getElementById('searchTestimonials');
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentSearch = this.value;
+                    displayedCount = 4; // إعادة تعيين العدد المعروض
+                    renderTestimonials();
+                }, 500);
+            });
+            
+            // إعداد حدث تحميل المزيد
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            loadMoreBtn.addEventListener('click', function() {
+                displayedCount += testimonialsPerLoad;
+                renderTestimonials();
+            });
+        });
+    </script>-->
+    <script>
+    // بيانات آراء العملاء الوهمية الموسعة مع وسائط متعددة
+    const testimonialsData = [
+        {
+            id: 1,
+            clientName: "أحمد الشاوي",
+            avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+            rating: 5,
+            content: "جودة اللوحات رائعة وتفوق التوقعات! التفاصيل دقيقة جداً والألوان زاهية. الشحن كان سريعاً والتغليف متقن. سأطلب بالتأكيد مرة أخرى.",
+            date: "2023-10-15",
+            media: [
+                { type: "image", url: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+                { type: "image", url: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+            ],
+            likes: 12,
+            isLiked: false
+        },
+        {
+            id: 2,
+            clientName: "فاطمة الزهرائي",
+            avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+            rating: 4,
+            content: "اللوحة جميلة وتضيف لمسة أنيقة لغرفة المعيشة. خدمة العملاء كانت محترفة وساعدوني في اختيار التصميم المناسب. أنصح بالتجربة.",
+            date: "2023-11-02",
+            media: [
+                { type: "image", url: "./gif/GIF_20250927_013001_350.gif" },
+                { type: "audio", url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", thumbnail: "https://cdn-icons-png.flaticon.com/512/727/727241.png" }
+            ],
+            likes: 8,
+            isLiked: false
+        },
+        {
+            id: 3,
+            clientName: "عمر الدكالي",
+            avatar: "https://randomuser.me/api/portraits/men/22.jpg",
+            rating: 5,
+            content: "اشتريت لوحة BMW M5 وكانت هدية مثالية لصديقي في عيد ميلاده. التفاصيل مذهلة والجودة عالية. الشحن وصل في الوقت المحدد.",
+            date: "2023-09-28",
+            media: [
+                { type: "video", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", thumbnail: "https://images.unsplash.com/photo-1532581140115-3e355d1ed1de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+            ],
+            likes: 15,
+            isLiked: false
+        },
+        {
+            id: 4,
+            clientName: "سارة العلوي",
+            avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+            rating: 5,
+            content: "تجربة رائعة من البداية إلى النهاية! التصميم كان كما طلبت تماماً والجودة ممتازة. شكراً لفريق PITSIKY على الاهتمام بالتفاصيل.",
+            date: "2023-12-10",
+            media: [
+                { type: "image", url: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+                { type: "video", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+            ],
+            likes: 20,
+            isLiked: false
+        },
+        {
+            id: 5,
+            clientName: "يوسف البكري",
+            avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+            rating: 4,
+            content: "المنتج جيد لكن الشحن استغرق وقتاً أطول من المتوقع. جودة الطباعة ممتازة والألوان حية. أنصح بالشراء مع الأخذ في الاعتبار وقت الشحن.",
+            date: "2023-11-25",
+            media: [],
+            likes: 6,
+            isLiked: false
+        },
+        {
+            id: 6,
+            clientName: "نورة الفاسي",
+            avatar: "https://randomuser.me/api/portraits/women/26.jpg",
+            rating: 5,
+            content: "لا أملك إلا كلمات الشكر لفريق PITSIKY. اللوحة كانت هدية لزوجي وأعجب بها كثيراً. الجودة فائقة والتسليم كان في الوقت المحدد.",
+            date: "2023-10-05",
+            media: [
+                { type: "audio", url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", thumbnail: "https://cdn-icons-png.flaticon.com/512/727/727241.png" }
+            ],
+            likes: 18,
+            isLiked: false
+        },
+        {
+            id: 7,
+            clientName: "خالد الراشدي",
+            avatar: "https://randomuser.me/api/portraits/men/41.jpg",
+            rating: 3,
+            content: "التجربة كانت مقبولة. الجودة جيدة لكن السعر مرتفع قليلاً مقارنة بالمنتجات المماثلة في السوق. الشحن كان ضمن الوقت الموعود.",
+            date: "2023-09-15",
+            media: [],
+            likes: 3,
+            isLiked: false
+        },
+        {
+            id: 8,
+            clientName: "لمياء التونسي",
+            avatar: "https://randomuser.me/api/portraits/women/53.jpg",
+            rating: 5,
+            content: "رائعة! رائعة! رائعة! هذا كل ما يمكنني قوله. اللوحة أضفت جمالاً لغرفتي واستلمتها قبل الموعد المحدد. شكراً جزيلاً!",
+            date: "2023-12-18",
+            media: [
+                { type: "image", url: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" },
+                { type: "image", url: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" }
+            ],
+            likes: 25,
+            isLiked: false
+        }
+    ];
+
+    // المتغيرات للتحكم في العرض
+    let currentFilter = 'all';
+    let currentSort = 'newest';
+    let currentSearch = '';
+    let displayedCount = 4;
+    const testimonialsPerLoad = 4;
+
+    // دالة لعرض آراء العملاء
+    function renderTestimonials() {
+        const testimonialsContainer = document.getElementById('testimonialsContainer');
+        if (!testimonialsContainer) return;
+        
+        // تصفية البيانات حسب الفلتر والبحث
+        let filteredTestimonials = testimonialsData.filter(testimonial => {
+            // التصفية حسب التقييم
+            if (currentFilter !== 'all' && testimonial.rating !== parseInt(currentFilter)) {
+                return false;
+            }
+            
+            // التصفية حسب البحث
+            if (currentSearch && !testimonial.content.includes(currentSearch)) {
+                return false;
+            }
+            
+            return true;
+        });
+        
+        // ترتيب البيانات
+        filteredTestimonials.sort((a, b) => {
+            if (currentSort === 'newest') {
+                return new Date(b.date) - new Date(a.date);
+            } else if (currentSort === 'oldest') {
+                return new Date(a.date) - new Date(b.date);
+            } else if (currentSort === 'highest') {
+                return b.rating - a.rating || b.likes - a.likes;
+            }
+            return 0;
+        });
+        
+        // تحديد عدد العناصر المعروضة
+        const testimonialsToShow = filteredTestimonials.slice(0, displayedCount);
+        
+        testimonialsContainer.innerHTML = '';
+        
+        if (testimonialsToShow.length === 0) {
+            testimonialsContainer.innerHTML = `
+                <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+                    <i class="fas fa-comment-slash" style="font-size: 4rem; color: rgba(248, 213, 104, 0.3); margin-bottom: 20px;"></i>
+                    <h3 style="color: orange; margin-bottom: 15px;">لا توجد آراء تطابق معايير البحث</h3>
+                    <p style="color: #ddd;">جرب تغيير الفلتر أو كلمات البحث</p>
+                </div>
+            `;
+            return;
+        }
+        
+        testimonialsToShow.forEach(testimonial => {
+            const testimonialCard = document.createElement('div');
+            testimonialCard.className = 'testimonial-card';
+            testimonialCard.dataset.id = testimonial.id;
+            
+            // إنشاء نجوم التقييم
+            let stars = '';
+            for (let i = 0; i < 5; i++) {
+                stars += i < testimonial.rating 
+                    ? '<i class="fas fa-star"></i>' 
+                    : '<i class="far fa-star"></i>';
+            }
+            
+            // إنشاء وسائط متعددة إذا كانت موجودة
+            let mediaHTML = '';
+            if (testimonial.media && testimonial.media.length > 0) {
+                mediaHTML = '<div class="media-container">';
+                testimonial.media.forEach(item => {
+                    if (item.type === 'image') {
+                        mediaHTML += `
+                            <div class="media-item" data-type="image" data-src="${item.url}">
+                                <img src="${item.url}" alt="صورة العميل">
+                            </div>
+                        `;
+                    } else if (item.type === 'video') {
+                        mediaHTML += `
+                            <div class="media-item video" data-type="video" data-src="${item.url}">
+                                <img src="${item.thumbnail}" alt="فيديو العميل">
+                            </div>
+                        `;
+                    } else if (item.type === 'audio') {
+                        mediaHTML += `
+                            <div class="media-item audio" data-type="audio" data-src="${item.url}">
+                                <img src="${item.thumbnail}" alt="مقطع صوتي">
+                            </div>
+                        `;
+                    }
+                });
+                mediaHTML += '</div>';
+            }
+            
+            testimonialCard.innerHTML = `
+                <div class="testimonial-header">
+                    <img src="${testimonial.avatar}" alt="${testimonial.clientName}" class="client-avatar">
+                    <div class="client-info">
+                        <h3>${testimonial.clientName}</h3>
+                        <div class="rating">${stars}</div>
+                    </div>
+                </div>
+                <p class="testimonial-content">${testimonial.content}</p>
+                ${mediaHTML}
+                <div class="testimonial-actions">
+                    <button class="action-btn ${testimonial.isLiked ? 'liked' : ''}" data-action="like">
+                        <i class="${testimonial.isLiked ? 'fas' : 'far'} fa-heart"></i>
+                        <span class="like-count">${testimonial.likes}</span>
+                    </button>
+                    <button class="action-btn" data-action="share">
+                        <i class="fas fa-share-alt"></i> مشاركة
+                    </button>
+                </div>
+                <div class="testimonial-date">${formatDate(testimonial.date)}</div>
+            `;
+            
+            testimonialsContainer.appendChild(testimonialCard);
+        });
+        
+        // التحكم في زر تحميل المزيد
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (filteredTestimonials.length <= displayedCount) {
+            loadMoreBtn.style.display = 'none';
+        } else {
+            loadMoreBtn.style.display = 'block';
+        }
+        
+        // إضافة أحداث النقر على الوسائط
+        setupMediaEvents();
+        
+        // إضافة أحداث الأزرار
+        setupActionButtons();
+    }
+    
+    // إعداد أحداث الوسائط
+    function setupMediaEvents() {
+        const mediaItems = document.querySelectorAll('.media-item');
+        const mediaModal = document.getElementById('mediaModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.getElementById('closeModal');
+        
+        mediaItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const type = this.dataset.type;
+                const src = this.dataset.src;
+                
+                if (type === 'image') {
+                    modalContent.innerHTML = `
+                        <span class="close-modal">&times;</span>
+                        <img src="${src}" alt="صورة العميل">
+                    `;
+                } else if (type === 'video') {
+                    modalContent.innerHTML = `
+                        <span class="close-modal">&times;</span>
+                        <video controls autoplay>
+                            <source src="${src}" type="video/mp4">
+                            متصفحك لا يدعم تشغيل الفيديو.
+                        </video>
+                    `;
+                } else if (type === 'audio') {
+                    modalContent.innerHTML = `
+                        <span class="close-modal">&times;</span>
+                        <audio controls autoplay>
+                            <source src="${src}" type="audio/wav">
+                            متصفحك لا يدعم تشغيل المقطع الصوتي.
+                        </audio>
+                    `;
+                }
+                
+                mediaModal.classList.add('show');
+            });
+        });
+        
+        // إغلاق المودال
+        closeModal.addEventListener('click', function() {
+            mediaModal.classList.remove('show');
+        });
+        
+        mediaModal.addEventListener('click', function(e) {
+            if (e.target === mediaModal) {
+                mediaModal.classList.remove('show');
+            }
+        });
+    }
+    
+    // إعداد أحداث الأزرار
+    function setupActionButtons() {
+        const actionButtons = document.querySelectorAll('.action-btn');
+        
+        actionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.dataset.action;
+                const testimonialCard = this.closest('.testimonial-card');
+                const testimonialId = parseInt(testimonialCard.dataset.id);
+                
+                if (action === 'like') {
+                    toggleLike(testimonialId, this);
+                } else if (action === 'share') {
+                    shareTestimonial(testimonialId);
+                }
+            });
+        });
+    }
+    
+    // تبديل الإعجاب
+    function toggleLike(testimonialId, button) {
+        const testimonial = testimonialsData.find(t => t.id === testimonialId);
+        if (!testimonial) return;
+        
+        testimonial.isLiked = !testimonial.isLiked;
+        
+        if (testimonial.isLiked) {
+            testimonial.likes++;
+            button.classList.add('liked');
+            button.querySelector('i').classList.replace('far', 'fas');
+            showToast('تم الإعجاب بالرأي');
+        } else {
+            testimonial.likes--;
+            button.classList.remove('liked');
+            button.querySelector('i').classList.replace('fas', 'far');
+            showToast('تم إلغاء الإعجاب بالرأي');
+        }
+        
+        button.querySelector('.like-count').textContent = testimonial.likes;
+    }
+    
+    // مشاركة الرأي
+    function shareTestimonial(testimonialId) {
+        // هنا يمكن تنفيذ وظائف المشاركة المختلفة
+        if (navigator.share) {
+            navigator.share({
+                title: 'رأي عميل PITSIKY',
+                text: 'اقرأ هذا الرأي الرائع عن منتجات PITSIKY',
+                url: window.location.href + '?testimonial=' + testimonialId
+            })
+            .then(() => console.log('تمت المشاركة بنجاح'))
+            .catch((error) => console.log('خطأ في المشاركة', error));
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            const tempInput = document.createElement('input');
+            tempInput.value = window.location.href + '?testimonial=' + testimonialId;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('تم نسخ رابط الرأي للمشاركة!');
+        }
+    }
+    
+    // دالة لتنسيق التاريخ
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+    
+    // دالة لعرض الإشعارات
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+    
+    // إضافة تأثير التمرير للهيدر
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+    
+    // نستدعي هذه الدالة عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        // تمت إزالة استدعاء createParticles() هنا
+        renderTestimonials();
+        
+        // إعداد أحداث الفلترة
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                displayedCount = 4; // إعادة تعيين العدد المعروض
+                renderTestimonials();
+            });
+        });
+        
+        // إعداد أحداث الترتيب
+        const sortButtons = document.querySelectorAll('.sort-btn');
+        sortButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                sortButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                currentSort = this.dataset.sort;
+                renderTestimonials();
+            });
+        });
+        
+        // إعداد حدث البحث
+        const searchInput = document.getElementById('searchTestimonials');
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentSearch = this.value;
+                displayedCount = 4; // إعادة تعيين العدد المعروض
+                renderTestimonials();
+            }, 500);
+        });
+        
+        // إعداد حدث تحميل المزيد
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        loadMoreBtn.addEventListener('click', function() {
+            displayedCount += testimonialsPerLoad;
+            renderTestimonials();
+        });
+    });
+</script>
+</body>
+  </html>
