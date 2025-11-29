@@ -334,10 +334,10 @@
                             <label class="form-label">المدينة</label>
                             <select class="form-select" id="city" required>
                                 <option value="">اختر المدينة</option>
-                                <option value="casablanca">الدار البيضاء (30 درهم)</option>
-                                <option value="rabat">الرباط (35 درهم)</option>
-                                <option value="marrakech">مراكش (40 درهم)</option>
-                                <option value="other">أخرى (70 درهم)</option>
+                                <option value="casablanca">الدار البيضاء (0 درهم)</option>
+                                <option value="rabat">الرباط (0 درهم)</option>
+                                <option value="marrakech">مراكش (0 درهم)</option>
+                                <option value="other">أخرى (35 درهم)</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -427,7 +427,7 @@
         // بيانات التطبيق
         let cart = [];
         const shippingCosts = {
-            casablanca: 30, rabat: 35, marrakech: 40, other: 70
+            casablanca: 0, rabat: 0, marrakech: 0, other: 35
         };
 
         // تهيئة الصفحة
