@@ -1,0 +1,18 @@
+{
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1.html",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "src": "/usrrvw",
+      "dest": "/usrrvw.html",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    }
+  ]
+}
