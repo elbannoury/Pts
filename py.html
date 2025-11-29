@@ -255,39 +255,6 @@
             height: auto;
         }
 
-        .payment-options {
-            display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .payment-option {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 1rem;
-            flex: 1;
-            min-width: 120px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .payment-option:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .payment-option.active {
-            border-color: var(--neon-blue);
-            background: rgba(0, 212, 255, 0.1);
-        }
-
-        .payment-option i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
         .binance-id-section {
             margin: 1.5rem 0;
             padding: 1rem;
@@ -301,6 +268,18 @@
             color: gold;
             margin: 0.5rem 0;
             direction: ltr;
+        }
+
+        .binance-link-section {
+            margin: 1.5rem 0;
+        }
+
+        .link-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
         }
     </style>
 </head>
@@ -431,22 +410,26 @@
                     
                     <div class="qr-code">
                         <p>مسح رمز QR للدفع السريع:</p>
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=binance://pay/transfer?recipient=408606033&amount=${usdtAmount}&currency=USDT&memo=${order.id}" alt="Binance QR Code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=binance://pay/transfer?action=transfer&recipient=408606033&amount=${usdtAmount}&currency=USDT&memo=${order.id}" alt="Binance QR Code">
+                    </div>
+                </div>
+                
+                <div class="binance-link-section">
+                    <div class="link-info">
+                        <p><i class="fas fa-info-circle"></i> اختر أحد الخيارين التاليين للدفع:</p>
                     </div>
                 </div>
             `;
             
             // أزرار بينانس المحسنة
             document.getElementById('actionButtons').innerHTML = `
-                <a href="https://www.binance.com/en/pay/request?amount=${usdtAmount}&currency=USDT&merchantTradeNo=${order.id}&orderId=${order.id}" 
-                   class="action-btn binance-web-btn" target="_blank">
-                    <i class="fas fa-globe"></i> فتح موقع بينانس
-                </a>
+                <button class="action-btn binance-web-btn" onclick="openBinanceWeb('${usdtAmount}', '${order.id}')">
+                    <i class="fas fa-globe"></i> فتح موقع بينانس للدفع
+                </button>
                 
-                <a href="binance://pay/transfer?recipient=408606033&amount=${usdtAmount}&currency=USDT&memo=${order.id}" 
-                   class="action-btn binance-btn" id="binanceAppLink">
-                    <i class="fas fa-mobile-alt"></i> فتح تطبيق بينانس
-                </a>
+                <button class="action-btn binance-btn" onclick="openBinanceApp('${usdtAmount}', '${order.id}')">
+                    <i class="fas fa-mobile-alt"></i> فتح تطبيق بينانس للدفع
+                </button>
                 
                 <a href="https://wa.me/212700720490?text=لقد قمت بالدفع عبر بينانس للطلب ${order.id} بمبلغ ${usdtAmount} USDT" 
                    class="action-btn whatsapp-btn" target="_blank">
@@ -457,21 +440,30 @@
                     <i class="fas fa-home"></i> العودة للرئيسية
                 </a>
             `;
+        }
 
-            // إضافة حل بديل إذا لم يعمل رابط التطبيق
-            document.getElementById('binanceAppLink').addEventListener('click', function(e) {
-                // محاولة فتح التطبيق
-                window.location.href = `binance://pay/transfer?recipient=408606033&amount=${usdtAmount}&currency=USDT&memo=${order.id}`;
-                
-                // إذا لم يفتح التطبيق خلال 2 ثانية، افتح صفحة الويب
-                setTimeout(function() {
-                    if (!document.webkitHidden && !document.hidden) {
-                        window.open(`https://www.binance.com/en/pay/request?amount=${usdtAmount}&currency=USDT&merchantTradeNo=${order.id}&orderId=${order.id}`, '_blank');
-                    }
-                }, 2000);
-                
-                e.preventDefault();
-            });
+        // فتح موقع بينانس للدفع
+        function openBinanceWeb(amount, orderId) {
+            // رابط الدفع عبر موقع بينانس
+            const binanceWebUrl = `https://www.binance.com/en/pay/request?amount=${amount}&currency=USDT&merchantTradeNo=${orderId}&orderId=${orderId}`;
+            window.open(binanceWebUrl, '_blank');
+        }
+
+        // فتح تطبيق بينانس للدفع
+        function openBinanceApp(amount, orderId) {
+            // رابط الدفع عبر تطبيق بينانس
+            const binanceAppUrl = `binance://pay/transfer?action=transfer&recipient=408606033&amount=${amount}&currency=USDT&memo=${orderId}`;
+            
+            // محاولة فتح التطبيق
+            window.location.href = binanceAppUrl;
+            
+            // إذا لم يفتح التطبيق خلال 2 ثانية، افتح موقع الويب
+            setTimeout(function() {
+                if (!document.webkitHidden && !document.hidden) {
+                    const binanceWebUrl = `https://www.binance.com/en/pay/request?amount=${amount}&currency=USDT&merchantTradeNo=${orderId}&orderId=${orderId}`;
+                    window.open(binanceWebUrl, '_blank');
+                }
+            }, 2000);
         }
 
         // عرض خيار الدفع عبر واتساب
@@ -523,7 +515,7 @@
         function getPaymentMethodName(method) {
             const methods = {
                 'whatsapp50': 'ادفع 50% على واتساب و 50% عند الاستلام',
-                'binance': 'BINANCE'
+                'binance': 'بينانس (USDT)'
             };
             return methods[method] || method;
         }
