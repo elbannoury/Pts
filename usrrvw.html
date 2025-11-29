@@ -1823,5 +1823,11 @@
         });
     });
     </script>
+    <script>
+// إعادة توجيه إذا طلب المستخدم الصفحة بدون .html
+if (!window.location.pathname.includes('.html') && window.location.pathname.includes('/usrrvw')) {
+    window.location.href = '/usrrvw.html' + window.location.search;
+}
+    </script>
 </body>
   </html>
