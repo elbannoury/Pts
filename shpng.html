@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PITSIKY - تتبع الشحن 🚚</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #F8FE4F 0%, #FF5A00 100%);
+            --secondary-gradient: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
+            --accent-gradient: linear-gradient(135deg, #F8FE4F 0%, #00FE9C 100%);
+            --neon-blue: #00d4ff;
+            --neon-purple: #b537f2;
+            --neon-pink: #ff006e;
+            --neon-green: #FF5A00;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("images/161.png") center/cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            height: 50px;
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.12);
+            color: gold;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .header-icon:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+        }
+
+        .products-btn {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #EAFFE7 0%, #FFCE00 50%, #F2C037 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .tracking-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px auto;
+            max-width: 700px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .tracking-form {
+            display: flex;
+            margin: 30px 0;
+        }
+
+        .tracking-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px 0 0 50px;
+            padding: 15px 20px;
+            color: white;
+            font-size: 1rem;
+            width: 70%;
+            outline: none;
+        }
+
+        .tracking-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .tracking-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tracking-btn:hover {
+            background: var(--secondary-gradient);
+        }
+
+        .order-status {
+            margin-top: 30px;
+            text-align: right;
+            display: none;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .status-badge.confirmed {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+
+        .status-badge.processing {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+            border: 1px solid #f39c12;
+        }
+
+        .status-badge.shipped {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+            border: 1px solid #9b59b6;
+        }
+
+        .status-badge.delivered {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .status-timeline {
+            margin: 30px 0;
+            position: relative;
+            padding-right: 30px;
+        }
+
+        .status-timeline::before {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--glass-border);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .status-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .status-item.active .status-icon {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .status-item.completed .status-icon {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .status-content {
+            flex: 1;
+            text-align: right;
+        }
+
+        .status-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .status-date {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .status-item.active .status-title {
+            color: var(--neon-blue);
+        }
+
+        .order-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .detail-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .detail-value {
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-gradient);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+        }
+
+        .error-message {
+            color: var(--neon-pink);
+            margin-top: 10px;
+            display: none;
+        }
+
+        .thank-you-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        .thank-you-icon {
+            font-size: 4rem;
+            color: gold;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .thank-you-card h3 {
+            color: gold;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .thank-you-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .support-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .support-section h4 {
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+        }
+
+        .support-section p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 1rem 1rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            text-align: right;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-section h4 {
+            color: rgba(239, 255, 211, 0.94);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: orange;
+            line-height: 1.6;
+            font-weight: bold;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .social-icons a {
+            color: rgba(255, 248, 172, 0.9);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: #FFE83E;
+            transform: scale(1.2);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tracking-form {
+                flex-direction: column;
+            }
+            
+            .tracking-input {
+                width: 100%;
+                border-radius: 50px;
+                margin-bottom: 10px;
+            }
+            
+            .tracking-btn {
+                width: 100%;
+                border-radius: 50px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .status-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="pdc.html" class="header-icon products-btn" title="العودة إلى المنتجات">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="index.html"><img src="./gif/fst.gif" alt="PITSIKY Logo" class="logo"></a>
+        <a href="https://wa.me/212702382376" class="header-icon whatsapp-btn" target="_blank" title="التواصل عبر واتساب">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>تتبع شحن طلبك</h1>
+            <p class="subtitle">أدخل رقم الطلب لمتابعة حالة شحنك خطوة بخطوة</p>
+            
+            <div class="tracking-card">
+                <div class="tracking-form">
+                    <input type="text" class="tracking-input" id="orderNumber" placeholder="أدخل رقم الطلب (مثال: 1764422791768-PTS)" maxlength="17">
+                    <button class="tracking-btn" id="trackOrder">تتبع الطلب</button>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    رقم الطلب غير صحيح. يرجى التحقق والمحاولة مرة أخرى.
+                </div>
+                
+                <div class="order-status" id="orderStatus">
+                    <div class="status-header">
+                        <h2 style="color: gold; margin: 0;">حالة الطلب</h2>
+                        <div class="status-badge" id="statusBadge">قيد المعالجة</div>
+                    </div>
+                    
+                    <div class="status-timeline" id="statusTimeline">
+                        <!-- سيتم ملؤه ديناميكيًا بالجافاسكريبت -->
+                    </div>
+                    
+                    <div class="order-details" id="orderDetails">
+                        <h3 style="color: var(--neon-blue); margin-bottom: 15px;">تفاصيل الطلب</h3>
+                        <div class="detail-row">
+                            <div class="detail-label">رقم الطلب:</div>
+                            <div class="detail-value" id="detailOrderNumber">1764422791768-PTS</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">اسم العميل:</div>
+                            <div class="detail-value" id="detailCustomer">أحمد محمد</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">تاريخ الطلب:</div>
+                            <div class="detail-value" id="detailOrderDate">15 مايو 2025</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">المنتجات:</div>
+                            <div class="detail-value" id="detailProducts">لوحة BMW M4 GT3</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">العنوان:</div>
+                            <div class="detail-value" id="detailAddress">الدار البيضاء، حي السلام، شارع محمد السادس، رقم 45</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">رقم الهاتف:</div>
+                            <div class="detail-value" id="detailPhone">+212 612-345678</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thank-you-card" id="thankYouCard">
+                <div class="thank-you-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>شكراً لثقتك بنا!</h3>
+                <p>نقدر ثقتك في PITSIKY ونعمل جاهدين لتقديم أفضل خدمة لك. نأمل أن تنال لوحاتنا إعجابك وتضيف جمالاً إلى مساحتك.</p>
+                
+                <div class="support-section">
+                    <h4>هل تحتاج إلى مساعدة؟</h4>
+                    <p>فريق الدعم لدينا متاح لمساعدتك في أي استفسار</p>
+                    <a href="https://wa.me/212702382376" class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i> تواصل معنا عبر واتساب
+                    </a>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="index.html" class="btn"><i class="fas fa-home"></i> العودة للرئيسية</a>
+                <a href="pdc.html" class="btn btn-secondary"><i class="fas fa-store"></i> متابعة التسوق</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>عن PITSIKY</h4>
+                <p>وجهتك الجديدة لترقية جدارك إلى مستوى جديد يناسب ذوقك</p>
+            </div>
+          <!--  <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="pdc.html">المنتجات</a></li>
+                    <li><a href="shpng.html">تتبع الشحن</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> 212-700-720-490+</li>
+                    <li><i class="fas fa-envelope"></i> contact@pitsiky.com</li>
+                    <li><i class="fab fa-whatsapp"></i> 212-702-382376+</li>
+                </ul>-->
+            </div>
+        </div>
+        
+        <div class="social-icons">
+            <a href="https://www.instagram.com/pitsiky" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@pitsiky" target="_blank"><i class="fab fa-tiktok"></i></a>
+            
+        </div>
+        
+        <div class="footer-bottom">
+            <p>PITSIKY 2025 - جميع الحقوق محفوظة ©</p>
+        </div>
+    </footer>
+
+    <!-- تضمين ملف نظام إدارة الطلبات -->
+    <script src="unm.js"></script>
+
+    <script>
+        // عناصر DOM
+        const orderNumberInput = document.getElementById('orderNumber');
+        const trackOrderBtn = document.getElementById('trackOrder');
+        const errorMessage = document.getElementById('errorMessage');
+        const orderStatus = document.getElementById('orderStatus');
+        const statusBadge = document.getElementById('statusBadge');
+        const statusTimeline = document.getElementById('statusTimeline');
+        const orderDetails = document.getElementById('orderDetails');
+        const detailOrderNumber = document.getElementById('detailOrderNumber');
+        const detailCustomer = document.getElementById('detailCustomer');
+        const detailOrderDate = document.getElementById('detailOrderDate');
+        const detailProducts = document.getElementById('detailProducts');
+        const detailAddress = document.getElementById('detailAddress');
+        const detailPhone = document.getElementById('detailPhone');
+        const thankYouCard = document.getElementById('thankYouCard');
+
+        // تحديث عداد السلة
+        function updateCartCount() {
+            const cartCount = document.querySelector('.cart-count');
+            const savedCart = localStorage.getItem('artGalleryCart');
+            if (savedCart) {
+                const cart = JSON.parse(savedCart);
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                if (cartCount) cartCount.textContent = count;
+            }
+        }
+
+        // تتبع الطلب
+        function trackOrder() {
+            const orderNumber = orderNumberInput.value.trim().toUpperCase();
+            
+            if (!orderNumber) {
+                showError("يرجى إدخال رقم الطلب");
+                return;
+            }
+            
+            // التحقق من صيغة رقم الطلب
+            const orderPattern = /^\d{13}-PTS$/;
+            if (!orderPattern.test(orderNumber)) {
+                showError("صيغة رقم الطلب غير صحيحة. يجب أن يكون بالشكل: 1764422791768-PTS");
+                return;
+            }
+            
+            const order = checkOrder(orderNumber);
+            if (order) {
+                displayOrderStatus(orderNumber, order);
+                hideError();
+                
+                // إظهار بطاقة الشكر بعد عرض حالة الطلب
+                setTimeout(() => {
+                    thankYouCard.style.display = 'block';
+                }, 1000);
+            } else {
+                showError("رقم الطلب غير موجود. يرجى التحقق والمحاولة مرة أخرى.");
+                hideOrderStatus();
+                thankYouCard.style.display = 'none';
+            }
+        }
+
+        // عرض حالة الطلب
+        function displayOrderStatus(orderNumber, order) {
+            // تحديث شارة الحالة
+            let statusText, statusClass;
+            switch(order.status) {
+                case "confirmed":
+                    statusText = "تم تأكيد الطلب";
+                    statusClass = "confirmed";
+                    break;
+                case "processing":
+                    statusText = "قيد التجهيز";
+                    statusClass = "processing";
+                    break;
+                case "shipped":
+                    statusText = "تم الشحن";
+                    statusClass = "shipped";
+                    break;
+                case "delivered":
+                    statusText = "تم التسليم";
+                    statusClass = "delivered";
+                    break;
+                default:
+                    statusText = "قيد المعالجة";
+                    statusClass = "confirmed";
+            }
+            
+            statusBadge.textContent = statusText;
+            statusBadge.className = `status-badge ${statusClass}`;
+            
+            // بناء الجدول الزمني للحالة
+            statusTimeline.innerHTML = '';
+            order.timeline.forEach(item => {
+                const statusItem = document.createElement('div');
+                statusItem.className = `status-item ${item.completed ? 'completed' : ''} ${item.step === order.status ? 'active' : ''}`;
+                
+                const iconClass = getIconForStep(item.step);
+                
+                statusItem.innerHTML = `
+                    <div class="status-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <div class="status-content">
+                        <div class="status-title">${item.title}</div>
+                        <div class="status-date">${item.date ? formatDate(item.date) : 'لم يتم بعد'}</div>
+                    </div>
+                `;
+                
+                statusTimeline.appendChild(statusItem);
+            });
+            
+            // تحديث تفاصيل الطلب
+            detailOrderNumber.textContent = orderNumber;
+            detailCustomer.textContent = order.customer;
+            detailOrderDate.textContent = formatDate(order.date);
+            detailProducts.textContent = order.products;
+            detailAddress.textContent = order.address;
+            detailPhone.textContent = order.phone;
+            
+            // إظهار حالة الطلب
+            orderStatus.style.display = 'block';
+            orderDetails.style.display = 'block';
+            
+            // إضافة تأثير ظهور تدريجي
+            const timelineItems = document.querySelectorAll('.status-item');
+            timelineItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 200);
+            });
+        }
+
+        // الحصول على الأيقونة المناسبة لكل خطوة
+        function getIconForStep(step) {
+            switch(step) {
+                case "confirmed":
+                    return "fas fa-clipboard-check";
+                case "processing":
+                    return "fas fa-box";
+                case "shipped":
+                    return "fas fa-shipping-fast";
+                case "delivered":
+                    return "fas fa-home";
+                default:
+                    return "fas fa-info-circle";
+            }
+        }
+
+        // تنسيق التاريخ
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('EG', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // إظهار رسالة الخطأ
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        // إخفاء رسالة الخطأ
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+
+        // إخفاء حالة الطلب
+        function hideOrderStatus() {
+            orderStatus.style.display = 'none';
+            orderDetails.style.display = 'none';
+        }
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            
+            // إضافة حدث النقر على زر التتبع
+            trackOrderBtn.addEventListener('click', trackOrder);
+            
+            // إضافة حدث الضغط على Enter في حقل الإدخال
+            orderNumberInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    trackOrder();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
