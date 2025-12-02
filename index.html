@@ -61,34 +61,7 @@
             pointer-events: none;
             z-index: 1;
         }
-/*
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            animation: float 6s infinite linear;
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-*/
         /* Modern Header */
         .header {
             position: fixed;
@@ -96,8 +69,8 @@
             left: 0;
             right: 0;
             height: 80px;
-            background: rgba(red#00FE9C, green, blue, alpha);
-            backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
             display: flex;
@@ -630,39 +603,354 @@
             opacity: 1;
         }
         
+        /* ------- الأنماط المحسنة لـ Stacked Gallery ------- */
+        .stacked-gallery-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            min-height: 500px;
+            margin: 170px auto;
+            top: 200px;
+            perspective: 2000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         .stacked-gallery {
             position: relative;
-            text-align: center;
-            width: 90%;
-            max-width: 90%;
-            justify-items: center;
-            height: 420px;
-            margin-top: 50px;
-            margin-bottom: 500px;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            cursor: grab;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 0;
         }
 
-        .stacked-gallery img {
+        .stacked-gallery:active {
+            cursor: grabbing;
+        }
+
+        .gallery-item {
+            position: absolute;
+            margin-top: 170px;
+            width: auto;
+            max-width: 600px;
+            height: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.1),
+                        0 0 30px rgba(0, 212, 255, 0.3);
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                       opacity 0.8s ease,
+                       filter 0.8s ease;
+            transform-origin: center center -40px;
+            backface-visibility: hidden;
+            will-change: transform;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item::before {
+            content: '';
             position: absolute;
             top: 0;
-            width: 280px;
-            height: 420px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s ease, left 0.4s ease, z-index 0.2s;
-            cursor: grab;
-            user-select: none;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(0, 212, 255, 0.1) 50%,
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 2;
         }
 
-        .stacked-gallery img:nth-child(1) { z-index: 5; }
-        .stacked-gallery img:nth-child(2) { top: 10px; z-index: 4; }
-        .stacked-gallery img:nth-child(3) { top: 20px; z-index: 3; }
-        .stacked-gallery img:nth-child(4) { top: 30px; z-index: 2; }
-        .stacked-gallery img:nth-child(5) { top: 40px; z-index: 1; }
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 60%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+            border-radius: 20px;
+            z-index: 1;
+        }
+
+        /* تأثير الإطار المتوهج للعنصر النشط */
+        .gallery-item.active {
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.6),
+                        0 0 0 2px rgba(248, 213, 104, 0.5),
+                        0 0 50px rgba(248, 213, 104, 0.4),
+                        0 0 100px rgba(248, 213, 104, 0.2);
+            z-index: 10 !important;
+        }
+
+        /* مؤشرات التنقل */
+        .gallery-nav {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 100;
+            margin-top: 20px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot.active {
+            background: var(--neon-blue);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px var(--neon-blue),
+                        0 0 20px var(--neon-blue);
+        }
+
+        .nav-dot:hover {
+            background: var(--neon-purple);
+            transform: scale(1.2);
+        }
+
+        .nav-dot::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border-radius: 50%;
+            border: 1px solid var(--neon-blue);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-dot.active::after {
+            opacity: 0.5;
+        }
+
+        /* أزرار التنقل */
+        .gallery-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+
+        .stacked-gallery-container:hover .gallery-btn {
+            opacity: 1;
+        }
+
+        .gallery-btn:hover {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .gallery-btn.prev {
+            right: 20px;
+        }
+
+        .gallery-btn.next {
+            left: 20px;
+        }
+
+        /* مؤشر الدوران */
+        .rotation-indicator {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .rotation-indicator i {
+            color: var(--neon-blue);
+            animation: pulse 2s infinite;
+        }
+
+        /* تأثيرات الحركة */
+        @keyframes galleryFloat {
+            0%, 100% { transform: translateY(0) rotateY(var(--rotate-y)) scale(var(--scale)); }
+            50% { transform: translateY(-20px) rotateY(var(--rotate-y)) scale(var(--scale)); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); }
+            50% { box-shadow: 0 35px 70px rgba(0, 212, 255, 0.3); }
+        }
+
+        .auto-rotate-btn {
+            margin-top: 100px;
+            background: var(--glass-bg);
+            border: 2px solid var(--neon-purple);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .auto-rotate-btn:hover {
+            background: var(--neon-purple);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(181, 55, 242, 0.5);
+        }
+
+        .auto-rotate-btn.active {
+            background: var(--neon-purple);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* تأثيرات الوسائط الصغيرة */
+        @media (max-width: 1024px) {
+            .stacked-gallery-container {
+                height: auto;
+                min-height: 400px;
+            }
+            
+            .gallery-item {
+                max-width: 400px;
+            }
+            
+            .gallery-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .gallery-btn.prev {
+                right: 10px;
+            }
+            
+            .gallery-btn.next {
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stacked-gallery-container {
+                height: auto;
+                min-height: 350px;
+                margin: 30px auto;
+            }
+            
+            .gallery-item {
+                max-width: 300px;
+                margin-top: 100px;
+            }
+            
+            .gallery-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+                opacity: 0.8;
+            }
+            
+            .gallery-btn.prev {
+                right: 5px;
+            }
+            
+            .gallery-btn.next {
+                left: 5px;
+            }
+            
+            .rotation-indicator {
+                top: -200px;
+                font-size: 0.8rem;
+            }
+            
+            .auto-rotate-btn {
+                margin-top: 80px;
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stacked-gallery-container {
+                height: auto;
+                min-height: 300px;
+                margin: 20px auto;
+            }
+            
+            .gallery-item {
+                max-width: 250px;
+                margin-top: 80px;
+            }
+            
+            .gallery-nav {
+                bottom: -50px;
+            }
+            
+            .nav-dot {
+                width: 10px;
+                height: 10px;
+            }
+            
+            .auto-rotate-btn {
+                margin-top: 70px;
+            }
+        }
 
         footer {
             background: rgba(0, 0, 0, 0.8);
@@ -687,6 +975,7 @@
             padding: 40px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             min-width: 96%;
+            margin-top: 380px;
             width: 96%;
             margin-inline: 2%;
             margin-bottom: 50vh;
@@ -1153,84 +1442,85 @@
         
         /* -- NEW HERO SECTION STYLES -- */
         /* إضافة حركة ثلاثية الأبعاد للصورة */
-@keyframes rotate3d {
-  0%, 100% {
-    transform: perspective(1200px) rotateY(0deg);
-  }
-  25% {
-    transform: perspective(1200px) rotateY(15deg);
-  }
-  50% {
-    transform: perspective(1200px) rotateY(0deg);
-  }
-  75% {
-    transform: perspective(1200px) rotateY(-15deg);
-  }
-}
+        @keyframes rotate3d {
+            0%, 100% {
+                transform: perspective(1200px) rotateY(0deg);
+            }
+            25% {
+                transform: perspective(1200px) rotateY(15deg);
+            }
+            50% {
+                transform: perspective(1200px) rotateY(0deg);
+            }
+            75% {
+                transform: perspective(1200px) rotateY(-15deg);
+            }
+        }
 
-.hero-section {
-  margin: 150px;
-  position: relative;
-  text-align: center;
-  height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-inline: 5%;
-  width: 90%;
-  max-width: 100%;
-  text-align: center;
-  border: 4px solid gold;
-  border-radius: 20px;
-  color: white;
-  background: url('gif/publer-1759013197758.jpg') no-repeat center center/cover;
-  padding-top: 80px;
-  overflow: hidden;
-  
-  /* إضافة تأثير ثلاثي الأبعاد */
-  transform-style: preserve-3d;
-  perspective: 1200px;
-  animation: rotate3d 6s infinite ease-in-out;
-}
+        .hero-section {
+            margin: 150px;
+            position: relative;
+            text-align: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-inline: 5%;
+            width: 90%;
+            max-width: 100%;
+            text-align: center;
+            border: 4px solid gold;
+            border-radius: 20px;
+            color: white;
+            background: url('gif/publer-1759013197758.jpg') no-repeat center center/cover;
+            padding-top: 80px;
+            overflow: hidden;
+            
+            /* إضافة تأثير ثلاثي الأبعاد */
+            transform-style: preserve-3d;
+            perspective: 1200px;
+            animation: rotate3d 6s infinite ease-in-out;
+        }
 
-/* بقية الأكواد بدون تغيير */
-.hero-overlay {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* شفافية للتحسين */
-}
+        /* بقية الأكواد بدون تغيير */
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* شفافية للتحسين */
+        }
 
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
-  padding: 20px;
-  
-  /* منع تضرر المحتوى من التحويلات */
-  transform: translateZ(50px);
-}
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 20px;
+            
+            /* منع تضرر المحتوى من التحويلات */
+            transform: translateZ(50px);
+        }
 
-.hero-content h1 {
-  font-size: 4.5rem;
-  margin: 0 0 1rem 0;
-  animation: titleGlow 3s ease-in-out infinite alternate;
-}
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin: 0 0 1rem 0;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
 
-.hero-content p {
-  font-size: 1.6rem;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 2rem;
-}
+        .hero-content p {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
 
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 3rem;
-  }
-  .hero-content p {
-    font-size: 1.2rem;
-  }
-}
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+        }
+        
         /* -- NEW FOOTER STYLES -- */
         footer {
             padding: 4rem 2rem 1rem;
@@ -1251,7 +1541,7 @@
         }
         
         .footer-section h4 {
-          text-align: center;
+            text-align: center;
             color: rgba(239, 255, 211, 0.94);
             font-size: 1.3rem;
             margin-bottom: 1.2rem;
@@ -1295,25 +1585,27 @@
             height: 60px;
             margin-bottom: 1rem;
         }
-      .social-icons {
-          color: rgba(255, 248, 172, 0.9);
-          font-size: 1.6rem;
-          text-align: center;
-          justify-content: center;
-          margin-left: 1rem;
-          transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
-          text-shadow: 0 0 5px rgba(255, 255, 172, 0.8),
-            0 0 10px rgba(255, 240, 123, 0.7),
-            0 0 20px rgba(255, 246, 172, 0.6);
+        
+        .social-icons {
+            color: rgba(255, 248, 172, 0.9);
+            font-size: 1.6rem;
+            text-align: center;
+            justify-content: center;
+            margin-left: 1rem;
+            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+            text-shadow: 0 0 5px rgba(255, 255, 172, 0.8),
+                0 0 10px rgba(255, 240, 123, 0.7),
+                0 0 20px rgba(255, 246, 172, 0.6);
         }
         
         .social-icons:hover {
-          color: #FFE83E;
-          transform: scale(1.2);
-          text-shadow: 0 0 10px rgba(255, 216, 25, 1),
-            0 0 15px rgba(255, 213, 91, 0.9),
-            0 0 40px rgba(248, 239, 139, 0.8);
+            color: #FFE83E;
+            transform: scale(1.2);
+            text-shadow: 0 0 10px rgba(255, 216, 25, 1),
+                0 0 15px rgba(255, 213, 91, 0.9),
+                0 0 40px rgba(248, 239, 139, 0.8);
         }
+        
         .social-icons a {
             color: rgba(255, 238, 73, 1);
             font-size: 1.6rem;
@@ -1327,6 +1619,7 @@
             color: var(--neon-pink);
             transform: translateY(-3px);
         }
+        
         .cart-icon {
             position: relative;
         }
@@ -1349,19 +1642,24 @@
             transform: translate(30%, -30%);
             border: 1px solid #0c0c0c;
         }
-        .cart-icon.shake { animation: shake 0.5s ease; }
+        
+        .cart-icon.shake { 
+            animation: shake 0.5s ease; 
+        }
+        
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-5px); }
             40%, 80% { transform: translateX(5px); }
         }
+        
         .product-tag {
-          background-color: #FFC35E;
-          font-weight: bold;
-          text-align: center;
-          margin-inline: 10%;
-          width: 80%;
-          border-radius: 30px 30px 0 0;
+            background-color: #FFC35E;
+            font-weight: bold;
+            text-align: center;
+            margin-inline: 10%;
+            width: 80%;
+            border-radius: 30px 30px 0 0;
         }
     </style>
 </head>
@@ -1371,10 +1669,10 @@
     <header class="header" id="header">
         <div class="header-icon" id="sidebar-open"><i class="fas fa-bars"></i></div>
         <a href="index.html"><img src="./gif/fst.gif" alt="PITSIKY Logo" class="logo"></a>
-         <a href="crt.html" class="header-icon cart-icon" aria-label="عرض سلة التسوق">
-   <i class="fas fa-shopping-cart"></i>
-   <span class="cart-count">0</span>
- </a>
+        <a href="crt.html" class="header-icon cart-icon" aria-label="عرض سلة التسوق">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+        </a>
     </header>
 
     <div id="sidebar" class="sidebar">
@@ -1405,11 +1703,8 @@
             <div class="hero-overlay"><h1 style="padding: 5px; text-align: center; margin-top: 0rem; font-size: 2rem">   لوحات PITSIKY</h1></div>
             
             <div class="hero-content">
-              
-                
                 <a href="#products-section" class="btn"> اكتشف </a>
-                
-            <p style="font-weight: bold; font-size: 1rem; text-shadow: 0 10px 15px  black">الأحدث في اللوحات الحائطية ، بالتصميم المثالي و التخصيص المطلوب </p>
+                <p style="font-weight: bold; font-size: 1rem; text-shadow: 0 10px 15px  black">الأحدث في اللوحات الحائطية ، بالتصميم المثالي و التخصيص المطلوب </p>
             </div>
         </section>
 
@@ -1448,22 +1743,23 @@
             </div>
         </div>
         <div class="painting left floating">
-  <div class="price-tag">آيات</div>
-  <img src="images/frst/ayah.jpeg" alt="لوحة فنية 1">
-  <div class="info">
-    <h3>آيات وعبارات</h3>
-    <p style="font-size: 1rem;">اطلب تصميم بالآية الأقرب الى قلبك </p>
-  </div>
-</div>
+            <div class="price-tag">آيات</div>
+            <img src="images/frst/ayah.jpeg" alt="لوحة فنية 1">
+            <div class="info">
+                <h3>آيات وعبارات</h3>
+                <p style="font-size: 1rem;">اطلب تصميم بالآية الأقرب الى قلبك </p>
+            </div>
+        </div>
     </div>
     
     <div class="controls">
         <button class="btn" style="margin-top: 30px; text-align: center; width: 96%; margin-inline: 2%;"><a href="pdc.html"><i class="fas fa-shopping-cart"></i> شراء اللوحات</a></button>
     </div>
-      <h1 style="margin-bottom: 20px; text-align: center;">   بعض اللوحات  </h1>
+    
+    <h1 style="margin-bottom: 20px; text-align: center;">   بعض اللوحات  </h1>
     <div class="products-section" id="products-section">
-        <div class="products-container" id="productsContainer">
-            </div><button class="btn" style="margin-top: 30px; text-align: center; width: 100%;"><a href="pdc.html"> التوجه الى المنتجات </a></button>
+        <div class="products-container" id="productsContainer"></div>
+        <button class="btn" style="margin-top: 30px; text-align: center; width: 100%;"><a href="pdc.html"> التوجه الى المنتجات </a></button>
     </div>
     
     <div class="car-brands">
@@ -1500,10 +1796,10 @@
             <span class="brand-name">VOLKSWAGEN</span>
         </div>
         <div class="brand-logo">
-  <img src="./cars/dacia.png" alt="DACIA" style="width: 90%;">
-  <span class="brand-name">DACIA</span>
-</div>
-<div class="brand-logo">
+            <img src="./cars/dacia.png" alt="DACIA" style="width: 90%;">
+            <span class="brand-name">DACIA</span>
+        </div>
+        <div class="brand-logo">
             <img src="./images/111b4e62d71fca82a5a037f2ae71cce3.jpg" alt="AYATH" style="border-radius: 50%;">
             <span class="brand-name">آيات</span>
         </div>
@@ -1516,6 +1812,7 @@
             <span class="brand-name">مشاهير</span>
         </div>
     </div>
+    
     <div class="artists">
         <div class="artist"><h4>جودة عالية</h4><p>  معايير تصنيع دقيقة </p></div>
         <div class="artist"><h4>توصيل سريع</h4><p>3/10ايام </p>
@@ -1523,35 +1820,77 @@
         </div>
         <div class="artist"><h4> دفع آمن </h4><p>ادفع بكل سهولة وأمان</p></div>
     </div>
-    <h1>  الاختيار ديالك    </h1>
-    <div class="stacked-gallery">
-        <img src="stacked/10.png" alt="لوحة 1">
-        <img src="stacked/7.png" alt="لوحة 2">
-        <img src="stacked/8.png" alt="لوحة 3">
-        <img src="stacked/6.png" alt="لوحة 4">
-        <img src="stacked/5.png" alt="لوحة 5" style="border: 4px solid gold;">
+    
+    <h1>    ديما الجديد     </h1>
+    
+    <!-- قسم Stacked Gallery المحسن -->
+    <div class="stacked-gallery-container">
+        <div class="rotation-indicator">
+            <i class="fas fa-arrows-alt-h"></i>
+            اسحب لتدوير المعرض
+            <i class="fas fa-arrows-alt-h"></i>
+        </div>
+        
+        <div class="stacked-gallery" id="stackedGallery">
+            <div class="gallery-item active" data-index="0">
+                <img src="stacked/10.png" alt="لوحة 1">
+            </div>
+            <div class="gallery-item" data-index="1">
+                <img src="images/crs/bmw/1763543805339.jpg" alt="لوحة 2">
+            </div>
+            <div class="gallery-item" data-index="2">
+                <img src="stacked/8.png" alt="لوحة 3">
+            </div>
+            <div class="gallery-item" data-index="3">
+                <img src="stacked/6.png" alt="لوحة 4">
+            </div>
+            <div class="gallery-item" data-index="4">
+                <img src="stacked/5.png" alt="لوحة 5">
+            </div>
+            <div class="gallery-item" data-index="5">
+            <img src="images/frst/gclass.jpeg" alt="6">
+            </div>
+            <div class="gallery-item" data-index="6">
+                <img src="images/frst/publer-1764629203937.jpg" alt="لوحة 7">
+            </div>
+        </div>
+        
+        <button class="gallery-btn prev" id="prevBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="gallery-btn next" id="nextBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="gallery-nav" id="galleryNav">
+            <div class="nav-dot active" data-index="0"></div>
+            <div class="nav-dot" data-index="1"></div>
+            <div class="nav-dot" data-index="2"></div>
+            <div class="nav-dot" data-index="3"></div>
+            <div class="nav-dot" data-index="4"></div>
+        </div>
+        
+        <button class="auto-rotate-btn" id="autoRotateBtn">
+            <i class="fas fa-play"></i> تشغيل الدوران التلقائي
+        </button>
     </div>
+    
     <div class="contr">
         <h1 style="margin-top: 2px; margin-bottom: 40px; color: gold; decoration: none;"> باغي تصميم مخصص؟</h1>
         <div class="dashed-box">
-            <div class="year-text"> صيفط لينا دابا </div>
-            <button class="detail-text"><a href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" style="text-decoration: none; color: black;">واتساب</a> </button>
+            <div class="year-text"> هي دابا   </div>
+            <a href="https://wa.me/+212700720490" target="_blank" style="text-decoration: none;">
+  <button class="detail-text" style="color: black;">
+    واتساب
+  </button>
+</a>
         </div>
-        
-      <!--  <div class="info">
-            <h2> شنو يمكن ليك تطلب ؟</h2>
-            <p>
-                 <img src="images/5c1809b336370eebf085a875a7fc7fa5.jpg" alt="لوحة فنية 2">
-         يمكن ليك تطلب اي تصميم طاح ليك فالبال ، سواءا كانت سيارة كاتعجبك او سيارتك بتعديل خاص ... غير آمر 
-            </p>
-        </div>   -->
     </div>
     
     <footer>
         <div class="footer-content">
             <div class="footer-section">
                 <img src="./images/ptk.png" alt="PITSIKY Logo" class="logo"><p style="font-size: 1rem; color: white;"> وجهتك الجديدة ، و الصحيحة لترقية جدارك الى مستوى جديد يناسب ذوقك. </p>
-             
             </div>
             <div class="footer-section">
                 <h4>روابط سريعة</h4>
@@ -1571,11 +1910,13 @@
                 </ul>
             </div>
         </div>
-           <div class="social-icons">
-     <a href="https://www.instagram.com/pitsiky" target="_blank"><i class="fab fa-instagram"></i></a>
-     <a href="https://www.tiktok.com/@pitsiky?_r=1&_t=ZM-91cIkxxetJ6" target="_blank"><i class="fab fa-tiktok"></i></a>
-     <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
-   </div>
+        
+        <div class="social-icons">
+            <a href="https://www.instagram.com/pitsiky" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@pitsiky?_r=1&_t=ZM-91cIkxxetJ6" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        </div>
+        
         <div class="footer-bottom">
             <p>PITSIKY  2025 - جميع الحقوق محفوظة ©</p>
         </div>
@@ -1585,6 +1926,7 @@
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">تمت إضافة المنتج إلى السلة</span>
     </div>
+    
     <script>
         // بيانات المنتجات من pdc.js
         const productsData = [
@@ -1830,25 +2172,282 @@
             updateCartCount();
             renderProducts();
         }
-        
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                
-                const colors = ['var(--neon-blue)', 'var(--neon-purple)', 'var(--neon-pink)', 'var(--neon-green)'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.background = color;
-                particle.style.boxShadow = `0 0 10px ${color}`;
-                
-                particlesContainer.appendChild(particle);
+        // الكود الجديد لـ Stacked Gallery
+        function initStackedGallery() {
+            const gallery = document.getElementById('stackedGallery');
+            const items = document.querySelectorAll('.gallery-item');
+            const navDots = document.querySelectorAll('.nav-dot');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const autoRotateBtn = document.getElementById('autoRotateBtn');
+            
+            let currentIndex = 0;
+            let totalItems = items.length;
+            let isDragging = false;
+            let startX = 0;
+            let autoRotateInterval = null;
+            let isAutoRotating = false;
+            
+            // تهيئة المواقع الأولية للعناصر
+            function initGallery() {
+                items.forEach((item, index) => {
+                    const angle = (360 / totalItems) * index;
+                    const distance = 500; // تقليل المسافة قليلاً
+                    const scale = index === 0 ? 1 : 0.8;
+                    const opacity = index === 0 ? 1 : 0.7;
+                    const zIndex = index === 0 ? 10 : totalItems - index;
+                    
+                    item.style.transform = `
+                        rotateY(${angle}deg)
+                        translateZ(${distance}px)
+                        scale(${scale})
+                    `;
+                    item.style.opacity = opacity;
+                    item.style.zIndex = zIndex;
+                    item.style.setProperty('--rotate-y', `${angle}deg`);
+                    item.style.setProperty('--scale', scale);
+                    
+                    // إضافة أنميشن الطفو للعنصر النشط
+                    if (index === 0) {
+                        item.style.animation = 'galleryFloat 6s ease-in-out infinite';
+                    }
+                });
             }
+            
+            // تدوير المعرض إلى عنصر معين
+            function rotateTo(index) {
+                currentIndex = index;
+                const angle = -(360 / totalItems) * currentIndex;
+                
+                gallery.style.transform = `rotateY(${angle}deg)`;
+                
+                // تحديث العناصر
+                items.forEach((item, i) => {
+                    const itemAngle = (360 / totalItems) * i;
+                    const relativeAngle = Math.abs(itemAngle + angle) % 360;
+                    const activeAngle = 360 / totalItems;
+                    
+                    let scale, opacity, zIndex;
+                    
+                    // تحديد إذا كان العنصر في المقدمة
+                    if (relativeAngle < activeAngle / 2 || relativeAngle > 360 - activeAngle / 2) {
+                        scale = 1;
+                        opacity = 1;
+                        zIndex = 10;
+                        item.classList.add('active');
+                        item.style.animation = 'galleryFloat 6s ease-in-out infinite, glowPulse 3s infinite';
+                    } else {
+                        scale = 0.8;
+                        opacity = 0.7;
+                        zIndex = totalItems - i;
+                        item.classList.remove('active');
+                        item.style.animation = 'none';
+                    }
+                    
+                    item.style.transform = `
+                        rotateY(${itemAngle}deg)
+                        translateZ(500px)
+                        scale(${scale})
+                    `;
+                    item.style.opacity = opacity;
+                    item.style.zIndex = zIndex;
+                    item.style.setProperty('--scale', scale);
+                });
+                
+                // تحديث مؤشرات التنقل
+                updateNavDots();
+            }
+            
+            // تحديث مؤشرات التنقل
+            function updateNavDots() {
+                navDots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // التنقل إلى العنصر السابق
+            function prevItem() {
+                currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                rotateTo(currentIndex);
+            }
+            
+            // التنقل إلى العنصر التالي
+            function nextItem() {
+                currentIndex = (currentIndex + 1) % totalItems;
+                rotateTo(currentIndex);
+            }
+            
+            // تبديل الدوران التلقائي
+            function toggleAutoRotate() {
+                if (isAutoRotating) {
+                    stopAutoRotate();
+                    autoRotateBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل الدوران التلقائي';
+                    autoRotateBtn.classList.remove('active');
+                } else {
+                    startAutoRotate();
+                    autoRotateBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف الدوران التلقائي';
+                    autoRotateBtn.classList.add('active');
+                }
+                isAutoRotating = !isAutoRotating;
+            }
+            
+            // بدء الدوران التلقائي
+            function startAutoRotate() {
+                if (autoRotateInterval) clearInterval(autoRotateInterval);
+                autoRotateInterval = setInterval(() => {
+                    nextItem();
+                }, 3000); // تدوير كل 3 ثواني
+            }
+            
+            // إيقاف الدوران التلقائي
+            function stopAutoRotate() {
+                if (autoRotateInterval) {
+                    clearInterval(autoRotateInterval);
+                    autoRotateInterval = null;
+                }
+            }
+            
+            // أحداث السحب على الهاتف
+            gallery.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                stopAutoRotate();
+            });
+            
+            gallery.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const currentX = e.touches[0].clientX;
+                const diffX = startX - currentX;
+                
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        nextItem();
+                    } else {
+                        prevItem();
+                    }
+                    isDragging = false;
+                }
+            });
+            
+            gallery.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+            
+            // أحداث السحب بالماوس
+            gallery.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                stopAutoRotate();
+                gallery.style.cursor = 'grabbing';
+            });
+            
+            gallery.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const currentX = e.clientX;
+                const diffX = startX - currentX;
+                
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        nextItem();
+                    } else {
+                        prevItem();
+                    }
+                    isDragging = false;
+                }
+            });
+            
+            gallery.addEventListener('mouseup', () => {
+                isDragging = false;
+                gallery.style.cursor = 'grab';
+            });
+            
+            gallery.addEventListener('mouseleave', () => {
+                isDragging = false;
+                gallery.style.cursor = 'grab';
+            });
+            
+            // أحداث الأزرار
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                prevItem();
+                stopAutoRotate();
+                if (isAutoRotating) {
+                    autoRotateBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل الدوران التلقائي';
+                    autoRotateBtn.classList.remove('active');
+                    isAutoRotating = false;
+                }
+            });
+            
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                nextItem();
+                stopAutoRotate();
+                if (isAutoRotating) {
+                    autoRotateBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل الدوران التلقائي';
+                    autoRotateBtn.classList.remove('active');
+                    isAutoRotating = false;
+                }
+            });
+            
+            // أحداث مؤشرات التنقل
+            navDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.dataset.index);
+                    rotateTo(index);
+                    stopAutoRotate();
+                    if (isAutoRotating) {
+                        autoRotateBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل الدوران التلقائي';
+                        autoRotateBtn.classList.remove('active');
+                        isAutoRotating = false;
+                    }
+                });
+            });
+            
+            // حدث زر الدوران التلقائي
+            autoRotateBtn.addEventListener('click', toggleAutoRotate);
+            
+            // تهيئة المعرض عند التحميل
+            initGallery();
+            
+            // بدء الدوران التلقائي بعد 5 ثواني
+            setTimeout(() => {
+                startAutoRotate();
+                autoRotateBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف الدوران التلقائي';
+                autoRotateBtn.classList.add('active');
+                isAutoRotating = true;
+            }, 5000);
+            
+            // إضافة تأثير عند تمرير الماوس على العناصر
+            items.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    if (!item.classList.contains('active')) {
+                        item.style.filter = 'brightness(1.2)';
+                    }
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.filter = 'brightness(1)';
+                });
+                
+                item.addEventListener('click', () => {
+                    if (!item.classList.contains('active')) {
+                        const index = parseInt(item.dataset.index);
+                        rotateTo(index);
+                        stopAutoRotate();
+                        if (isAutoRotating) {
+                            autoRotateBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل الدوران التلقائي';
+                            autoRotateBtn.classList.remove('active');
+                            isAutoRotating = false;
+                        }
+                    }
+                });
+            });
         }
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -1894,7 +2493,7 @@
             }
             
             initStore();
-            createParticles();
+            initStackedGallery();
         });
         
         function openSidebar() {
@@ -1922,88 +2521,16 @@
                 cartIcon.classList.remove('shake');
             }, 500);
         }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const gallery = document.querySelector('.stacked-gallery');
-            if(!gallery) return;
-            let startX = 0;
-            let dragging = false;
-            
-            function resetHorizontalStack() {
-                const imgs = Array.from(gallery.children);
-                const offset = 60;
-                imgs.forEach((img, index) => {
-                    img.style.left = `${index * offset}px`;
-                    img.style.zIndex = imgs.length - index;
-                });
-            }
-            
-            gallery.querySelectorAll('img').forEach(img => {
-                img.addEventListener('mousedown', dragStart);
-                img.addEventListener('touchstart', dragStart, { passive: true });
-            });
-            
-            function dragStart(e) {
-                dragging = true;
-                const dragged = e.target;
-                startX = e.clientX || e.touches[0].clientX;
-                
-                dragged.style.transition = "none";
-                dragged.style.zIndex = 1000;
-                
-                const dragMove = (e2) => {
-                    if (!dragging) return;
-                    const currentX = e2.clientX || e2.touches[0].clientX;
-                    const diffX = currentX - startX;
-                    
-                    if (diffX > 0) {
-                        dragged.style.transform = `translateX(${diffX}px) scale(1.05)`;
-                    }
-                };
-                
-                const dragEnd = (e2) => {
-                    dragging = false;
-                    const endX = e2.clientX || (e2.changedTouches && e2.changedTouches[0].clientX) || startX;
-                    const diffX = endX - startX;
-                    
-                    dragged.style.transition = "transform 0.3s ease, left 0.4s ease";
-                    
-                    if (diffX > 100) {
-                        dragged.style.transform = `translateX(600px) scale(0.95)`;
-                        setTimeout(() => {
-                            dragged.style.transform = "";
-                            dragged.style.zIndex = "";
-                            gallery.appendChild(dragged);
-                            resetHorizontalStack();
-                        }, 300);
-                    } else {
-                        dragged.style.transform = "";
-                        dragged.style.zIndex = "";
-                    }
-                    
-                    document.removeEventListener('mousemove', dragMove);
-                    document.removeEventListener('mouseup', dragEnd);
-                    document.removeEventListener('touchmove', dragMove);
-                    document.removeEventListener('touchend', dragEnd);
-                };
-                
-                document.addEventListener('mousemove', dragMove);
-                document.addEventListener('mouseup', dragEnd);
-                document.addEventListener('touchmove', dragMove);
-                document.addEventListener('touchend', dragEnd);
-            }
-            
-            resetHorizontalStack();
-        });
     </script>
+    
     <script>
-    document.querySelectorAll('.brand-logo').forEach(logo => {
-        logo.addEventListener('click', function() {
-            const category = this.dataset.category;
-            localStorage.setItem('selectedCategory', category);
-            window.location.href = 'pdc.html';
+        document.querySelectorAll('.brand-logo').forEach(logo => {
+            logo.addEventListener('click', function() {
+                const category = this.dataset.category;
+                localStorage.setItem('selectedCategory', category);
+                window.location.href = 'pdc.html';
+            });
         });
-    });
     </script>
 </body>
 </html>
