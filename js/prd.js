@@ -361,7 +361,7 @@ const productsData = [
             { name: "الضمان", value: " سنة" }
         ],
         // إضافة خيارات التخصيص
-        sizes: [ "لايوجد"
+        sizes: [ ""
         ],
         frames: [""
         ],
