@@ -2550,11 +2550,20 @@
             });
         });
     </script>
-    <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js")
-    .then(() => console.log("Service Worker Registered"));
-}
-    </script>
+    
+<!-- تسجيل Service Worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+          console.log('Service Worker مسجل بنجاح:', registration.scope);
+        })
+        .catch(error => {
+          console.log('فشل تسجيل Service Worker:', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>
