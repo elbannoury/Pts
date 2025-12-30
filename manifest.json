@@ -1,0 +1,21 @@
+{
+  "name": "PITSIKY",
+  "short_name": "PITSIKY",
+  "description": "متجر اللوحات الفنية والتصاميم المخصصة",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "images/ptk.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/ptk.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
