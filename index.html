@@ -1782,49 +1782,57 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/BMW_logo_%28gray%29.svg/800px-BMW_logo_%28gray%29.svg.png" alt="BMW">
             <span class="brand-name">BMW</span>
         </div>
-        <div class="brand-logo">
+        <div class="brand-logo" data-category="FOOTBALL">
+  <img src="../cars/1000110906-removebg-preview.png" alt="Mercedes">
+  <span class="brand-name">FOOTBALL</span>
+</div>
+        <div class="brand-logo" data-category="MERCEDES">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/800px-Mercedes-Logo.svg.png" alt="Mercedes">
             <span class="brand-name">MERCEDES</span>
         </div>
-        <div class="brand-logo">
+        <div class="brand-logo" data-category="CARTOON">
+            <img src="./cars/crtn.png" alt="CARTOON" style="width: 90%;">
+            <span class="brand-name">CARTOON</span>
+        </div>
+        <div class="brand-logo" data-category="BENTLEY">
             <img src="./cars/bntl.png" alt="Bentley" style="width: 90%; height: 90%;">
             <span class="brand-name">BENTLEY</span>
         </div>
-        <div class="brand-logo">
+        <div class="brand-logo" data-category="PORSCHE">
             <img src="./cars/porsche.png" alt="Porsche" style="width: 95%;">
             <span class="brand-name">PORSCHE</span>
         </div>
-        <div class="brand-logo">
+        <div class="brand-logo" data-category="FERRARI">
             <img src="./cars/ferrari.png" alt="Ferrari" style="width: 95%;">
             <span class="brand-name">FERRARI</span>
         </div>
-        <div class="brand-logo">
-            <img src="../cars/lamborghini.png" alt="Lamborghini" style="width: 90%;">
+        <div class="brand-logo" data-category="LAMBORGHINI">
+            <img src="./cars/lamborghini.png" alt="Lamborghini" style="width: 90%;">
             <span class="brand-name">LAMBORGHINI</span>
         </div>
-        <div class="brand-logo">
+        <div class="brand-logo" data-category="AUDI">
             <img src="./cars/audi.png" alt="Audi" style="width: 95%;">
             <span class="brand-name">AUDI</span>
         </div>
-        <div class="brand-logo">
+        <div class="brand-logo" data-category="VOLKSWAGEN">
             <img src="./cars/volks.png" alt="Volkswagen" style="width: 90%;">
             <span class="brand-name">VOLKSWAGEN</span>
         </div>
-        <div class="brand-logo">
+        <div class="brand-logo" data-category="DACIA">
             <img src="./cars/dacia.png" alt="DACIA" style="width: 90%;">
             <span class="brand-name">DACIA</span>
         </div>
-        <div class="brand-logo">
-            <img src="./images/111b4e62d71fca82a5a037f2ae71cce3.jpg" alt="AYATH" style="border-radius: 50%;">
+        <div class="brand-logo" data-category="AYATH">
+            <img src="../images/111b4e62d71fca82a5a037f2ae71cce3.jpg" alt="ayath" style="border-radius: 50%;">
             <span class="brand-name">آيات</span>
         </div>
-        <div class="brand-logo">
-            <img src="./images/20251127e20afbd5778cce953cac749d.jpg" alt="mirror" style="border-radius: 50%">
-            <span class="brand-name">مرايات</span>
+        <div class="brand-logo" data-category="MIRROR">
+            <img src="../images/20251127e20afbd5778cce953cac749d.jpg" alt="mirror" style="border-radius: 50%">
+            <span class="brand-name">MIRRORS</span>
         </div>
-        <div class="brand-logo">
-            <img src="../cars/641622dd2429013b4c3bfc23af7c528e.jpg" alt="mirror" style="border-radius: 50%; height: 70%">
-            <span class="brand-name">مشاهير</span>
+        <div class="brand-logo" data-category="HORSES">
+            <img src="./cars/hos.png" alt="horses" style="border-radius: 50%; height: 70%">
+            <span class="brand-name">HORSES</span>
         </div>
     </div>
     
@@ -2547,12 +2555,5 @@
             });
         });
     </script>
-    
-<!-- إضافة Service Worker Script بسيط في نهاية body -->
-<script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-}
-</script>
 </body>
-</html>
+    </html>
