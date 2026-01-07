@@ -1,3 +1,4 @@
+
 // استيراد بيانات المنتجات من الملف المنفصل
 if (typeof productsData === 'undefined') {
     console.error('❌ً حدث خطأ في التحميل ');
@@ -25,11 +26,11 @@ const StoreManager = {
         if (selectedCategory) {
             // تعيين قيمة الفئة في القائمة المنسدلة
             document.getElementById('categoryFilter').value = selectedCategory;
-            
-            // تصفية المنتجات حسب الفئة
-            const filteredProducts = productsData.filter(product =>
-                product.category === selectedCategory
-            );
+  
+// اجعلها كذا:
+const filteredProducts = productsData.filter(product =>
+  product.categories && product.categories.includes(selectedCategory)
+);
             
             this.renderProducts(filteredProducts);
             
@@ -201,20 +202,27 @@ const StoreManager = {
         
         console.log('🔍 نتائج البحث:', filteredProducts.length, 'منتج');
     },
-    
-    // معالجة تصفية الفئة
     handleCategoryFilter(e) {
-        const category = e.target.value;
-        if (category === 'all') {
-            this.renderProducts(productsData);
-            return;
-        }
-        
-        const filteredProducts = productsData.filter(product => product.category === category);
-        this.renderProducts(filteredProducts);
-        
-        console.log('🏷️ تصفية الفئة:', category, '-', filteredProducts.length, 'منتج');
-    },
+  const category = e.target.value;
+  if (category === 'all') {
+    this.renderProducts(productsData);
+    return;
+  }
+  
+  // تدعم كلا النظامين: categories أولاً، ثم category كنسخة احتياطية
+  const filteredProducts = productsData.filter(product => {
+    // إذا كانت هناك مصفوفة categories، ابحث فيها
+    if (product.categories && Array.isArray(product.categories)) {
+      return product.categories.includes(category);
+    }
+    // إذا لم تكن، ابحث في category القديمة
+    return product.category === category;
+  });
+  
+  this.renderProducts(filteredProducts);
+  
+  console.log('🏷️ تصفية الفئة:', category, '-', filteredProducts.length, 'منتج');
+},
     
     // فتح صفحة تفاصيل المنتج
     openProductDetailPage(productId) {
@@ -239,7 +247,6 @@ const StoreManager = {
             : `${product.price.toFixed(2)} DH`;
         
         document.getElementById('quickViewPrice').innerHTML = priceHTML;
-        document.getElementById('quickViewDescription').textContent = product.description;
         document.getElementById('quickViewDetails').textContent = product.details;
         document.getElementById('quickViewModal').dataset.productId = product.id;
         
@@ -354,3 +361,5 @@ window.storeManager = {
     },
     manager: StoreManager
 };
+
+
