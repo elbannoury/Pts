@@ -476,7 +476,7 @@ type="image/png">
         }
 
         .empty-cart i {
-            font-size: 6rem;
+            font-size: 2rem;
             color: rgba(248, 213, 104, 0.2);
             margin-bottom: 30px;
             text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -1042,7 +1042,7 @@ type="image/png">
                         </div>
                         <div class="summary-row">
                             <span>تكلفة الشحن:</span>
-                            <span id="shippingAmount">30.00 درهم</span>
+                            <span id="shippingAmount">~ </span>
                         </div>
                         <div class="summary-row" id="discountRow" style="display: none;">
                             <span>الخصم:</span>
@@ -1731,7 +1731,7 @@ const cart = {
             subtotal += itemPrice * (item.quantity || 1);
         });
         
-        const shipping = subtotal > 0 ? 30 : 0;
+        const shipping = subtotal > 0 ? 0 : 0;
         let discount = 0;
         
         if (this.appliedCoupon) {
