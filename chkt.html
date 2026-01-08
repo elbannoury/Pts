@@ -473,16 +473,21 @@
                 const itemPrice = item.finalPrice || item.price;
                 const itemTotal = itemPrice * (item.quantity || 1);
                 
-                itemElement.innerHTML = `
-                    <div class="order-item-image">
-                        <img src="${item.image}" alt="${item.name}" onerror="this.src='images/pit.png'">
-                    </div>
-                    <div>
-                        <div style="font-weight: bold;">${item.name}</div>
-                        <div>${itemPrice.toFixed(2)} درهم × ${item.quantity || 1}</div>
-                        <div style="color: gold;">المجموع: ${itemTotal.toFixed(2)} درهم</div>
-                    </div>
-                `;
+               const customizationText = getCustomizationText(item);
+itemElement.innerHTML = `
+    <div class="order-item-image">
+        <img src="${item.image}" alt="${item.name}" onerror="this.src='images/pit.png'">
+    </div>
+    <div style="flex: 1;">
+        <div style="font-weight: bold; margin-bottom: 3px;">${item.name}</div>
+        <div style="color: gold; margin-bottom: 3px;">${itemPrice.toFixed(2)} درهم × ${item.quantity || 1}</div>
+        ${customizationText ? `
+            <div style="font-size: 0.85em; color: #aaa; margin-top: 5px; line-height: 1.4;">
+                ${customizationText.split('\n').map(line => `<div>${line}</div>`).join('')}
+            </div>
+        ` : ''}
+    </div>
+`;
                 container.appendChild(itemElement);
             });
         }
@@ -583,9 +588,17 @@
             
             message += `🖼️ *المنتجات:*\n`;
             order.items.forEach((item, index) => {
-                const itemTotal = (item.finalPrice || item.price) * (item.quantity || 1);
-                message += `${index + 1}. ${item.name} - ${itemTotal.toFixed(2)} درهم\n`;
-            });
+  const itemTotal = (item.finalPrice || item.price) * (item.quantity || 1);
+  const qty = item.quantity || 1;
+  const customizationText = getCustomizationText(item);
+  
+  message += `\n${index + 1}. ${qty}× ${item.name}\n`;
+  message += `💰 ${itemTotal.toFixed(2)} درهم\n`;
+  
+  if (customizationText) {
+    message += `${customizationText}\n`;
+  }
+});
             
             message += `\n💰 *الفاتورة:*\n`;
             message += `المجموع الفرعي: ${order.subtotal.toFixed(2)} درهم\n`;
@@ -605,7 +618,36 @@
             message += `\nشكراً لثقتكم بنا! ❤️`;
             return message;
         }
-
+// دالة لاستخراج نص التخصيص من المنتج
+// دالة مختصرة لاستخراج نص التخصيص
+function getCustomizationText(item) {
+  let customization = [];
+  
+  // المقاس
+  if (item.options?.size) {
+    customization.push(`📏 ${item.options.size.name || item.options.size}`);
+  } else if (item.size) {
+    customization.push(`📏 ${item.size}`);
+  }
+  
+  // الإطار
+  if (item.options?.frame) {
+    customization.push(`🖼️ ${item.options.frame.name || item.options.frame}`);
+  }
+  
+  // الإضافات
+  if (item.options?.addons?.length > 0) {
+    const addons = item.options.addons.map(a => a.name || a).join('، ');
+    customization.push(`✨ ${addons}`);
+  }
+  
+  // تفاصيل إضافية
+  if (item.optionsDetails?.length > 0) {
+    customization.push(...item.optionsDetails.map(d => `📍 ${d}`));
+  }
+  
+  return customization.join('\n');
+}
         // إرسال الطلب - الإصدار المحسّن
         async function processOrder() {
             if (!validateForm()) return;
