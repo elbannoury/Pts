@@ -295,7 +295,7 @@
 </head>
 <body>
     <div class="header">
-        <a href="index.html" class="header-icon"><i class="fas fa-arrow-left"></i></a>
+        <a href="pdc.html" class="header-icon"><i class="fas fa-arrow-left"></i></a>
         <a href="index.html"><img src="./images/ptk.png" alt="PITSIKY Logo" class="logo"></a>
         <a href="crt.html" class="header-icon"><i class="fas fa-shopping-cart"></i></a>
     </div>
@@ -357,15 +357,15 @@
                     <div class="payment-option selected" data-method="whatsapp50">
                         <div class="payment-icon"><i class="fab fa-whatsapp"></i></div>
                         <div class="payment-details">
-                            <div class="payment-name">ادفع 50% على واتساب و 50% عند الاستلام</div>
-                            <div class="payment-desc">الخيار الموصى به - دفع 50% الآن والباقي عند الاستلام</div>
+                            <div class="payment-name"></div>
+                            <div class="payment-desc">تواصل معنا للدفع </div>
                         </div>
                     </div>
                     
                     <div class="payment-option" data-method="binance">
                         <div class="payment-icon"><i class="fas fa-coins"></i></div>
                         <div class="payment-details">
-                            <div class="payment-name">بينانس</div>
+                            <div class="payment-name">BINANCE</div>
                             <div class="payment-desc">الدفع الكامل بالعملات المشفرة (USDT)</div>
                         </div>
                     </div>
@@ -408,7 +408,7 @@
             <a href="https://www.instagram.com/pitsiky" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://www.tiktok.com/@pitsiky" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
-        <p>PITSIKY 2025 - جميع الحقوق محفوظة ©</p>
+        <p>PITSIKY 2026 - جميع الحقوق محفوظة ©</p>
     </footer>
 
     <!-- Toast Notification -->
@@ -428,8 +428,10 @@
         // بيانات التطبيق
         let cart = [];
         const shippingCosts = {
-            casablanca: 0, rabat: 0, marrakech: 0, kenitra: 0, other: 35
-        };
+        'casablanca': 0, 'rabat': 0, 'marrakech': 0, 'fes': 0,
+        'tanger': 0, 'agadir': 0, 'meknes': 0, 'oujda': 0,
+        'other': 0,
+    };
 
         // تهيئة الصفحة
         function initCheckoutPage() {
@@ -591,8 +593,8 @@
             message += `*الإجمالي: ${order.total.toFixed(2)} درهم*\n\n`;
             
             if (order.paymentMethod === 'whatsapp50') {
-                const amount50 = (order.total * 0.5).toFixed(2);
-                message += `💳 *طريقة الدفع:* ادفع 50% على واتساب و 50% عند الاستلام\n`;
+                const amount50 = (order.total * 1).toFixed(2);
+                message += ` مرحبا أرسلت طلبي وأريد الدفع الآن\n`;
                 message += `المبلغ المطلوب دفعه الآن: ${amount50} درهم\n`;
             } else {
                 const usdtAmount = (order.total / 10).toFixed(2);
@@ -746,5 +748,7 @@
         // بدء التطبيق
         document.addEventListener('DOMContentLoaded', initCheckoutPage);
     </script>
+    
+    
 </body>
 </html>
