@@ -86,7 +86,7 @@ body {
         display:flex;align-items:center;justify-content:center;
         background:rgba(0,0,0,.90);
         backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-        animation:wmIn .5s ease both;
+        animation:wmIn .6s ease both;
     }
     #welcomeModal.hiding{animation:wmOut .45s ease both;pointer-events:none;}
     @keyframes wmIn {from{opacity:0;}to{opacity:1;}}
@@ -98,7 +98,7 @@ body {
         padding:46px 38px 38px;max-width:510px;width:92%;
         text-align:center;position:relative;
         box-shadow:0 32px 96px rgba(0,0,0,.75),var(--shg);
-        animation:wbIn .65s cubic-bezier(.34,1.56,.64,1) .1s both;
+        animation:wbIn .65s cubic-bezier(.34,1.56,.64,1) 0.3s both;
         overflow:hidden;
     }
     @keyframes wbIn{from{opacity:0;transform:scale(.82) translateY(28px);}to{opacity:1;transform:none;}}
@@ -106,8 +106,8 @@ body {
     /* spinning shimmer border */
     .wm-box::before{
         content:'';position:absolute;inset:-2px;border-radius:30px;
-        background:conic-gradient(from 0deg,transparent 55%,rgba(248,215,107,.35) 68%,transparent 80%);
-        animation:wbSpin 5s linear infinite;z-index:0;pointer-events:none;
+      /*  background:conic-gradient(from 0deg,transparent 55%,rgba(248,215,107,.35) 368%,transparent 360%);
+        animation:wbSpin 50s linear infinite;z-index:0;pointer-events:none;*/
     }
     @keyframes wbSpin{to{transform:rotate(360deg);}}
     .wm-box>*{position:relative;z-index:1;}
@@ -328,7 +328,7 @@ body {
     .painting:hover .price-tag{opacity:1;transform:scale(1);}
 
     .floating{animation:fl1 8s ease-in-out infinite;}
-    .floating2{animation:fl2 7s ease-in-out infinite;animation-delay:1s;}
+    .floating2{animation:fl2 1s ease-in-out infinite;animation-delay:1s;}
     .floating-center{animation:flc 6s ease-in-out infinite;}
     @keyframes fl1{0%,100%{transform:rotate(-9deg) translateY(16px);}50%{transform:rotate(-9deg) translateY(3px);}}
     @keyframes fl2{0%,100%{transform:rotate(9deg) translateY(16px);}50%{transform:rotate(9deg) translateY(3px);}}
