@@ -500,11 +500,14 @@
                     shape: 'rect',
                     label: 'paypal'
                 },
-                createOrder: function(data, actions) {
+                onClick: function(data, actions) {
+                    // التحقق من النموذج قبل فتح نافذة PayPal
                     if (!validateForm()) {
                         return actions.reject();
                     }
-
+                    return actions.resolve();
+                },
+                createOrder: function(data, actions) {
                     const subtotal = cart.reduce((sum, item) => {
                         return sum + ((item.finalPrice || item.price) * (item.quantity || 1));
                     }, 0);
@@ -513,41 +516,16 @@
                     const shipping = city ? shippingCosts[city] || shippingCosts.other : 0;
                     const total = subtotal + shipping;
 
+                    // تحويل العملة (10 دراهم = 1 دولار تقريباً)
+                    const totalUSD = (total / 10).toFixed(2);
+
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
-                                value: (total / 10).toFixed(2), // تحويل من درهم إلى دولار تقريباً
-                                currency_code: 'USD',
-                                breakdown: {
-                                    item_total: {
-                                        currency_code: 'USD',
-                                        value: (subtotal / 10).toFixed(2)
-                                    },
-                                    shipping: {
-                                        currency_code: 'USD',
-                                        value: (shipping / 10).toFixed(2)
-                                    }
-                                }
+                                value: totalUSD,
+                                currency_code: 'USD'
                             },
-                            items: cart.map(item => ({
-                                name: item.name,
-                                unit_amount: {
-                                    currency_code: 'USD',
-                                    value: ((item.finalPrice || item.price) / 10).toFixed(2)
-                                },
-                                quantity: item.quantity || 1
-                            })),
-                            shipping: {
-                                name: {
-                                    full_name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`
-                                },
-                                address: {
-                                    address_line_1: document.getElementById('address').value,
-                                    admin_area_2: document.getElementById('city').value,
-                                    postal_code: document.getElementById('postalCode').value,
-                                    country_code: 'MA'
-                                }
-                            }
+                            description: "PITSIKY Order " + Date.now()
                         }]
                     });
                 },
