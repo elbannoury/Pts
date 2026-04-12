@@ -369,6 +369,14 @@
                             <div class="payment-desc">الدفع الكامل بالعملات المشفرة (USDT)</div>
                         </div>
                     </div>
+                    
+                    <div class="payment-option" data-method="paypal">
+                        <div class="payment-icon"><i class="fab fa-paypal"></i></div>
+                        <div class="payment-details">
+                            <div class="payment-name">PayPal</div>
+                            <div class="payment-desc">الدفع الآمن عبر PayPal</div>
+                        </div>
+                    </div>
                 </form>
             </div>
             
@@ -424,9 +432,13 @@
         <div style="font-size: 0.9rem; margin-top: 1rem; color: #ccc;">قد تستغرق العملية بضع ثوان</div>
     </div>
 
+    <!-- PayPal Checkout SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AQG-pwnJe2kxMLdivl51M01Jo7HCIJLgHg_O3QEg-1bSjYr8Lk_tn0ndrq9jDM1S13DXEmGl2fr5yACf&currency=MAD"></script>
+
     <script>
         // بيانات التطبيق
         let cart = [];
+        let paypalInitialized = false;
         const shippingCosts = {
         'casablanca': 0, 'rabat': 0, 'marrakech': 0, 'fes': 0,
         'tanger': 0, 'agadir': 0, 'meknes': 0, 'oujda': 0,
@@ -439,6 +451,136 @@
             renderOrderItems();
             updateOrderSummary();
             setupEventListeners();
+            initPayPalButtons();
+        }
+
+        // تهيئة أزرار PayPal
+        function initPayPalButtons() {
+            // تحديث الأزرار عند تغيير طريقة الدفع
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.dataset.method === 'paypal') {
+                        renderPayPalButton();
+                    }
+                });
+            });
+        }
+
+        // رسم زر PayPal
+        function renderPayPalButton() {
+            // حذف الزر السابق إن وجد
+            const existingContainer = document.getElementById('paypal-button-container');
+            if (existingContainer) {
+                existingContainer.innerHTML = '';
+            }
+
+            // التحقق من أن المبلغ أكبر من صفر
+            const subtotal = cart.reduce((sum, item) => {
+                return sum + ((item.finalPrice || item.price) * (item.quantity || 1));
+            }, 0);
+
+            if (subtotal <= 0) {
+                return;
+            }
+
+            // إنشاء حاوية الزر
+            const placeOrderBtn = document.getElementById('placeOrderBtn');
+            if (!document.getElementById('paypal-button-container')) {
+                const container = document.createElement('div');
+                container.id = 'paypal-button-container';
+                container.style.marginTop = '1rem';
+                placeOrderBtn.parentNode.insertBefore(container, placeOrderBtn);
+            }
+
+            // رسم زر PayPal
+            paypal.Buttons({
+                style: {
+                    layout: 'vertical',
+                    color: 'blue',
+                    shape: 'rect',
+                    label: 'paypal'
+                },
+                createOrder: function(data, actions) {
+                    if (!validateForm()) {
+                        return actions.reject();
+                    }
+
+                    const subtotal = cart.reduce((sum, item) => {
+                        return sum + ((item.finalPrice || item.price) * (item.quantity || 1));
+                    }, 0);
+                    
+                    const city = document.getElementById('city').value;
+                    const shipping = city ? shippingCosts[city] || shippingCosts.other : 0;
+                    const total = subtotal + shipping;
+
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: (total / 10).toFixed(2), // تحويل من درهم إلى دولار تقريباً
+                                currency_code: 'USD',
+                                breakdown: {
+                                    item_total: {
+                                        currency_code: 'USD',
+                                        value: (subtotal / 10).toFixed(2)
+                                    },
+                                    shipping: {
+                                        currency_code: 'USD',
+                                        value: (shipping / 10).toFixed(2)
+                                    }
+                                }
+                            },
+                            items: cart.map(item => ({
+                                name: item.name,
+                                unit_amount: {
+                                    currency_code: 'USD',
+                                    value: ((item.finalPrice || item.price) / 10).toFixed(2)
+                                },
+                                quantity: item.quantity || 1
+                            })),
+                            shipping: {
+                                name: {
+                                    full_name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`
+                                },
+                                address: {
+                                    address_line_1: document.getElementById('address').value,
+                                    admin_area_2: document.getElementById('city').value,
+                                    postal_code: document.getElementById('postalCode').value,
+                                    country_code: 'MA'
+                                }
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(orderData) {
+                        // حفظ الطلب
+                        const order = createOrder();
+                        order.paymentMethod = 'paypal';
+                        order.paypalOrderId = orderData.id;
+                        order.paypalStatus = 'COMPLETED';
+                        
+                        const orders = JSON.parse(localStorage.getItem('pitsikyOrders') || '[]');
+                        orders.push(order);
+                        localStorage.setItem('pitsikyOrders', JSON.stringify(orders));
+                        
+                        // تفريغ السلة
+                        localStorage.removeItem('artGalleryCart');
+                        cart = [];
+                        
+                        // عرض رسالة النجاح
+                        showToast('✅ تم الدفع بنجاح! شكراً لك.');
+                        
+                        // التوجيه
+                        setTimeout(() => {
+                            window.location.href = 'thnk.html';
+                        }, 2000);
+                    });
+                },
+                onError: function(err) {
+                    console.error('خطأ في PayPal:', err);
+                    showToast('حدث خطأ في معالجة الدفع. يرجى المحاولة مرة أخرى.', 'error');
+                }
+            }).render('#paypal-button-container');
         }
 
         // تحميل السلة
@@ -650,6 +792,13 @@ function getCustomizationText(item) {
 }
         // إرسال الطلب - الإصدار المحسّن
         async function processOrder() {
+            const paymentMethod = document.querySelector('.payment-option.selected').dataset.method;
+            
+            // إذا كانت PayPal، لا نفعل شيئاً لأن الزر سيتعامل مع الدفع مباشرة
+            if (paymentMethod === 'paypal') {
+                return; // الزر سيتم رسمه بواسطة PayPal SDK
+            }
+            
             if (!validateForm()) return;
             
             const order = createOrder();
@@ -694,7 +843,7 @@ function getCustomizationText(item) {
                 hideLoading();
                 showToast('✅ تم استلام طلبك! سنتصل بك قريباً لتأكيد التفاصيل.');
                 
-                // حفظ الطلب رغم الخطأ الظاهري
+                // حفظ الطلب رغم الخطأ
                 const orders = JSON.parse(localStorage.getItem('pitsikyOrders') || '[]');
                 orders.push(order);
                 localStorage.setItem('pitsikyOrders', JSON.stringify(orders));
