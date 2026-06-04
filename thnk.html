@@ -8,1397 +8,585 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #FF5A00;
+            --gold: #C9962A;
+            --gold-deep: #A67B1E;
+            --gold-light: #F5E6C8;
+            --bg-primary: #FAF8F5;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #FDF9F2;
+            --border-light: rgba(0,0,0,0.08);
+            --border-gold: rgba(201,150,42,0.35);
+            --text-primary: #1A1A1A;
+            --text-muted: #5A5A5A;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 16px 40px rgba(0,0,0,0.09);
+            --shadow-gold: 0 8px 20px rgba(201,150,42,0.15);
+            --gradient-gold: linear-gradient(135deg, #C9962A 0%, #E6B84C 100%);
+            --accent-pink: #C0185A;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            /* متغيرات للتوافق مع الأنماط القديمة */
+            --primary: #E65A00;
             --primary-light: #FF8C42;
-            --accent: #00FE9C;
-            --accent-dark: #00C97A;
-            --dark: #0c0c0c;
-            --darker: #080808;
-            --light: #ffffff;
-            --gray: #e0e0e0;
-            --gold: #FFD700;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --accent: #2E7D32;
+            --accent-dark: #1B5E20;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
 
         html, body {
-            height: 100%;
-            overflow-x: hidden;
-            background: linear-gradient(145deg, var(--darker) 0%, var(--dark) 50%, #1a1a1a 100%);
-            color: var(--light);
+            height: 100%; overflow-x: hidden;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             position: relative;
         }
 
         body::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 90, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 254, 156, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("images/161.png") center/cover;
+            opacity: 0.05; z-index: -1;
         }
 
         .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: rgba(12, 12, 12, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
+            position: fixed; top: 0; left: 0; right: 0; height: 70px;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-gold); z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem;
         }
 
-        .logo {
-            height: 45px;
-            filter: brightness(1.2);
-        }
+        .logo { height: 42px; }
 
         .nav-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--glass);
-            color: var(--gold);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            color: var(--gold); font-size: 1.2rem; cursor: pointer;
+            transition: all 0.3s; text-decoration: none;
         }
+        .nav-icon:hover { background: var(--gold-light); border-color: var(--border-gold); box-shadow: var(--shadow-gold); }
 
-        .nav-icon:hover {
-            background: var(--primary);
-            transform: scale(1.05);
+        .lang-switch {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            color: var(--gold-deep); border-radius: 50px; padding: 8px 16px;
+            font-weight: 600; font-size: 0.8rem; display: flex; align-items: center;
+            gap: 6px; cursor: pointer; transition: all 0.3s;
         }
+        .lang-switch:hover { background: var(--gold-light); border-color: var(--border-gold); }
 
         .main-content {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             padding: 100px 20px 50px;
         }
 
         .success-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 3rem;
-            max-width: 900px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 2rem;
+            background: var(--bg-card); border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md); padding: 3rem; max-width: 900px;
+            width: 100%; text-align: center; box-shadow: var(--shadow-lg);
+            position: relative; overflow: hidden; margin-bottom: 2rem;
         }
-
         .success-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: var(--gradient-gold);
         }
 
         .success-badge {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 2rem;
-            font-size: 2.5rem;
-            color: white;
-            box-shadow: 0 10px 20px rgba(0, 254, 156, 0.3);
-            animation: pulse 2s infinite;
+            width: 100px; height: 100px;
+            background: var(--gradient-gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 2rem; font-size: 2.5rem; color: #fff;
+            box-shadow: var(--shadow-gold); animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 10px 20px rgba(0, 254, 156, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 15px 30px rgba(0, 254, 156, 0.5); }
-            100% { transform: scale(1); box-shadow: 0 10px 20px rgba(0, 254, 156, 0.3); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--light), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--gray);
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
-        }
+        h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--gold-deep); }
+        .subtitle { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.6; }
 
         .order-summary {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: right;
-            border: 1px solid var(--glass-border);
+            background: var(--bg-card-hover); border-radius: var(--radius-sm);
+            padding: 2rem; margin: 2rem 0; text-align: right;
+            border: 1px solid var(--border-light);
         }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-light); }
+        .order-id { font-size: 1.1rem; font-weight: 600; color: var(--gold-deep); }
+        .order-date { color: var(--text-muted); font-size: 0.9rem; }
+        .order-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .detail-item { display: flex; flex-direction: column; }
+        .detail-label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .detail-value { font-size: 1rem; font-weight: 600; }
 
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .order-id {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--gold);
-        }
-
-        .order-date {
-            color: var(--gray);
-            font-size: 0.5rem;
-            font-weight: bolder;
-        }
-
-        .order-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .detail-label {
-            font-size: 1.1rem;
-            color: #eee;
-            margin-bottom: 0.5rem;
-            font-weight: bolder;
-        }
-
-        .detail-value {
-            font-size: 0.9rem;
-            font-weight: 400;
-        }
-
-        .tracking-section {
-            margin: 2rem 0;
-        }
-
-        .tracking-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--accent);
-            text-align: center;
-        }
-
-        .tracking-steps {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin: 0 1rem;
-        }
-
+        .tracking-section { margin: 2rem 0; }
+        .tracking-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gold-deep); text-align: center; }
+        .tracking-steps { display: flex; justify-content: space-between; position: relative; margin: 0 1rem; }
         .tracking-steps::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: 0;
-            left: 0;
-            height: 3px;
-            background: var(--glass);
-            z-index: 1;
+            content: ''; position: absolute; top: 20px; right: 0; left: 0;
+            height: 3px; background: var(--border-light); z-index: 1;
         }
-
-        .tracking-steps::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: 0;
-            width: 33%;
-            height: 3px;
-            background: var(--accent);
-            z-index: 2;
-            transition: width 1s ease;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 3;
-        }
-
+        .step { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 3; }
         .step-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--glass);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.8rem;
-            color: var(--gray);
-            transition: all 0.3s ease;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: #fff; border: 2px solid var(--border-light);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 0.8rem; color: var(--text-muted); transition: all 0.3s;
         }
+        .step.active .step-icon { border-color: var(--gold); background: var(--gold-light); color: var(--gold-deep); }
+        .step.completed .step-icon { border-color: var(--gold); background: var(--gold); color: #fff; }
+        .step-label { font-size: 0.85rem; color: var(--text-muted); text-align: center; max-width: 100px; }
 
-        .step.active .step-icon {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 254, 156, 0.4);
-        }
-
-        .step.completed .step-icon {
-            background: var(--primary);
-            color: white;
-        }
-
-        .step-label {
-            font-size: 0.85rem;
-            color: var(--gray);
-            text-align: center;
-            max-width: 100px;
-        }
-
-        .step.active .step-label {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .step.completed .step-label {
-            color: var(--primary);
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2.5rem;
-        }
-
+        .action-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2.5rem; }
         .btn {
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.7rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            min-width: 180px;
+            padding: 1rem 2rem; border-radius: 50px; font-weight: 600;
+            text-decoration: none; display: inline-flex; align-items: center;
+            justify-content: center; gap: 0.7rem; transition: all 0.3s;
+            border: none; cursor: pointer; font-size: 1rem; min-width: 180px;
         }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-            box-shadow: 0 5px 15px rgba(255, 90, 0, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 90, 0, 0.4);
-        }
-
-        .btn-secondary {
-            background: var(--glass);
-            color: var(--light);
-            border: 1px solid var(--glass-border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-3px);
-        }
-
-        .btn-accent {
-            background: linear-gradient(to right, var(--accent), var(--accent-dark));
-            color: var(--dark);
-            box-shadow: 0 5px 15px rgba(0, 254, 156, 0.3);
-        }
-
-        .btn-accent:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 254, 156, 0.4);
-        }
-
-        .btn-whatsapp {
-            background: linear-gradient(to right, #25D366, #128C7E);
-            color: white;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-        }
-
-        .btn-whatsapp:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-        }
-
-        /* قسم تتبع الطلب الجديد */
-        .track-order-section {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            max-width: 900px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .track-order-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--primary));
-        }
-
-        .search-box {
-            display: flex;
-            max-width: 600px;
-            margin: 2rem auto;
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .search-input::placeholder {
-            color: var(--gray);
-        }
-
-        .search-btn {
-            padding: 0 2rem;
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover {
-            background: linear-gradient(to right, var(--primary-light), var(--primary));
-        }
-
-        .order-status-result {
-            margin-top: 2rem;
-            text-align: right;
-            display: none;
-        }
-
-        .status-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid var(--glass-border);
-            margin-top: 1.5rem;
-        }
-
-        .status-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .status-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .status-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .status-badge.processing {
-            background: rgba(255, 193, 7, 0.2);
-            color: #FFC107;
-            border: 1px solid rgba(255, 193, 7, 0.3);
-        }
-
-        .status-badge.shipped {
-            background: rgba(33, 150, 243, 0.2);
-            color: #2196F3;
-            border: 1px solid rgba(33, 150, 243, 0.3);
-        }
-
-        .status-badge.delivered {
-            background: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .status-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .status-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .status-label {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-        }
-
-        .status-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .estimated-delivery {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
-        .delivery-title {
-            font-size: 1rem;
-            color: var(--gold);
-            margin-bottom: 0.5rem;
-        }
-
-        .delivery-date {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--light);
-        }
-
-        .floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .floating-element {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 90, 0, 0.1) 0%, transparent 70%);
-            animation: float 15s infinite linear;
-        }
-
-        .floating-element:nth-child(1) {
-            width: 150px;
-            height: 150px;
-            top: 10%;
-            left: 10%;
-            animation-duration: 20s;
-        }
-
-        .floating-element:nth-child(2) {
-            width: 100px;
-            height: 100px;
-            top: 70%;
-            left: 80%;
-            animation-duration: 25s;
-            background: radial-gradient(circle, rgba(0, 254, 156, 0.1) 0%, transparent 70%);
-        }
-
-        .floating-element:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            top: 40%;
-            left: 5%;
-            animation-duration: 30s;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(20px, 20px) rotate(90deg); }
-            50% { transform: translate(0, 40px) rotate(180deg); }
-            75% { transform: translate(-20px, 20px) rotate(270deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
-        }
-
-        footer {
-            background: rgba(8, 8, 8, 0.9);
-            padding: 3rem 2rem 1.5rem;
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-            margin-top: 2rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-logo {
-            height: 50px;
-            margin-bottom: 1.5rem;
-            filter: brightness(1.2);
-        }
-
-        .footer-text {
-            color: var(--gray);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-link {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--glass);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            color: var(--gray);
-            font-size: 0.9rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 0 1rem;
-            }
-            
-            .success-card, .track-order-section {
-                padding: 2rem 1.5rem;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .order-details, .status-details {
-                grid-template-columns: 1fr;
-            }
-            
-            .tracking-steps {
-                margin: 0 0.5rem;
-            }
-            
-            .step-label {
-                font-size: 0.75rem;
-                max-width: 80px;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .search-box {
-                flex-direction: column;
-                border-radius: 16px;
-            }
-            
-            .search-input {
-                border-radius: 16px 16px 0 0;
-            }
-            
-            .search-btn {
-                border-radius: 0 0 16px 16px;
-                padding: 1rem;
-            }
-        }
-
-        .confetti {
-            position: fixed;
-            width: 12px;
-            height: 12px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: confetti-fall 5s linear forwards;
-            z-index: 9999;
-        }
-
-        .confetti:nth-child(2n) {
-            background: var(--accent);
-        }
-
-        .confetti:nth-child(3n) {
-            background: var(--gold);
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
+        .btn-primary { background: var(--gradient-gold); color: #fff; box-shadow: var(--shadow-gold); }
+        .btn-primary:hover { background: #B8860B; transform: translateY(-3px); }
+        .btn-secondary { background: #fff; color: var(--text-primary); border: 1px solid var(--border-light); }
+        .btn-secondary:hover { border-color: var(--border-gold); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+        .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 5px 15px rgba(37,211,102,0.3); }
+        .btn-whatsapp:hover { background: #128C7E; transform: translateY(-3px); }
 
         .order-items-list {
-            margin-top: 2rem;
-            text-align: right;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.2);
+            margin-top: 2rem; text-align: right; max-height: 300px; overflow-y: auto;
+            border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+            padding: 1rem; background: #fff;
         }
+        .order-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border-light); }
+        .order-item:last-child { border-bottom: none; }
+        .item-info { flex: 1; }
+        .item-name { font-weight: 600; color: var(--text-primary); }
+        .item-details { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .item-total { font-weight: 700; color: var(--gold-deep); min-width: 100px; text-align: left; }
+        .invoice-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); }
+        .invoice-row { display: flex; justify-content: space-between; padding: 0.5rem 0; }
+        .invoice-total { font-size: 1.2rem; font-weight: 800; color: var(--gold-deep); padding-top: 1rem; border-top: 2px solid var(--border-gold); }
 
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .estimated-delivery {
+            background: var(--gold-light); border: 1px solid var(--border-gold);
+            border-radius: var(--radius-sm); padding: 1rem; margin-top: 2rem; text-align: center;
         }
+        .delivery-title { font-size: 1rem; color: var(--gold-deep); margin-bottom: 0.5rem; }
+        .delivery-date { font-size: 1.2rem; font-weight: 700; }
 
-        .order-item:last-child {
-            border-bottom: none;
+        .track-order-section {
+            background: var(--bg-card); border: 1px solid var(--border-gold);
+            border-radius: var(--radius-md); padding: 2.5rem; max-width: 900px;
+            width: 100%; text-align: center; box-shadow: var(--shadow-lg);
+            position: relative; overflow: hidden;
         }
+        .search-box { display: flex; max-width: 600px; margin: 2rem auto; border-radius: 50px; overflow: hidden; box-shadow: var(--shadow-sm); }
+        .search-input { flex: 1; padding: 1rem 1.5rem; border: 1px solid var(--border-light); background: #fff; color: var(--text-primary); font-size: 1rem; outline: none; }
+        .search-btn { padding: 0 2rem; background: var(--gradient-gold); color: #fff; border: none; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .search-btn:hover { background: #B8860B; }
 
-        .item-info {
-            flex: 1;
-        }
+        .status-card { background: var(--bg-card-hover); border-radius: var(--radius-sm); padding: 2rem; border: 1px solid var(--border-light); margin-top: 1.5rem; }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-light); }
+        .status-badge { padding: 0.5rem 1rem; border-radius: 50px; font-weight: 600; font-size: 0.9rem; }
+        .status-badge.processing { background: rgba(255,193,7,0.2); color: #F57F17; }
+        .status-badge.shipped { background: rgba(33,150,243,0.2); color: #1565C0; }
+        .status-badge.delivered { background: rgba(76,175,80,0.2); color: #2E7D32; }
 
-        .item-name {
-            font-weight: 600;
-            color: var(--light);
-        }
+        footer { background: #fff; border-top: 1px solid var(--border-gold); padding: 3rem 2rem 1.5rem; text-align: center; margin-top: 2rem; }
+        .footer-logo { height: 50px; margin-bottom: 1.5rem; }
+        .footer-text { color: #666; margin-bottom: 2rem; max-width: 600px; margin-inline: auto; line-height: 1.6; }
+        .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+        .social-link { width: 44px; height: 44px; border-radius: 50%; background: #f5f5f5; display: flex; align-items: center; justify-content: center; color: var(--gold-deep); font-size: 1.2rem; transition: all 0.3s; text-decoration: none; }
+        .social-link:hover { background: var(--gold); color: #fff; transform: translateY(-3px); }
+        .copyright { color: #888; font-size: 0.9rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
 
-        .item-details {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-top: 0.3rem;
-        }
+        a { text-decoration: none; }
 
-        .item-total {
-            font-weight: 700;
-            color: var(--gold);
-            min-width: 100px;
-            text-align: left;
-        }
-
-        .invoice-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .invoice-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-        }
-
-        .invoice-total {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--accent);
-            padding-top: 1rem;
-            border-top: 2px solid var(--glass-border);
+        @media (max-width: 768px) {
+            .success-card, .track-order-section { padding: 2rem 1.5rem; }
+            h1 { font-size: 2.2rem; }
+            .order-details { grid-template-columns: 1fr; }
+            .action-buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 300px; }
+            .search-box { flex-direction: column; border-radius: var(--radius-sm); }
+            .search-input { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+            .search-btn { border-radius: 0 0 var(--radius-sm) var(--radius-sm); padding: 1rem; }
         }
     </style>
 </head>
 <body>
-    <!-- عناصر عائمة في الخلفية -->
-    <div class="floating-elements">
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-    </div>
-
-    <!-- الهيدر -->
     <header class="header">
-        <a href="index.html" class="nav-icon">
-            <i class="fas fa-arrow-right"></i>
-        </a>
-        <a href="index.html">
-            <img src="./images/ptk.png" alt="PITSIKY Logo" class="logo">
-        </a>
-        <a href="https://wa.me/212702382376" class="nav-icon">
-            <i class="fab fa-whatsapp" style="color: greenyellow;"></i>
-        </a>
+        <a href="index.html" class="nav-icon"><i class="fas fa-arrow-right"></i></a>
+        <a href="index.html"><img src="./images/ptk.png" alt="PITSIKY Logo" class="logo"></a>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button class="lang-switch" id="langSwitch"><i class="fas fa-globe"></i> <span>EN</span></button>
+            <a href="https://wa.me/212702382376" class="nav-icon"><i class="fab fa-whatsapp" style="color:#25D366;"></i></a>
+        </div>
     </header>
 
-    <!-- المحتوى الرئيسي -->
     <main class="main-content">
         <div class="success-card">
-            <div class="success-badge">
-                <i class="fas fa-check"></i>
-            </div>
-            
-            <h1>شكراً لثقتك بنا!</h1>
-            <p class="subtitle">لقد تلقينا طلبك بنجاح ! 👇قم بالنقر للدفع  </p>
+            <div class="success-badge"><i class="fas fa-check"></i></div>
+            <h1 data-i18n="thank_you">شكراً لثقتك بنا!</h1>
+            <p class="subtitle" data-i18n="order_received_text">لقد تلقينا طلبك بنجاح ! 👇قم بالنقر للدفع</p>
             <button id="whatsapp-btn" class="btn btn-whatsapp">
-                    <i class="fab fa-whatsapp"></i>
-                    الدفع عبر واتساب
-                </button>
-                <p style="margin-top: 10px; color: greenyellow; font-size: 0.7rem;"> كل الطلبات يتم تجهيزها" P.O.D"  </p>
+                <i class="fab fa-whatsapp"></i> <span data-i18n="pay_whatsapp">الدفع عبر واتساب</span>
+            </button>
+            <p style="margin-top:10px;color:var(--gold-deep);font-size:0.85rem;" data-i18n="pod_note">كل الطلبات يتم تجهيزها "P.O.D"</p>
+            
             <div class="order-summary">
                 <div class="order-header">
                     <div class="order-id" id="order-id">#PSK-تحميل...</div>
                     <div class="order-date" id="order-date">جاري التحميل...</div>
                 </div>
-                
                 <div class="order-details">
                     <div class="detail-item">
-                        <span class="detail-label">طريقة الدفع</span>
+                        <span class="detail-label" data-i18n="payment_method_label">طريقة الدفع</span>
                         <span class="detail-value" id="payment-method">جاري التحميل...</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">اسم العميل</span>
+                        <span class="detail-label" data-i18n="customer_name_label">اسم العميل</span>
                         <span class="detail-value" id="customer-name">جاري التحميل...</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">رقم الهاتف</span>
+                        <span class="detail-label" data-i18n="phone_label">رقم الهاتف</span>
                         <span class="detail-value" id="customer-phone">جاري التحميل...</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">عنوان الشحن</span>
+                        <span class="detail-label" data-i18n="address_label">عنوان الشحن</span>
                         <span class="detail-value" id="shipping-address">جاري التحميل...</span>
                     </div>
                 </div>
-
-                <!-- تفاصيل المنتجات -->
-                <div id="order-items-container" class="order-items-list">
-                    <!-- سيتم ملؤها بالجافاسكريبت -->
-                </div>
-
-                <!-- ملخص الفاتورة -->
+                <div id="order-items-container" class="order-items-list"></div>
                 <div class="invoice-summary">
                     <div class="detail-item">
-                        <span class="detail-label">المجموع الفرعي</span>
+                        <span class="detail-label" data-i18n="subtotal_label">المجموع الفرعي</span>
                         <span class="detail-value" id="subtotal-amount">0.00 درهم</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">تكلفة الشحن</span>
+                        <span class="detail-label" data-i18n="shipping_label">تكلفة الشحن</span>
                         <span class="detail-value" id="shipping-amount">0.00 درهم</span>
                     </div>
                     <div class="invoice-total invoice-row">
-                        <span>المبلغ الإجمالي</span>
+                        <span data-i18n="total_label">المبلغ الإجمالي</span>
                         <span id="total-amount">0.00 درهم</span>
                     </div>
                 </div>
             </div>
             
-          
-            
             <div class="action-buttons">
-                <a href="index.html" class="btn btn-primary">
-                    <i class="fas fa-home"></i>
-                    العودة للرئيسية
-                </a>
-                <a href="pdc.html" class="btn btn-secondary">
-                    <i class="fas fa-store"></i>
-                    مواصلة التسوق
-                </a>
-                
+                <a href="index.html" class="btn btn-primary"><i class="fas fa-home"></i> <span data-i18n="back_home">العودة للرئيسية</span></a>
+                <a href="pdc.html" class="btn btn-secondary"><i class="fas fa-store"></i> <span data-i18n="continue_shopping">مواصلة التسوق</span></a>
             </div>
+            
             <div class="tracking-section">
-  <div class="tracking-section">
-  <h3 class="tracking-title">تتبع حالة الطلب</h3>
-  <div class="tracking-steps">
-    <div class="step completed">
-      <div class="step-icon">
-        <i class="fas fa-check"></i>
-      </div>
-      <div class="step-label">تم التأكيد</div>
-    </div>
-    <div class="step active">
-      <div class="step-icon">
-        <i class="fas fa-box"></i>
-      </div>
-      <div class="step-label">قيد التجهيز</div>
-    </div>
-    <div class="step">
-      <div class="step-icon">
-        <i class="fas fa-shipping-fast"></i>
-      </div>
-      <div class="step-label">قيد الشحن</div>
-    </div>
-    <div class="step">
-      <div class="step-icon">
-        <i class="fas fa-home"></i>
-      </div>
-      <div class="step-label">تم التسليم</div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- أضف هذا الكود هنا -->
-<div class="estimated-delivery" style="margin-top: 2rem;">
-  <div class="delivery-title">التاريخ المتوقع للتسليم:</div>
-  <div class="delivery-date" id="estimated-delivery-date">جاري التحميل...</div>
-</div>
-<!-- نهاية الإضافة -->
-
-</div>
-</div>
-
-</div>
+                <h3 class="tracking-title" data-i18n="track_order_title">تتبع حالة الطلب</h3>
+                <div class="tracking-steps">
+                    <div class="step completed"><div class="step-icon"><i class="fas fa-check"></i></div><div class="step-label" data-i18n="confirmed">تم التأكيد</div></div>
+                    <div class="step active"><div class="step-icon"><i class="fas fa-box"></i></div><div class="step-label" data-i18n="preparing">قيد التجهيز</div></div>
+                    <div class="step"><div class="step-icon"><i class="fas fa-shipping-fast"></i></div><div class="step-label" data-i18n="shipping">قيد الشحن</div></div>
+                    <div class="step"><div class="step-icon"><i class="fas fa-home"></i></div><div class="step-label" data-i18n="delivered">تم التسليم</div></div>
+                </div>
+            </div>
+            
+            <div class="estimated-delivery">
+                <div class="delivery-title" data-i18n="estimated_delivery">التاريخ المتوقع للتسليم:</div>
+                <div class="delivery-date" id="estimated-delivery-date">جاري التحميل...</div>
+            </div>
         </div>
 
+        <div class="track-order-section">
+            <h2 style="color:var(--gold-deep);margin-bottom:1rem;" data-i18n="search_order_title">تتبع طلبك</h2>
+            <p style="color:var(--text-muted);" data-i18n="search_order_desc">أدخل رقم الطلب لمعرفة حالة طلبك</p>
+            <div class="search-box">
+                <input type="text" class="search-input" id="order-search" data-i18n-placeholder="search_order_placeholder" placeholder="أدخل رقم الطلب (مثال: PTS-1234567890)">
+                <button class="search-btn" id="search-btn" data-i18n="search_btn">بحث</button>
+            </div>
+            <div class="order-status-result" id="order-status-result"></div>
+        </div>
     </main>
 
-    <!-- الفوتر -->
     <footer>
         <div class="footer-content">
             <img src="./images/ptk.png" alt="PITSIKY Logo" class="footer-logo">
-            <p class="footer-text">وجهتك الجديدة لترقية جدارك إلى مستوى جديد يناسب ذوقك. نقدم لوحات فنية عالية الجودة بتصاميم مبتكرة تناسب جميع الأذواق.</p>
-            
+            <p class="footer-text" data-i18n="footer_desc">وجهتك الجديدة والصحيحة لترقية جدارك إلى مستوى يناسب ذوقك. نقدم لوحات فنية عالية الجودة بتصاميم مبتكرة تناسب جميع الأذواق.</p>
             <div class="social-links">
-                <a href="https://www.instagram.com/pitsiky" class="social-link" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.tiktok.com/@pitsiky" class="social-link" target="_blank">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-                <a href="#" class="social-link">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
+                <a href="https://www.instagram.com/pitsiky" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@pitsiky" class="social-link" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
             </div>
-            
-            <div class="copyright">
-                PITSIKY 2026<span id="current-year"></span> - جميع الحقوق محفوظة ©
-            </div>
+            <div class="copyright">PITSIKY 2025 - <span data-i18n="all_rights">جميع الحقوق محفوظة</span> ©</div>
         </div>
     </footer>
 
     <script>
-        // البيانات الحقيقية - جلب آخر طلب من localStorage
-        let currentOrder = null;
-        const whatsappNumber = "212702382376"; // رقم الواتساب الخاص بك
-
-        // إنشاء تأثير الألعاب النارية
-        function createConfetti() {
-            const colors = ['#FF5A00', '#00FE9C', '#FFD700'];
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.animationDelay = Math.random() * 5 + 's';
-                confetti.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                document.body.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, 8000);
+        // ========== الترجمة ==========
+        const translations = {
+            ar: {
+                thank_you: "شكراً لثقتك بنا!",
+                order_received_text: "لقد تلقينا طلبك بنجاح ! 👇قم بالنقر للدفع",
+                pay_whatsapp: "الدفع عبر واتساب",
+                pod_note: 'كل الطلبات يتم تجهيزها "P.O.D"',
+                payment_method_label: "طريقة الدفع",
+                customer_name_label: "اسم العميل",
+                phone_label: "رقم الهاتف",
+                address_label: "عنوان الشحن",
+                subtotal_label: "المجموع الفرعي",
+                shipping_label: "تكلفة الشحن",
+                total_label: "المبلغ الإجمالي",
+                back_home: "العودة للرئيسية",
+                continue_shopping: "مواصلة التسوق",
+                track_order_title: "تتبع حالة الطلب",
+                confirmed: "تم التأكيد",
+                preparing: "قيد التجهيز",
+                shipping: "قيد الشحن",
+                delivered: "تم التسليم",
+                estimated_delivery: "التاريخ المتوقع للتسليم:",
+                search_order_title: "تتبع طلبك",
+                search_order_desc: "أدخل رقم الطلب لمعرفة حالة طلبك",
+                search_order_placeholder: "أدخل رقم الطلب (مثال: PTS-1234567890)",
+                search_btn: "بحث",
+                footer_desc: "وجهتك الجديدة والصحيحة لترقية جدارك إلى مستوى يناسب ذوقك. نقدم لوحات فنية عالية الجودة بتصاميم مبتكرة تناسب جميع الأذواق.",
+                all_rights: "جميع الحقوق محفوظة",
+                loading: "جاري التحميل...",
+                no_products: "لا توجد منتجات",
+                currency: "درهم",
+                payment_cod: "الدفع عند الاستلام",
+                payment_whatsapp: "الدفع عبر واتساب",
+                payment_binance: "الدفع عبر بينانس (كامل)",
+                searching: "جاري البحث عن الطلب...",
+                order_not_found: "لم يتم العثور على طلب بهذا الرقم",
+                order_not_found_desc: "يرجى التأكد من رقم الطلب والمحاولة مرة أخرى",
+                processing: "قيد المعالجة",
+                shipped_status: "قيد الشحن",
+                delivered_status: "تم التسليم"
+            },
+            en: {
+                thank_you: "Thank You for Your Trust!",
+                order_received_text: "We have successfully received your order! 👇 Click to pay",
+                pay_whatsapp: "Pay via WhatsApp",
+                pod_note: 'All orders are prepared "P.O.D"',
+                payment_method_label: "Payment Method",
+                customer_name_label: "Customer Name",
+                phone_label: "Phone Number",
+                address_label: "Shipping Address",
+                subtotal_label: "Subtotal",
+                shipping_label: "Shipping Cost",
+                total_label: "Total Amount",
+                back_home: "Back to Home",
+                continue_shopping: "Continue Shopping",
+                track_order_title: "Track Order Status",
+                confirmed: "Confirmed",
+                preparing: "Preparing",
+                shipping: "Shipping",
+                delivered: "Delivered",
+                estimated_delivery: "Estimated Delivery Date:",
+                search_order_title: "Track Your Order",
+                search_order_desc: "Enter your order number to check its status",
+                search_order_placeholder: "Enter order number (e.g. PTS-1234567890)",
+                search_btn: "Search",
+                footer_desc: "Your new and correct destination to upgrade your wall to a level that suits your taste. We offer high-quality art pieces with innovative designs.",
+                all_rights: "All Rights Reserved",
+                loading: "Loading...",
+                no_products: "No products",
+                currency: "MAD",
+                payment_cod: "Cash on Delivery",
+                payment_whatsapp: "Payment via WhatsApp",
+                payment_binance: "Payment via Binance (Full)",
+                searching: "Searching for order...",
+                order_not_found: "Order not found",
+                order_not_found_desc: "Please check the order number and try again",
+                processing: "Processing",
+                shipped_status: "Shipped",
+                delivered_status: "Delivered"
             }
+        };
+
+        let currentLang = localStorage.getItem('pitsiky_lang') || 'ar';
+        function t(key) { return translations[currentLang]?.[key] || key; }
+
+        function applyLanguage() {
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang]?.[key]) el.textContent = translations[currentLang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[currentLang]?.[key]) el.placeholder = translations[currentLang][key];
+            });
+            document.getElementById('langSwitch').querySelector('span').textContent = currentLang === 'ar' ? 'EN' : 'AR';
+            // إعادة تحميل تفاصيل الطلب باللغة الجديدة
+            loadRealOrderDetails();
         }
-        
-        // تنسيق التاريخ بالعربية
+
+        document.getElementById('langSwitch').addEventListener('click', () => {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('pitsiky_lang', currentLang);
+            applyLanguage();
+        });
+
+        // ========== وظائف الصفحة ==========
+        const whatsappNumber = "212702382376";
+        let currentOrder = null;
+
         function formatArabicDate(date) {
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            return date.toLocaleDateString('ar-u-nu-latn', options);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return date.toLocaleDateString(currentLang === 'ar' ? 'ar-u-nu-latn' : 'en-US', options);
         }
-        
-        // جلب آخر طلب من localStorage
+
         function getLatestOrder() {
             try {
                 const orders = JSON.parse(localStorage.getItem('pitsikyOrders') || '[]');
-                if (orders.length > 0) {
-                    return orders[orders.length - 1];
-                }
-            } catch (error) {
-                console.error('Error loading order:', error);
-            }
-            return null;
+                return orders.length > 0 ? orders[orders.length - 1] : null;
+            } catch (error) { return null; }
         }
-        
-        // تحميل وتفاصيل الطلب الحقيقي
+
         function loadRealOrderDetails() {
             currentOrder = getLatestOrder();
-            
-            if (!currentOrder) {
-                // إذا لم يكن هناك طلب، استخدم بيانات افتراضية
-                setDefaultOrderDetails();
-                return;
-            }
-            
-            // تحديث معلومات الطلب
+            if (!currentOrder) { setDefaultOrderDetails(); return; }
+
             document.getElementById('order-id').textContent = currentOrder.id;
-            
-            const orderDate = new Date(currentOrder.date);
-            document.getElementById('order-date').textContent = formatArabicDate(orderDate);
-            
-            // تحديد طريقة الدفع
-            let paymentMethodText = '';
-            if (currentOrder.paymentMethod === 'whatsapp50') {
-                paymentMethodText = 'الدفع عبر واتساب ';
-            } else if (currentOrder.paymentMethod === 'binance') {
-                paymentMethodText = 'الدفع عبر بينانس (كامل)';
-            } else {
-                paymentMethodText = 'الدفع عند الاستلام';
-            }
-            
-            document.getElementById('payment-method').textContent = paymentMethodText;
-            
-            // معلومات العميل
+            document.getElementById('order-date').textContent = formatArabicDate(new Date(currentOrder.date));
+
+            let paymentText = t('payment_cod');
+            if (currentOrder.paymentMethod === 'whatsapp50') paymentText = t('payment_whatsapp');
+            else if (currentOrder.paymentMethod === 'binance') paymentText = t('payment_binance');
+            document.getElementById('payment-method').textContent = paymentText;
+
             if (currentOrder.customer) {
-                document.getElementById('customer-name').textContent = 
-                    currentOrder.customer.firstName + ' ' + currentOrder.customer.lastName;
+                document.getElementById('customer-name').textContent = currentOrder.customer.firstName + ' ' + currentOrder.customer.lastName;
                 document.getElementById('customer-phone').textContent = currentOrder.customer.phone;
-                document.getElementById('shipping-address').textContent = 
-                    currentOrder.customer.address + ' - ' + currentOrder.customer.cityText;
+                document.getElementById('shipping-address').textContent = currentOrder.customer.address + ' - ' + currentOrder.customer.cityText;
             }
-            
-            // المبالغ
-            document.getElementById('subtotal-amount').textContent = 
-                currentOrder.subtotal.toFixed(2) + ' درهم';
-            document.getElementById('shipping-amount').textContent = 
-                currentOrder.shipping.toFixed(2) + ' درهم';
-            document.getElementById('total-amount').textContent = 
-                currentOrder.total.toFixed(2) + ' درهم';
-            
-            // عرض المنتجات
+
+            document.getElementById('subtotal-amount').textContent = currentOrder.subtotal.toFixed(2) + ' ' + t('currency');
+            document.getElementById('shipping-amount').textContent = currentOrder.shipping.toFixed(2) + ' ' + t('currency');
+            document.getElementById('total-amount').textContent = currentOrder.total.toFixed(2) + ' ' + t('currency');
+
             renderOrderItems(currentOrder.items);
-            
-            // إعداد زر الواتساب
             setupWhatsAppButton();
-            
-            // تعيين رقم الطلب الحالي في خانة البحث
+
+            const orderDate = new Date(currentOrder.date);
+            const deliveryDate = new Date(orderDate);
+            deliveryDate.setDate(deliveryDate.getDate() + Math.floor(Math.random() * 5) + 3);
+            document.getElementById('estimated-delivery-date').textContent = formatArabicDate(deliveryDate);
+
             document.getElementById('order-search').value = currentOrder.id;
-            
-            // البحث تلقائياً
-            setTimeout(() => {
-                document.getElementById('search-btn').click();
-            }, 1000);
+            setTimeout(() => document.getElementById('search-btn').click(), 500);
         }
-         // حساب وتحديث التاريخ المتوقع للتسليم
-if (currentOrder) {
-  const orderDate = new Date(currentOrder.date);
-  const deliveryDate = new Date(orderDate);
-  
-  // إضافة 3-7 أيام كتاريخ متوقع للتسليم
-  const minDays = 3; // الحد الأدنى للأيام
-  const maxDays = 7; // الحد الأقصى للأيام
-  const randomDays = Math.floor(Math.random() * (maxDays - minDays + 1)) + minDays;
-  
-  deliveryDate.setDate(deliveryDate.getDate() + randomDays);
-  
-  const deliveryOptions = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  };
-  
-  const formattedDeliveryDate = deliveryDate.toLocaleDateString('ar-u-nu-latn', deliveryOptions);
-  document.getElementById('estimated-delivery-date').textContent = formattedDeliveryDate;
-  
-  // حفظ التاريخ المتوقع في الطلب للتتبع لاحقاً
-  if (!currentOrder.estimatedDelivery) {
-    currentOrder.estimatedDelivery = deliveryDate.toISOString();
-    
-    // تحديث البيانات في localStorage
-    try {
-      const orders = JSON.parse(localStorage.getItem('pitsikyOrders') || '[]');
-      const orderIndex = orders.findIndex(o => o.id === currentOrder.id);
-      if (orderIndex !== -1) {
-        orders[orderIndex] = currentOrder;
-        localStorage.setItem('pitsikyOrders', JSON.stringify(orders));
-      }
-    } catch (e) {
-      console.error('Error saving estimated delivery date:', e);
-    }
-  }
-} else {
-  // للبيانات الافتراضية
-  const defaultDeliveryDate = new Date();
-  defaultDeliveryDate.setDate(defaultDeliveryDate.getDate() + 5); // 5 أيام كمتوسط
-  
-  const deliveryOptions = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  };
-  
-  document.getElementById('estimated-delivery-date').textContent =
-    defaultDeliveryDate.toLocaleDateString('ar-u-nu-latn', deliveryOptions);
-}
-        // عرض المنتجات في الطلب
+
         function renderOrderItems(items) {
             const container = document.getElementById('order-items-container');
             if (!items || items.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--gray);">لا توجد منتجات</p>';
+                container.innerHTML = `<p style="text-align:center;color:var(--text-muted);">${t('no_products')}</p>`;
                 return;
             }
-            
-            let html = '';
-            items.forEach((item, index) => {
+            container.innerHTML = items.map(item => {
                 const price = item.finalPrice || item.price;
-                const quantity = item.quantity || 1;
-                const total = price * quantity;
-                
-                html += `
-                    <div class="order-item">
-                        <div class="item-info">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-details">
-                                ${price.toFixed(2)} درهم × ${quantity}
-                            </div>
-                        </div>
-                        <div class="item-total">${total.toFixed(2)} درهم</div>
+                const total = price * (item.quantity || 1);
+                return `<div class="order-item">
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-details">${price.toFixed(2)} ${t('currency')} × ${item.quantity || 1}</div>
                     </div>
-                `;
-                
-            });
-            
-            container.innerHTML = html;
+                    <div class="item-total">${total.toFixed(2)} ${t('currency')}</div>
+                </div>`;
+            }).join('');
         }
-        
-        // إعداد زر الواتساب
+
         function setupWhatsAppButton() {
-            const whatsappBtn = document.getElementById('whatsapp-btn');
-            
-            whatsappBtn.addEventListener('click', function() {
+            document.getElementById('whatsapp-btn').addEventListener('click', function() {
                 if (!currentOrder) return;
-                
-                // إنشاء رسالة الواتساب
-        let message = `👋السلام عليكم الى كان ممكن بغيت نخلص كومند ديالي لي ثمنها \n`;
-                message += ` ${currentOrder.total.toFixed(2)} درهم\n\n`;
-               
-                message += `📋 رقم الطلب: ${currentOrder.id}\n`;
-               
-          
-                
-                // ترميز الرسالة للرابط
-                const encodedMessage = encodeURIComponent(message);
-                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-                
-                // فتح الواتساب في نافذة جديدة
-                window.open(whatsappUrl, '_blank');
+                const message = `👋 ${currentLang === 'ar' ? 'السلام عليكم، أريد دفع طلبي' : 'Hello, I want to pay my order'}\n📋 ${t('search_order_title')}: ${currentOrder.id}\n💰 ${t('total_label')}: ${currentOrder.total.toFixed(2)} ${t('currency')}`;
+                window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
             });
         }
-        
-        // البيانات الافتراضية عند عدم وجود طلب
+
         function setDefaultOrderDetails() {
-            const now = new Date();
             document.getElementById('order-id').textContent = '#PSK-' + Date.now().toString().slice(-6);
-            document.getElementById('order-date').textContent = formatArabicDate(now);
-            document.getElementById('payment-method').textContent = 'الدفع عند الاستلام';
-            document.getElementById('customer-name').textContent = 'العميل';
-            document.getElementById('customer-phone').textContent = '06XXXXXXXX';
-            document.getElementById('shipping-address').textContent = 'العنوان';
-            document.getElementById('subtotal-amount').textContent = '0.00 درهم';
-            document.getElementById('shipping-amount').textContent = '0.00 درهم';
-            document.getElementById('total-amount').textContent = '0.00 درهم';
-            
-            document.getElementById('order-items-container').innerHTML = 
-                '<p style="text-align: center; color: var(--gray);">لا توجد منتجات</p>';
-            
-            // زر واتساب افتراضي
-            const whatsappBtn = document.getElementById('whatsapp-btn');
-            const defaultMessage = 'السلام عليكم، أريد الاستفسار عن طلبي.';
-            const encodedMessage = encodeURIComponent(defaultMessage);
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-            whatsappBtn.onclick = () => window.open(whatsappUrl, '_blank');
+            document.getElementById('order-date').textContent = formatArabicDate(new Date());
+            document.getElementById('payment-method').textContent = t('payment_cod');
+            document.getElementById('customer-name').textContent = '—';
+            document.getElementById('customer-phone').textContent = '—';
+            document.getElementById('shipping-address').textContent = '—';
+            document.getElementById('subtotal-amount').textContent = '0.00 ' + t('currency');
+            document.getElementById('shipping-amount').textContent = '0.00 ' + t('currency');
+            document.getElementById('total-amount').textContent = '0.00 ' + t('currency');
+            document.getElementById('order-items-container').innerHTML = `<p style="text-align:center;color:var(--text-muted);">${t('no_products')}</p>`;
+            document.getElementById('estimated-delivery-date').textContent = '—';
+            document.getElementById('whatsapp-btn').onclick = () => window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(t('search_order_desc'))}`, '_blank');
         }
-        
-        // نظام تتبع الطلبات
-        function setupOrderTracking() {
-            const searchBtn = document.getElementById('search-btn');
-            const searchInput = document.getElementById('order-search');
-            const resultSection = document.getElementById('order-status-result');
-            
-            searchBtn.addEventListener('click', function() {
-                const orderId = searchInput.value.trim();
-                
-                if (!orderId) {
-                    alert('يرجى إدخال رقم الطلب');
-                    return;
-                }
-                
-                // البحث عن الطلب
-                searchOrder(orderId);
-            });
-            
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchBtn.click();
-                }
-            });
-        }
-        
-        // البحث عن الطلب
+
         function searchOrder(orderId) {
             const resultSection = document.getElementById('order-status-result');
-            
-            // إظهار رسالة تحميل
             resultSection.style.display = 'block';
-            resultSection.innerHTML = '<p style="text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin"></i> جاري البحث عن الطلب...</p>';
-            
-            // البحث في الطلبات المحفوظة
+            resultSection.innerHTML = `<p style="text-align:center;padding:2rem;"><i class="fas fa-spinner fa-spin"></i> ${t('searching')}</p>`;
             setTimeout(() => {
                 const orders = JSON.parse(localStorage.getItem('pitsikyOrders') || '[]');
                 const foundOrder = orders.find(order => order.id === orderId);
-                
-                if (foundOrder) {
-                    displayOrderResult(foundOrder);
-                } else {
-                    resultSection.innerHTML = `
-                        <div class="status-card">
-                            <div style="text-align: center; padding: 2rem;">
-                                <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                                <p>لم يتم العثور على طلب بهذا الرقم</p>
-                                <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.5rem;">
-                                    يرجى التأكد من رقم الطلب والمحاولة مرة أخرى
-                                </p>
-                            </div>
-                        </div>
-                    `;
+                if (foundOrder) displayOrderResult(foundOrder);
+                else {
+                    resultSection.innerHTML = `<div class="status-card"><div style="text-align:center;padding:2rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:2rem;color:var(--primary);margin-bottom:1rem;"></i>
+                        <p>${t('order_not_found')}</p><p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem;">${t('order_not_found_desc')}</p></div></div>`;
                 }
             }, 1000);
         }
-        
-        // عرض نتيجة البحث
+
         function displayOrderResult(order) {
-            const resultSection = document.getElementById('order-status-result');
-            
-            // تاريخ التسليم المتوقع (بعد 3-5 أيام)
             const orderDate = new Date(order.date);
             const deliveryDate = new Date(orderDate);
             deliveryDate.setDate(deliveryDate.getDate() + 3 + Math.floor(Math.random() * 3));
-            
-            const deliveryOptions = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
-            
-            const formattedDeliveryDate = deliveryDate.toLocaleDateString('ar-u-nu-latn', deliveryOptions);
-            
-            // حالة الطلب
-            const statuses = ['processing', 'processing', 'shipped', 'delivered'];
+            const statuses = ['processing', 'shipped', 'delivered'];
             const status = statuses[Math.floor(Math.random() * statuses.length)];
-            
-            let statusBadge = '';
-            let statusText = '';
-            let stepActive = 1;
-            
-            switch(status) {
-                case 'processing':
-                    statusBadge = '<div class="status-badge processing">قيد المعالجة</div>';
-                    statusText = 'قيد المعالجة';
-                    stepActive = 1;
-                    break;
-                case 'shipped':
-                    statusBadge = '<div class="status-badge shipped">قيد الشحن</div>';
-                    statusText = 'قيد الشحن';
-                    stepActive = 2;
-                    break;
-                case 'delivered':
-                    statusBadge = '<div class="status-badge delivered">تم التسليم</div>';
-                    statusText = 'تم التسليم';
-                    stepActive = 3;
-                    break;
-            }
-            
-            // تحديث الخطوات
-            const steps = ['completed', 'active', '', ''];
-            if (stepActive >= 2) {
-                steps[1] = 'completed';
-                steps[2] = stepActive === 2 ? 'active' : 'completed';
-            }
-            if (stepActive === 3) {
-                steps[3] = 'active completed';
-            }
-            
-            resultSection.innerHTML = `
+            const statusBadges = {
+                processing: `<div class="status-badge processing">${t('processing')}</div>`,
+                shipped: `<div class="status-badge shipped">${t('shipped_status')}</div>`,
+                delivered: `<div class="status-badge delivered">${t('delivered_status')}</div>`
+            };
+            let steps = [1, status === 'shipped' || status === 'delivered' ? 1 : 0, status === 'delivered' ? 1 : 0, 0];
+            const stepClasses = ['completed', ...steps.slice(1).map((s, i) => s ? (i === 2 && status === 'shipped' ? 'active' : 'completed') : (i === 1 && status === 'processing' ? 'active' : ''))];
+
+            document.getElementById('order-status-result').innerHTML = `
                 <div class="status-card">
                     <div class="status-header">
-                        <div class="status-title">حالة الطلب: <span id="result-order-id">${order.id}</span></div>
-                        ${statusBadge}
+                        <div class="status-title">${t('track_order_title')}: <span>${order.id}</span></div>
+                        ${statusBadges[status]}
                     </div>
-                    
-                    <div class="status-details">
-                        <div class="status-item">
-                            <span class="status-label">تاريخ الطلب</span>
-                            <span class="status-value" id="result-order-date">${formatArabicDate(new Date(order.date))}</span>
-                        </div>
-                        <div class="status-item">
-                            <span class="status-label">آخر تحديث</span>
-                            <span class="status-value" id="result-last-update">${new Date().toLocaleDateString('ar-u-nu-latn', {hour: '2-digit', minute: '2-digit'})}</span>
-                        </div>
-                        <div class="status-item">
-                            <span class="status-label">طريقة الدفع</span>
-                            <span class="status-value" id="result-payment-method">${order.paymentMethod === 'whatsapp50' ? 'واتساب ' : 'بينانس (كامل)'}</span>
-                        </div>
-                        <div class="status-item">
-                            <span class="status-label">المبلغ الإجمالي</span>
-                            <span class="status-value" id="result-total-amount">${order.total.toFixed(2)} درهم</span>
-                        </div>
+                    <div class="status-details" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:1.5rem;">
+                        <div class="status-item"><span class="status-label" style="color:var(--text-muted);">${t('search_order_title')}</span><span class="status-value" style="font-weight:600;">${formatArabicDate(orderDate)}</span></div>
+                        <div class="status-item"><span class="status-label" style="color:var(--text-muted);">${t('total_label')}</span><span class="status-value" style="font-weight:600;">${order.total.toFixed(2)} ${t('currency')}</span></div>
                     </div>
-                    
                     <div class="tracking-section">
                         <div class="tracking-steps">
-                            <div class="step completed">
-                                <div class="step-icon">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="step-label">تم التأكيد</div>
-                            </div>
-                            <div class="step ${steps[1]}">
-                                <div class="step-icon">
-                                    <i class="fas fa-box"></i>
-                                </div>
-                                <div class="step-label">قيد التجهيز</div>
-                            </div>
-                            <div class="step ${steps[2]}">
-                                <div class="step-icon">
-                                    <i class="fas fa-shipping-fast"></i>
-                                </div>
-                                <div class="step-label">قيد الشحن</div>
-                            </div>
-                            <div class="step ${steps[3]}">
-                                <div class="step-icon">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                                <div class="step-label">تم التسليم</div>
-                            </div>
+                            <div class="step completed"><div class="step-icon"><i class="fas fa-check"></i></div><div class="step-label">${t('confirmed')}</div></div>
+                            <div class="step ${stepClasses[1]}"><div class="step-icon"><i class="fas fa-box"></i></div><div class="step-label">${t('preparing')}</div></div>
+                            <div class="step ${stepClasses[2]}"><div class="step-icon"><i class="fas fa-shipping-fast"></i></div><div class="step-label">${t('shipping')}</div></div>
+                            <div class="step ${stepClasses[3]}"><div class="step-icon"><i class="fas fa-home"></i></div><div class="step-label">${t('delivered')}</div></div>
                         </div>
                     </div>
-                    
                     <div class="estimated-delivery">
-                        <div class="delivery-title">التاريخ المتوقع للتسليم:</div>
-                        <div class="delivery-date" id="estimated-delivery-date">${formattedDeliveryDate}</div>
+                        <div class="delivery-title">${t('estimated_delivery')}</div>
+                        <div class="delivery-date">${formatArabicDate(deliveryDate)}</div>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
-        
-        // بدء التطبيق
+
         document.addEventListener('DOMContentLoaded', function() {
-            createConfetti();
+            applyLanguage();
             loadRealOrderDetails();
-            setupOrderTracking();
             
-            // تحديث السنة الحالية في الفوتر
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-            
-            // إضافة تأثير كتابة للنص
-            const title = document.querySelector('h1');
-            const text = title.textContent;
-            title.textContent = '';
-            
-            let i = 0;
-            const typeWriter = () => {
-                if (i < text.length) {
-                    title.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 100);
-                }
-            };
-            
-            setTimeout(typeWriter, 1000);
+            document.getElementById('search-btn').addEventListener('click', function() {
+                const orderId = document.getElementById('order-search').value.trim();
+                if (orderId) searchOrder(orderId);
+            });
+            document.getElementById('order-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') document.getElementById('search-btn').click();
+            });
         });
     </script>
 </body>
