@@ -8,17 +8,37 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #F8FE4F 0%, #FF5A00 100%);
-            --secondary-gradient: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
-            --accent-gradient: linear-gradient(135deg, #F8FE4F 0%, #00FE9C 100%);
-            --gold-gradient: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-            --neon-blue: #00d4ff;
-            --neon-purple: #b537f2;
-            --neon-pink: #ff006e;
-            --neon-green: #FF5A00;
-            --neon-yellow: #F8FE4F;
+            --gold: #C9962A;
+            --gold-deep: #A67B1E;
+            --gold-light: #F5E6C8;
+            --bg-primary: #FAF8F5;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #FDF9F2;
+            --border-light: rgba(0,0,0,0.08);
+            --border-gold: rgba(201,150,42,0.35);
+            --text-primary: #1A1A1A;
+            --text-muted: #5A5A5A;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 16px 40px rgba(0,0,0,0.09);
+            --shadow-gold: 0 8px 20px rgba(201,150,42,0.15);
+            --gradient-gold: linear-gradient(135deg, #C9962A 0%, #E6B84C 100%);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --accent-pink: #C0185A;
+            /* للتوافق مع الكلاسات الأصلية */
+            --neon-yellow: #C9962A;
+            --neon-blue: #1E3A5F;
+            --neon-purple: #6B2FA0;
+            --neon-pink: #C0185A;
+            --neon-green: #E65A00;
             --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(0,0,0,0.1);
+            --primary-gradient: var(--gradient-gold);
+            --secondary-gradient: linear-gradient(135deg, #6B2FA0 0%, #C0185A 100%);
+            --accent-gradient: linear-gradient(135deg, #C9962A 0%, #2E7D32 100%);
+            --gold-gradient: linear-gradient(135deg, #F5E6C8 0%, #1E3A5F 100%);
         }
          
         * {
@@ -34,9 +54,9 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background: var(--bg-primary);
             background-attachment: fixed;
-            color: #e0e0e0;
+            color: var(--text-primary);
             overflow-x: hidden;
             position: relative;
         }
@@ -49,14 +69,14 @@
             width: 100%;
             height: 100%;
             background: url("images/161.png") center/cover;
-            opacity: 0.3;
+            opacity: 0.05;
             z-index: -1;
         }
 
         .header {
-            background: rgba(30, 30, 40, 0.98);
+            background: rgba(255,255,255,0.95);
             backdrop-filter: blur(10px);
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -65,13 +85,13 @@
             justify-content: space-between;
             align-items: center;
             height: 70px;
-            border-bottom: 1px solid rgba(248, 213, 104, 0.25);
+            border-bottom: 1px solid var(--border-gold);
         }
 
         .brand-name {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #f8d568;
+            color: var(--gold-deep);
             text-align: center;
             flex-grow: 1;
         }
@@ -83,8 +103,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.12);
-            color: gold;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--gold);
             font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.3s ease, transform 0.2s ease;
@@ -92,9 +113,11 @@
         }
          
         .header-icon:hover {
-            background: #f8d568;
-            color: #1a1a2e;
+            background: var(--gold-light);
+            color: var(--gold-deep);
             transform: scale(1.1);
+            border-color: var(--border-gold);
+            box-shadow: var(--shadow-gold);
         }
 
         .cart-icon {
@@ -105,7 +128,7 @@
             position: absolute;
             top: -5px;
             right: -5px;
-            background: #e74c3c;
+            background: var(--accent-pink);
             color: white;
             font-size: 0.7rem;
             width: 20px;
@@ -115,10 +138,31 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            border: 2px solid #fff;
+        }
+
+        .lang-switch {
+            margin: 0 0.5rem 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--gold-deep);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .lang-switch:hover {
+            background: var(--gold-light);
+            border-color: var(--border-gold);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 20px auto;
             padding: 0 20px;
             flex: 1;
@@ -128,10 +172,7 @@
             text-align: center;
             font-size: 2.5rem;
             margin: 20px 0 30px;
-            background: linear-gradient(to right, #FFF000, #FF9845, #FBFF00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(255, 248, 0, 0.3);
+            color: var(--gold-deep);
         }
 
         .product-detail-container {
@@ -155,12 +196,14 @@
         .main-image-container {
             position: relative;
             overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            margin-inline: 1%;
+            Max-width: 98%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
             height: auto;
             margin-bottom: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-light);
+            background: #fafafa;
         }
 
         .main-image-container img {
@@ -188,13 +231,13 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
             position: relative;
-            background: rgba(0, 0, 0, 0.2);
+            background: #f5f5f5;
         }
 
         .thumbnail-item:hover, .thumbnail-item.active {
-            border-color: var(--neon-yellow);
+            border-color: var(--gold);
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(248, 254, 79, 0.3);
+            box-shadow: var(--shadow-gold);
         }
 
         .thumbnail-item.active::after {
@@ -204,7 +247,7 @@
             right: 0;
             width: 100%;
             height: 100%;
-            background: rgba(248, 254, 79, 0.1);
+            background: rgba(201,150,42,0.1);
             pointer-events: none;
         }
 
@@ -224,24 +267,24 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 1px solid rgba(248, 213, 104, 0.3);
+            border-bottom: 1px solid var(--border-gold);
             padding-bottom: 15px;
         }
 
         .product-name {
             font-size: 2rem;
-            color: #FFBE1B;
-            text-shadow: 0 0 10px rgba(248, 254, 79, 0.3);
+            color: var(--gold-deep);
+            font-weight: 900;
         }
 
         .product-tag {
-            background: linear-gradient(135deg, var(--neon-yellow), #FF9845);
-            color: #1A1A2E;
+            background: var(--gradient-gold);
+            color: #fff;
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.9rem;
-            box-shadow: 0 3px 10px rgba(248, 254, 79, 0.3);
+            box-shadow: var(--shadow-gold);
         }
 
         .product-price-container {
@@ -254,8 +297,7 @@
         .current-price {
             font-size: 2.3rem;
             font-weight: bold;
-            color: var(--neon-yellow);
-            text-shadow: 0 0 15px rgba(248, 254, 79, 0.5);
+            color: var(--gold-deep);
         }
 
         .old-price {
@@ -268,9 +310,14 @@
         .product-description {
             line-height: 1.8;
             margin-bottom: 25px;
-            color: #DDDDDD;
-            background: rgba(0, 0, 0, 0.1);
+            color: var(--text-muted);
+            background: #fff;
+            border: 1px solid var(--border-light);
             padding: 20px;
+            border-radius: var(--radius-sm);
+            white-space: pre-line;
+            text-align: justify;
+            text-indent: 20px;
         }
 
         .specifications {
@@ -279,10 +326,10 @@
 
         .spec-title {
             font-size: 1.3rem;
-            color: #FFA900;
+            color: var(--gold-deep);
             margin-bottom: 15px;
             padding-bottom: 8px;
-            border-bottom: 2px solid rgba(255, 151, 60, 0.3);
+            border-bottom: 2px solid var(--border-gold);
         }
 
         .spec-grid {
@@ -297,9 +344,9 @@
             align-items: center;
             text-align: center;
             padding: 15px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -312,7 +359,7 @@
             right: 0;
             width: 100%;
             height: 3px;
-            background: var(--neon-yellow);
+            background: var(--gradient-gold);
             transform: translateX(-100%);
             transition: transform 0.3s ease;
         }
@@ -322,41 +369,41 @@
         }
 
         .spec-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--bg-card-hover);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-md);
         }
 
         .spec-icon {
-            color: var(--neon-yellow);
-            font-size: 0rem;
+            color: var(--gold);
+            font-size: 1.5rem;
             margin-bottom: 8px;
-            text-shadow: 0 0 10px rgba(248, 254, 79, 0.3);
         }
 
         .spec-name {
             font-weight: bold;
             font-size: 0.85rem;
             margin-bottom: 4px;
-            color: #eee;
+            color: var(--text-primary);
         }
 
         .spec-value {
-            color: var(--neon-yellow);
+            color: var(--gold-deep);
             font-size: 0.9rem;
             font-weight: 500;
         }
 
-        /* قسم خيارات التخصيص المحسن بشكل كبير */
+        /* قسم خيارات التخصيص */
         .customization-options {
             margin: 30px 0;
             padding: 30px;
-            background: rgba(20, 20, 30, 0.9);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
+            background: #fff;
+            border-radius: var(--radius-md);
             position: relative;
             overflow-x: hidden;
-overflow-y: visible;
+            overflow-y: visible;
+            border: 1px solid var(--border-gold);
+            box-shadow: var(--shadow-sm);
         }
 
         .customization-options::before {
@@ -366,7 +413,7 @@ overflow-y: visible;
             right: 0;
             width: 100px;
             height: 100px;
-            background: radial-gradient(circle, rgba(248, 254, 79, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(201,150,42,0.08) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
         }
@@ -374,63 +421,60 @@ overflow-y: visible;
         .customization-title {
             font-size: 1.5rem;
             text-align: center;
-            margin-right: 15%;
-            color: orange;
+            margin-right: 0;
+            color: var(--gold-deep);
             margin-bottom: 25px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 15px;
-            text-shadow: 0 0 15px rgba(248, 254, 79, 0.5);
             padding-bottom: 10px;
-            border-bottom: 2px solid rgba(248, 254, 79, 0.2);
+            border-bottom: 2px solid var(--border-gold);
         }
 
         .customization-title i {
             font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--neon-yellow), #FF9845);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--gold);
         }
 
         .help-alert {
-            background: rgba(254, 171, 79, 0.1);
-            border: 1px solid rgba(254, 171, 79, 0.65);
+            background: rgba(201,150,42,0.1);
+            border: 1px solid var(--border-gold);
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 25px;
             display: flex;
             align-items: center;
             gap: 15px;
-            color: orange;
+            color: var(--gold-deep);
             font-size: 1rem;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(248, 254, 79, 0.2); }
-            70% { box-shadow: 0 0 0 10px rgba(248, 254, 79, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(248, 254, 79, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(201,150,42,0.2); }
+            70% { box-shadow: 0 0 0 10px rgba(201,150,42,0); }
+            100% { box-shadow: 0 0 0 0 rgba(201,150,42,0); }
         }
 
         .help-alert i {
             font-size: 1.3rem;
         }
 
-        /* أزرار اختيار الحجم المحسنة بشكل كبير */
         .option-group {
             margin-bottom: 35px;
             padding: 25px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            border: 1px solid #24190EA6;
+            background: var(--bg-card-hover);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
         }
 
         .option-group:hover {
-            border-color: rgba(248, 254, 79, 0.3);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: var(--border-gold);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
 
         .option-header {
@@ -444,25 +488,25 @@ overflow-y: visible;
 
         .option-title {
             font-size: 1rem;
-            color: #fff;
+            color: var(--text-primary);
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 12px;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
         }
 
         .option-title i {
-            color: var(--neon-yellow);
+            color: var(--gold);
             font-size: 1.2rem;
         }
 
         .option-hint {
-            color: var(--neon-yellow);
+            color: var(--gold-deep);
             font-size: 0.7rem;
-            background: rgba(248, 254, 79, 0.1);
+            background: var(--gold-light);
             padding: 5px 15px;
             border-radius: 20px;
-            border: 1px solid rgba(248, 254, 79, 0.2);
+            border: 1px solid var(--border-gold);
         }
 
         .size-buttons {
@@ -472,10 +516,10 @@ overflow-y: visible;
         }
 
         .size-btn {
-            padding: 5px 1px;
-            background: rgba(10, 10, 15, 0.7);
-            border: 2px solid rgba(248, 254, 79, 0.2);
-            border-radius: 12px;
+            padding: 15px 10px;
+            background: #fff;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -485,8 +529,7 @@ overflow-y: visible;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-}
-        
+        }
 
         .size-btn::before {
             content: '';
@@ -495,23 +538,23 @@ overflow-y: visible;
             right: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, transparent 30%, rgba(248, 254, 79, 0.05) 100%);
+            background: linear-gradient(135deg, transparent 30%, rgba(201,150,42,0.05) 100%);
             z-index: 1;
             pointer-events: none;
         }
 
         .size-btn:hover {
-            background: rgba(20, 20, 25, 0.9);
-            border-color: var(--neon-yellow);
+            background: var(--bg-card-hover);
+            border-color: var(--gold);
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         }
 
         .size-btn.selected {
-            background: linear-gradient(135deg, rgba(248, 254, 79, 0.15), rgba(255, 152, 69, 0.15));
-            border-color: greenyellow;
-            color: var(--neon-yellow);
-            box-shadow: 0 0 25px rgba(248, 254, 79, 0.4);
+            background: var(--gold-light);
+            border-color: var(--gold);
+            color: var(--gold-deep);
+            box-shadow: var(--shadow-gold);
             transform: translateY(-5px);
         }
 
@@ -520,8 +563,8 @@ overflow-y: visible;
             position: absolute;
             top: 10px;
             left: 10px;
-            background: var(--neon-yellow);
-            color: #1a1a2e;
+            background: var(--gold);
+            color: #fff;
             width: 25px;
             height: 25px;
             border-radius: 50%;
@@ -530,27 +573,26 @@ overflow-y: visible;
             justify-content: center;
             font-weight: bold;
             font-size: 0.9rem;
-            box-shadow: 0 0 10px rgba(248, 254, 79, 0.5);
+            box-shadow: 0 0 10px rgba(201,150,42,0.5);
             z-index: 2;
         }
 
         .size-btn.selected .size-price {
-            color: #fff;
+            color: var(--gold-deep);
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(248, 254, 79, 0.5);
         }
 
         .size-name {
             font-weight: bold;
             margin-bottom: 2px;
-            font-size: 0.7rem;
-            color: #fff;
+            font-size: 0.9rem;
+            color: var(--text-primary);
             z-index: 2;
         }
 
         .size-dimensions {
-            font-size: 0.95rem;
-            color: #ccc;
+            font-size: 0.85rem;
+            color: var(--text-muted);
             margin-bottom: 12px;
             z-index: 2;
         }
@@ -558,47 +600,34 @@ overflow-y: visible;
         .size-price {
             font-size: 0.8rem;
             font-weight: bold;
-            color: var(--neon-yellow);
+            color: var(--gold-deep);
             display: block;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(201,150,42,0.1);
             padding: 5px 15px;
             border-radius: 20px;
-            border: 1px solid rgba(248, 254, 79, 0.3);
+            border: 1px solid var(--border-gold);
             z-index: 2;
         }
 
-        /* عارض الإطارات المحسن بشكل كبير */
+        /* عارض الإطارات */
         .frame-display {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 10px 5px;
-    scroll-behavior: smooth;
-    max-width: 100%;
-    -webkit-overflow-scrolling: touch; /* مهم للموبايل */
-}
-      .frame-display {
-    display: flex;
-    gap: 20px;
-    flex-wrap: nowrap;   /* العناصر بجانب بعضها بلا كسر */
-}
-
-.frame-option {
-    width: 160px auto;
-    flex: 0 0 auto;     /* منع التصغير */
-    display: flex;
-    flex-direction: column;
-    border-radius: 12px;
-    align-items: center;
-}
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 10px 5px;
+            scroll-behavior: smooth;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
+            flex-wrap: nowrap;
         }
 
         .frame-option {
-            padding: 1px 2px;
-            background: rgba(10, 10, 15, 0.7);
-            border: 2px solid #FEAF4F;
-            border-radius: 12px;
+            flex: 0 0 auto;
+            padding: 12px;
+            background: #fff;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -617,21 +646,21 @@ overflow-y: visible;
             right: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, transparent 30%, rgba(248, 254, 79, 0.05) 100%);
+            background: linear-gradient(135deg, transparent 30%, rgba(201,150,42,0.05) 100%);
             pointer-events: none;
         }
 
         .frame-option:hover {
-            background: rgba(20, 20, 25, 0.9);
-            border-color: var(--neon-yellow);
-            transform: translateY(-5px) scale(1.2);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: var(--bg-card-hover);
+            border-color: var(--gold);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         }
 
         .frame-option.selected {
-            background: linear-gradient(135deg, rgba(79, 254, 88, 0.27), rgba(69, 204, 255, 0.19));
-            border-color: var(--neon-yellow);
-            box-shadow: 0 0 25px rgba(30, 30, 30, 0.19);
+            background: var(--gold-light);
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
             transform: translateY(-5px);
         }
 
@@ -640,8 +669,8 @@ overflow-y: visible;
             position: absolute;
             top: 12px;
             left: 12px;
-            background: rgba(61, 227, 115, 0.4);
-            color: #1a1a2e;
+            background: var(--gold);
+            color: #fff;
             width: 28px;
             height: 28px;
             border-radius: 50%;
@@ -650,20 +679,19 @@ overflow-y: visible;
             justify-content: center;
             font-weight: bold;
             font-size: 1rem;
-            box-shadow: 0 0 12px rgba(248, 254, 79, 0.6);
+            box-shadow: 0 0 12px rgba(201,150,42,0.5);
             z-index: 2;
         }
 
         .frame-option.selected .frame-price {
-            color: #fff;
+            color: var(--gold-deep);
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(248, 254, 79, 0.5);
         }
 
         .frame-preview {
             width: 100%;
             height: 120px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(201,150,42,0.05);
             border-radius: 10px;
             margin-bottom: 1px;
             display: flex;
@@ -671,7 +699,7 @@ overflow-y: visible;
             justify-content: center;
             overflow: hidden;
             position: relative;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--border-light);
             z-index: 2;
         }
 
@@ -680,7 +708,7 @@ overflow-y: visible;
             height: 100%;
             object-fit: cover;
             border-radius: 6px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         .frame-sample {
@@ -733,24 +761,24 @@ overflow-y: visible;
             font-weight: bold;
             margin-top: 1px;
             margin-bottom: 5px;
-            font-size: 0.7rem;
-            color: #fff;
+            font-size: 0.8rem;
+            color: var(--text-primary);
             z-index: 2;
         }
 
         .frame-price {
             font-size: 0.8rem;
             font-weight: bold;
-            color: var(--neon-yellow);
+            color: var(--gold-deep);
             display: block;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(201,150,42,0.1);
             padding: 5px 15px;
             border-radius: 20px;
-            border: 1px solid rgba(248, 254, 79, 0.3);
+            border: 1px solid var(--border-gold);
             z-index: 2;
         }
 
-        /* الإضافات الاختيارية المحسنة بشكل كبير */
+        /* الإضافات الاختيارية */
         .addons-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -758,10 +786,10 @@ overflow-y: visible;
         }
 
         .addon-item {
-            padding: 10px 3px;
-            background: rgba(10, 10, 15, 0.7);
-            border: 2px solid gold;
-            border-radius: 12px;
+            padding: 15px;
+            background: #fff;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -778,115 +806,102 @@ overflow-y: visible;
             right: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, transparent 30%, rgba(248, 254, 79, 0.05) 100%);
+            background: linear-gradient(135deg, transparent 30%, rgba(201,150,42,0.05) 100%);
             pointer-events: none;
         }
 
         .addon-item:hover {
-            background: rgba(20, 20, 25, 0.9);
-            border-color: orange;
+            background: var(--bg-card-hover);
+            border-color: var(--gold);
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         }
 
         .addon-item.active {
-            background: linear-gradient(135deg, rgba(95, 254, 79, 0.47), rgba(255, 152, 69, 0.15));
-            border-color: greenyellow;
-            box-shadow: 0 0 25px rgba(248, 254, 79, 0.3);
+            background: var(--gold-light);
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
             transform: translateY(-5px);
         }
 
         .addon-checkbox {
             width: 18px;
             height: 18px;
-            border: 2px solid rgba(254, 195, 79, 0.5);
+            border: 2px solid var(--border-gold);
             border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            background: rgba(0, 0, 0, 0.3);
+            background: #fff;
             z-index: 2;
         }
 
         .addon-item.active .addon-checkbox {
-            background: var(--neon-yellow);
-            border-color: var(--neon-yellow);
-            box-shadow: 0 0 10px rgba(248, 254, 79, 0.5);
+            background: var(--gold);
+            border-color: var(--gold);
         }
 
         .addon-item.active .addon-checkbox::after {
             content: '✓';
-            color: #1a1a2e;
+            color: #fff;
             font-weight: bold;
             font-size: 0.7rem;
         }
 
         .addon-icon {
-            font-size: 0rem;
-            color: var(--neon-yellow);
-            min-width: 0px;
-            height: 0px;
+            font-size: 1.2rem;
+            color: var(--gold);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(248, 254, 79, 0.1);
+            background: var(--gold-light);
             border-radius: 10px;
+            width: 40px;
+            height: 40px;
             z-index: 2;
         }
 
         .addon-details {
-         display: flex;
-         align-items: center;
-         gap: 20px;
-         justify-content: space-between;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
         }
 
         .addon-name {
             font-weight: bold;
-            margin-bottom: 1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            
-            font-size: 1rem;
-            color: #fff;
+            font-size: 0.9rem;
+            color: var(--text-primary);
         }
 
         .addon-description {
-            font-size: 0.8rem;
-            display: flex;
-            color: #ccc;
-            margin-bottom: 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
             line-height: 1.5;
         }
 
         .addon-price {
             font-size: 0.8rem;
-            position: absolute;
             font-weight: bold;
-            left: 5px;
-            color: gold;
+            color: var(--gold-deep);
             padding: 5px 10px;
             border-radius: 20px;
-            align-items: center;
-            justify-content: center;
-            display: flex;
+            align-self: flex-start;
         }
 
         .addon-item.active .addon-price {
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border-color: var(--neon-yellow);
+            background: rgba(201,150,42,0.2);
+            color: var(--gold-deep);
         }
 
-        /* ملخص السعر المحسن بشكل كبير */
+        /* ملخص السعر */
         .price-summary {
             margin-top: 30px;
             padding: 25px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            border: 2px solid rgba(248, 254, 79, 0.2);
+            background: var(--bg-card-hover);
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border-gold);
             position: relative;
             overflow: hidden;
         }
@@ -898,7 +913,7 @@ overflow-y: visible;
             right: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, transparent 60%, rgba(248, 254, 79, 0.05) 100%);
+            background: linear-gradient(135deg, transparent 60%, rgba(201,150,42,0.05) 100%);
             pointer-events: none;
         }
 
@@ -908,7 +923,7 @@ overflow-y: visible;
             margin-bottom: 15px;
             font-size: 0.9rem;
             padding: 12px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            border-bottom: 1px dashed var(--border-light);
             position: relative;
             z-index: 2;
         }
@@ -920,36 +935,34 @@ overflow-y: visible;
         .price-row.total {
             font-weight: bold;
             font-size: 1rem;
-            color: var(--neon-yellow);
+            color: var(--gold-deep);
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid rgba(248, 254, 79, 0.3);
+            border-top: 2px solid var(--border-gold);
             border-bottom: none;
-            text-shadow: 0 0 15px rgba(248, 254, 79, 0.5);
-            background: rgba(248, 254, 79, 0.05);
+            background: rgba(201,150,42,0.05);
             border-radius: 10px;
             padding: 20px;
         }
 
         .price-label {
-            color: #ddd;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .price-label i {
-            color: gold;
+            color: var(--gold);
             font-size: 1.1rem;
         }
 
         .price-value {
-            color: #fff;
+            color: var(--text-primary);
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
         }
 
-        /* تحسينات أزرار الكميات والشراء */
+        /* أزرار الكميات والشراء */
         .add-to-cart-container {
             display: flex;
             gap: 20px;
@@ -960,25 +973,25 @@ overflow-y: visible;
         .quantity-control {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: #fff;
+            border-radius: var(--radius-sm);
             padding: 8px;
-            border: 2px solid rgba(248, 254, 79, 0.2);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--border-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
         }
 
         .quantity-control:hover {
-            border-color: gold;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--gold);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         }
 
         .quantity-btn {
             width: 45px;
             height: 45px;
             border: none;
-            background: rgba(248, 254, 79, 0.1);
-            color: #fff;
+            background: var(--gold-light);
+            color: var(--gold-deep);
             font-size: 1.5rem;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -989,8 +1002,8 @@ overflow-y: visible;
         }
 
         .quantity-btn:hover {
-            background: var(--neon-yellow);
-            color: #1a1a2e;
+            background: var(--gold);
+            color: #fff;
             transform: scale(1.1);
         }
 
@@ -1003,7 +1016,7 @@ overflow-y: visible;
             text-align: center;
             background: none;
             border: none;
-            color: var(--neon-yellow);
+            color: var(--gold-deep);
             font-weight: bold;
             font-size: 1.3rem;
             margin: 0 10px;
@@ -1017,10 +1030,10 @@ overflow-y: visible;
 
         .add-to-cart-btn {
             flex: 1;
-            background: linear-gradient(135deg, var(--neon-yellow), #FF8813);
+            background: var(--gradient-gold);
             border: none;
             border-radius: 52px;
-            color: #000;
+            color: #fff;
             font-weight: bold;
             font-size: 1.1rem;
             cursor: pointer;
@@ -1031,7 +1044,7 @@ overflow-y: visible;
             transition: all 0.3s ease;
             padding: 20px 30px;
             min-height: 45px;
-            box-shadow: 0 10px 25px rgba(255, 152, 69, 0.3);
+            box-shadow: var(--shadow-gold);
             position: relative;
             overflow: hidden;
         }
@@ -1049,13 +1062,13 @@ overflow-y: visible;
 
         .add-to-cart-btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(255, 152, 69, 0.5);
-            background: linear-gradient(135deg, #FF9845, var(--neon-yellow));
+            box-shadow: 0 15px 30px rgba(201,150,42,0.3);
+            background: #B8860B;
         }
 
         .add-to-cart-btn:active {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 152, 69, 0.4);
+            box-shadow: 0 8px 20px rgba(201,150,42,0.3);
         }
 
         .add-to-cart-btn i {
@@ -1070,10 +1083,9 @@ overflow-y: visible;
 
         .section-title {
             font-size: 1.8rem;
-            color: gold;
+            color: var(--gold-deep);
             margin-bottom: 25px;
             text-align: center;
-            text-shadow: 0 0 15px rgba(248, 254, 79, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1081,9 +1093,7 @@ overflow-y: visible;
         }
 
         .section-title i {
-            background: linear-gradient(135deg, gold, #FF9845);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--gold);
         }
 
         .related-grid {
@@ -1093,12 +1103,13 @@ overflow-y: visible;
         }
 
         .related-product {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            background: #fff;
+            border-radius: var(--radius-md);
             overflow: hidden;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
             position: relative;
+            cursor: pointer;
         }
 
         .related-product::before {
@@ -1108,14 +1119,14 @@ overflow-y: visible;
             right: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, transparent 60%, rgba(248, 254, 79, 0.05) 100%);
+            background: linear-gradient(135deg, transparent 60%, rgba(201,150,42,0.05) 100%);
             pointer-events: none;
         }
 
         .related-product:hover {
             transform: translateY(-10px);
-            border-color: var(--neon-yellow);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--gold);
+            box-shadow: var(--shadow-lg);
         }
 
         .related-product-image {
@@ -1135,33 +1146,30 @@ overflow-y: visible;
         }
 
         .related-product-info {
-            padding: 2px;
+            padding: 15px;
             position: relative;
             z-index: 2;
+            text-align: center;
         }
 
         .related-product-name {
             font-size: 1.1rem;
-            text-align: center;
-            color: white;
-            margin-bottom: 1px auto;
-            min-height: 60px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            min-height: 40px;
         }
 
         .related-product-price {
-            font-size: 1.3rem;
-            text-align: center;
+            font-size: 1.1rem;
             font-weight: bold;
-            color: gold;
+            color: var(--gold-deep);
             margin-bottom: 1px;
-            text-shadow: 0 0 5px rgba(248, 254, 79, 0.3);
         }
 
         /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--glass-border);
+            background: #fff;
+            border-top: 1px solid var(--border-gold);
             padding: 4rem 2rem 1rem;
             text-align: center;
         }
@@ -1173,6 +1181,8 @@ overflow-y: visible;
             gap: 2.5rem;
             margin-bottom: 3rem;
             text-align: right;
+            max-width: 1100px;
+            margin-inline: auto;
         }
         
         .footer-section {
@@ -1182,8 +1192,8 @@ overflow-y: visible;
         
         .footer-section h4 {
             text-align: center;
-            color: rgba(239, 255, 211, 0.94);
-            font-size: 1.3rem;
+            color: var(--gold-deep);
+            font-size: 1.1rem;
             margin-bottom: 1.2rem;
             position: relative;
             padding-bottom: 0.5rem;
@@ -1195,21 +1205,21 @@ overflow-y: visible;
             bottom: 0;
             right: 50%;
             transform: translateX(50%);
-            width: 60px;
+            width: 40px;
             height: 2px;
-            background: #f8d568;
+            background: var(--gradient-gold);
         }
         
         .footer-section p, .footer-section a {
-            color: orange;
+            color: #555;
             line-height: 1.8;
-            font-weight: bold;
+            font-size: 0.9rem;
             transition: color 0.3s;
             text-decoration: none;
         }
         
         .footer-section a:hover {
-            color: white;
+            color: var(--gold-deep);
         }
         
         .footer-section ul {
@@ -1234,21 +1244,20 @@ overflow-y: visible;
         }
 
         .social-icons a {
-            color: #f8d568;
+            color: var(--gold-deep);
             font-size: 1.8rem;
             transition: all 0.3s ease;
-            text-shadow: 0 0 10px rgba(248, 213, 104, 0.3);
         }
         
         .social-icons a:hover {
-            color: #fff;
+            color: var(--gold);
             transform: scale(1.2) translateY(-5px);
         }
 
         .footer-bottom {
-            border-top: 1px solid var(--glass-border);
+            border-top: 1px solid #eee;
             padding-top: 1.5rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
@@ -1256,34 +1265,39 @@ overflow-y: visible;
         .toast {
             position: fixed;
             bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, rgba(248, 254, 79, 0.9), rgba(255, 152, 69, 0.9));
-            color: #1a1a2e;
+            left: 30px;
+            background: #fff;
+            color: var(--text-primary);
             padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
             z-index: 1000;
-            transform: translateX(150%) translateY(20px);
+            transform: translateX(-120%);
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex;
             align-items: center;
             gap: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-gold);
             max-width: 400px;
         }
         
         .toast.show {
-            transform: translateX(0) translateY(0);
+            transform: translateX(0);
         }
 
         .toast.error {
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
-            color: white;
+            background: #fff0f0;
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
         }
 
         .toast i {
             font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .toast.error i {
+            color: var(--accent-pink);
         }
 
         .logo {
@@ -1374,139 +1388,31 @@ overflow-y: visible;
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        /* جعل وصف المنتج فقرات */
-.product-description {
-    white-space: pre-line;
-    line-height: 1.5;
-}
 
+        /* أنماط النصوص المميزة */
+        .text-emphasis-1 { color: var(--gold); font-weight: bold; }
+        .text-emphasis-2 { color: #2E7D32; font-weight: bold; background: rgba(46,125,50,0.1); padding: 3px 8px; border-radius: 5px; border-right: 2px solid #2E7D32; }
+        .text-emphasis-3 { color: var(--neon-green); font-weight: bold; animation: glow 2s infinite alternate; }
+        .text-emphasis-4 { background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold; font-size: 1.1em; }
+        .text-emphasis-5 { color: var(--neon-purple); font-weight: bold; padding: 2px 5px; background: rgba(107,47,160,0.1); border-radius: 4px; }
+        .text-emphasis-6 { color: var(--neon-blue); font-weight: bold; border-bottom: 2px solid var(--neon-blue); padding-bottom: 2px; }
 
-.product-description {
-    text-align: justify;
-    text-indent: 20px; /* مسافة بادئة لبداية النص */
-}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /* أنماط مختلفة للنصوص المميزة */
-.text-emphasis-1 {
-    color: var(--neon-yellow);
-    font-weight: bold;
-    text-shadow: 0 0 8px rgba(248, 254, 79, 0.5);
-}
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px rgba(230,90,0,0.5); }
+            100% { text-shadow: 0 0 15px rgba(230,90,0,0.8); }
+        }
 
-.text-emphasis-2 {
-    color: #00FE9C;
-    font-weight: bold;
-    background: rgba(0, 254, 156, 0.1);
-    padding: 3px 8px;
-    border-radius: 5px;
-    border-right: 2px solid #00FE9C;
-}
+        .call-to-action { color: var(--gold-deep); font-weight: bold; display: block; margin-top: 15px; padding: 10px 15px; background: linear-gradient(90deg, rgba(230,90,0,0.1), rgba(201,150,42,0.1)); border-radius: 8px; border: 1px solid var(--border-gold); text-align: center; }
+        .important-title { color: var(--text-primary); font-size: 1.2em; font-weight: bold; background: linear-gradient(90deg, transparent, rgba(201,150,42,0.1), transparent); padding: 8px 15px; border-right: 3px solid var(--gold); }
+        .feature-point { color: #2E7D32; position: relative; padding-right: 20px; }
+        .feature-point:before { content: " ️𝖕 "; position: relative; right: 0; color: #2E7D32; font-weight: bold; }
+        .limited-offer { color: var(--accent-pink); font-weight: bold; animation: pulse 1.5s infinite; background: rgba(192,24,90,0.1); padding: 5px 10px; border-radius: 5px; border: 1px dashed var(--accent-pink); }
 
-.text-emphasis-3 {
-    color: #FF5A00;
-    font-weight: bold;
-    animation: glow 2s infinite alternate;
-}
-
-.text-emphasis-4 {
-    background: linear-gradient(45deg, #F8FE4F, #FF5A00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-.text-emphasis-5 {
-    color: #F093FB;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(240, 147, 251, 0.5);
-    padding: 2px 5px;
-    background: rgba(240, 147, 251, 0.1);
-    border-radius: 4px;
-}
-
-.text-emphasis-6 {
-    color: #00d4ff;
-    font-weight: bold;
-    border-bottom: 2px solid #00d4ff;
-    padding-bottom: 2px;
-}
-
-@keyframes glow {
-    0% { text-shadow: 0 0 5px rgba(255, 90, 0, 0.5); }
-    100% { text-shadow: 0 0 15px rgba(255, 90, 0, 0.8); }
-}
-
-/* نمط خاص للدعوة إلى الشراء */
-.call-to-action {
-    color: #FFD700;
-    font-weight: bold;
-    display: block;
-    margin-top: 15px;
-    padding: 10px 15px;
-    background: linear-gradient(90deg, rgba(255, 90, 0, 0.1), rgba(248, 254, 79, 0.1));
-    border-radius: 8px;
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    text-align: center;
-}
-
-/* نمط خاص للعناوين المهمة */
-.important-title {
-    color: #FFFFFF;
-    font-size: 1.2em;
-    font-weight: bold;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    padding: 8px 15px;
-    border-right: 3px solid var(--neon-yellow);
-}
-
-/* نمط خاص للنقاط المميزة */
-.feature-point {
-    color: #00FE9C;
-    position: relative;
-    padding-right: 20px;
-}
-
-.feature-point:before {
-    content: " ️𝖕 ";
-    position: relative;
-    right: 0;
-    color: #00FE9C;
-    font-weight: bold;
-}
-
-/* نمط خاص للعرض المحدود */
-.limited-offer {
-    color: #FF006E;
-    font-weight: bold;
-    animation: pulse 1.5s infinite;
-    background: rgba(255, 0, 110, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px dashed #FF006E;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-
-    
-
-
-
-
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -1515,14 +1421,19 @@ overflow-y: visible;
         <div class="brand-name">
             <a href="index.html"><img src="./images/ptk.png" alt="PITSIKY Logo" class="logo"></a>
         </div>
-        <a href="crt.html" class="header-icon cart-icon">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="cart-count">0</span>
-        </a>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button class="lang-switch" id="langSwitch" aria-label="Switch Language">
+                <i class="fas fa-globe"></i> <span>EN</span>
+            </button>
+            <a href="crt.html" class="header-icon cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
     </div>
 
     <div class="container">
-        <h1 class="product-detail-title">🔎 تفاصيل المنتج</h1>
+        <h1 class="product-detail-title" data-i18n="page_title">🔎 تفاصيل المنتج</h1>
         
         <div class="product-detail-container">
             <div class="product-gallery">
@@ -1551,7 +1462,7 @@ overflow-y: visible;
                 </div>
                 
                 <div class="specifications">
-                    <h3 class="spec-title"><i class="fas fa-list-alt"></i> مواصفات المنتج</h3>
+                    <h3 class="spec-title"><i class="fas fa-list-alt"></i> <span data-i18n="specifications">مواصفات المنتج</span></h3>
                     <div class="spec-grid" id="specGrid">
                         <!-- سيتم ملء المواصفات بواسطة JavaScript -->
                     </div>
@@ -1559,18 +1470,13 @@ overflow-y: visible;
                 
                 <!-- قسم خيارات التخصيص المحسن بشكل كبير -->
                 <div class="customization-options" id="customizationOptions">
-                    <h3 class="customization-title"><i class="fas fa-cog"></i> خيارات التخصيص</h3>
-                    
-                  <!--  <div class="help-alert">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>اختر حسب ما يناسبك</span>
-                    </div> -->
+                    <h3 class="customization-title"><i class="fas fa-cog"></i> <span data-i18n="customization_title">خيارات التخصيص</span></h3>
                     
                     <!-- أزرار اختيار الحجم -->
                     <div class="option-group">
                         <div class="option-header">
-                            <h4 class="option-title"><i class="fas fa-expand-arrows-alt"></i> اختر الحجم</h4>
-                            <span class="option-hint">الأسعار تختلف حسب الحجم</span> 
+                            <h4 class="option-title"><i class="fas fa-expand-arrows-alt"></i> <span data-i18n="choose_size">اختر الحجم</span></h4>
+                            <span class="option-hint" data-i18n="size_hint">الأسعار تختلف حسب الحجم</span> 
                         </div>
                         <div class="size-buttons" id="sizeOptions">
                             <div class="size-btn selected" data-size="small" data-price="0">
@@ -1599,8 +1505,8 @@ overflow-y: visible;
                     <!-- عارض الإطارات -->
                     <div class="option-group">
                         <div class="option-header">
-                            <h4 class="option-title"><i class="fas fa-square"></i> اختر نوع الإطار</h4>
-                            <span class="option-hint">انقر على الإطار المفضل</span>
+                            <h4 class="option-title"><i class="fas fa-square"></i> <span data-i18n="choose_frame">اختر نوع الإطار</span></h4>
+                            <span class="option-hint" data-i18n="frame_hint">انقر على الإطار المفضل</span>
                         </div>
                         <div class="frame-display" id="frameOptions">
                             <div class="frame-option selected" data-frame="none" data-price="0">
@@ -1637,8 +1543,8 @@ overflow-y: visible;
                     <!-- الإضافات الاختيارية -->
                     <div class="option-group">
                         <div class="option-header">
-                            <h4 class="option-title"><i class="fas fa-plus-circle"></i> إضافات اختيارية</h4>
-                            <span class="option-hint">انقر للتفعيل/الإلغاء</span>
+                            <h4 class="option-title"><i class="fas fa-plus-circle"></i> <span data-i18n="addons_title">إضافات اختيارية</span></h4>
+                            <span class="option-hint" data-i18n="addons_hint">انقر للتفعيل/الإلغاء</span>
                         </div>
                         <div class="addons-container" id="addonOptions">
                             <div class="addon-item" data-addon="glass" data-price="40">
@@ -1683,23 +1589,23 @@ overflow-y: visible;
                     <!-- ملخص السعر -->
                     <div class="price-summary">
                         <div class="price-row">
-                            <span class="price-label"><i class="fas fa-tag"></i> السعر الأساسي:</span>
+                            <span class="price-label"><i class="fas fa-tag"></i> <span data-i18n="base_price_label">السعر الأساسي:</span></span>
                             <span class="price-value" id="basePrice">299.00 درهم</span>
                         </div>
                         <div class="price-row">
-                            <span class="price-label"><i class="fas fa-expand-alt"></i> الحجم الإضافي:</span>
+                            <span class="price-label"><i class="fas fa-expand-alt"></i> <span data-i18n="size_price_label">الحجم الإضافي:</span></span>
                             <span class="price-value" id="sizePrice">0.00 درهم</span>
                         </div>
                         <div class="price-row">
-                            <span class="price-label"><i class="fas fa-square"></i> الإطار:</span>
+                            <span class="price-label"><i class="fas fa-square"></i> <span data-i18n="frame_price_label">الإطار:</span></span>
                             <span class="price-value" id="framePrice">0.00 درهم</span>
                         </div>
                         <div class="price-row">
-                            <span class="price-label"><i class="fas fa-plus-circle"></i> الإضافات:</span>
+                            <span class="price-label"><i class="fas fa-plus-circle"></i> <span data-i18n="addons_price_label">الإضافات:</span></span>
                             <span class="price-value" id="addonsPrice">0.00 درهم</span>
                         </div>
                         <div class="price-row total">
-                            <span class="price-label"><i class="fas fa-calculator"></i> المجموع الكلي:</span>
+                            <span class="price-label"><i class="fas fa-calculator"></i> <span data-i18n="total_price_label">المجموع الكلي:</span></span>
                             <span class="price-value" id="totalPrice">299.00 درهم</span>
                         </div>
                     </div>
@@ -1712,14 +1618,14 @@ overflow-y: visible;
                         <button class="quantity-btn increase-btn">+</button>
                     </div>
                     <button class="add-to-cart-btn" id="addToCartBtn">
-                        <i class="fas fa-shopping-cart"></i> أضف إلى السلة
+                        <i class="fas fa-shopping-cart"></i> <span data-i18n="add_to_cart">أضف إلى السلة</span>
                     </button>
                 </div>
             </div>
         </div>
 
         <div class="related-products">
-            <h2 class="section-title"><i class="fas fa-star"></i> منتجات قد تعجبك</h2>
+            <h2 class="section-title"><i class="fas fa-star"></i> <span data-i18n="related_title">منتجات قد تعجبك</span></h2>
             <div class="related-grid" id="relatedGrid">
                 <!-- سيتم ملء المنتجات ذات الصلة بواسطة JavaScript -->
             </div>
@@ -1730,10 +1636,10 @@ overflow-y: visible;
         <div class="footer-content">
             <div class="footer-section">
                 <img src="./images/ptk.png" alt="PITSIKY Logo" class="logo">
-                <p style="font-size: 1.2rem; color: white;"> وجهتك الجديدة ، و الصحيحة لترقية جدارك الى مستوى جديد يناسب ذوقك. </p>
+                <p style="font-size: 1rem; color: var(--text-muted);" data-i18n="footer_desc"> وجهتك الجديدة ، و الصحيحة لترقية جدارك الى مستوى جديد يناسب ذوقك. </p>
             </div>
             <div class="footer-section">
-                <h4>روابط سريعة</h4>
+                <h4 data-i18n="footer_quick_links">روابط سريعة</h4>
                 <ul>
                     <li><a href="index.html">الرئيسية</a></li>
                     <li><a href="pdc.html">المنتجات</a></li>
@@ -1742,11 +1648,11 @@ overflow-y: visible;
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>تواصل معنا</h4>
+                <h4 data-i18n="footer_contact">تواصل معنا</h4>
                 <ul>
                     <li><i class="fas fa-map-marker-alt"></i> في كل مكان، المغرب</li>
-                    <li><i class="fas fa-phone"></i> 212-700-720-490+</li>
-                    <li><i class="fas fa-envelope"></i> contact@pitsiky.com</li>
+                    <li><i class="fas fa-phone"></i> +212-702-382-376</li>
+                    <li><i class="fas fa-envelope"></i> pitsiky1co@gmail.com</li>
                 </ul>
             </div>
         </div>
@@ -1759,8 +1665,6 @@ overflow-y: visible;
             <p>PITSIKY 2025 - جميع الحقوق محفوظة ©</p>
         </div>
     </footer>
-     
-     
 
     <!-- Toast Notification -->
     <div class="toast" id="toast">
@@ -1881,16 +1785,16 @@ overflow-y: visible;
                 const totalPriceEl = document.getElementById('totalPrice');
                 const currentPriceEl = document.getElementById('currentPrice');
                 
-                if (sizePriceEl) sizePriceEl.textContent = this.selectedSizePrice.toFixed(2) + ' درهم';
-                if (framePriceEl) framePriceEl.textContent = this.selectedFramePrice.toFixed(2) + ' درهم';
-                if (addonsPriceEl) addonsPriceEl.textContent = this.addonsPrice.toFixed(2) + ' درهم';
-                if (totalPriceEl) totalPriceEl.textContent = totalWithQuantity.toFixed(2) + ' درهم';
-                if (currentPriceEl) currentPriceEl.textContent = totalPrice.toFixed(2) + ' درهم';
+                const currency = window.currentLang === 'en' ? 'MAD' : 'درهم';
+                if (sizePriceEl) sizePriceEl.textContent = this.selectedSizePrice.toFixed(2) + ' ' + currency;
+                if (framePriceEl) framePriceEl.textContent = this.selectedFramePrice.toFixed(2) + ' ' + currency;
+                if (addonsPriceEl) addonsPriceEl.textContent = this.addonsPrice.toFixed(2) + ' ' + currency;
+                if (totalPriceEl) totalPriceEl.textContent = totalWithQuantity.toFixed(2) + ' ' + currency;
+                if (currentPriceEl) currentPriceEl.textContent = totalPrice.toFixed(2) + ' ' + currency;
                 
                 // تحديث العرض في خيارات التخصيص
-                document.getElementById('basePrice').textContent = this.basePrice.toFixed(2) + ' درهم';
-                document.getElementById('optionsPrice').textContent = (this.selectedSizePrice + this.selectedFramePrice + this.addonsPrice).toFixed(2) + ' درهم';
-                document.getElementById('totalPrice').textContent = totalWithQuantity.toFixed(2) + ' درهم';
+                document.getElementById('basePrice').textContent = this.basePrice.toFixed(2) + ' ' + currency;
+                document.getElementById('totalPrice').textContent = totalWithQuantity.toFixed(2) + ' ' + currency;
             },
             
             // عرض تفاصيل المنتج
@@ -1905,21 +1809,22 @@ overflow-y: visible;
                     if (Array.isArray(product.description)) {
                         product.description.forEach(paragraph => {
                             const p = document.createElement("p");
-                            p.textContent = paragraph;
+                            p.innerHTML = window.quickFormat ? window.quickFormat(paragraph) : paragraph;
                             descContainer.appendChild(p);
                         });
                     } else {
                         const p = document.createElement("p");
-                        p.textContent = product.description || '';
+                        p.innerHTML = window.quickFormat ? window.quickFormat(product.description || '') : (product.description || '');
                         descContainer.appendChild(p);
                     }
                 }
                 
                 // تحديث الأسعار
-                document.getElementById('currentPrice').textContent = product.price.toFixed(2) + ' درهم';
+                const currency = window.currentLang === 'en' ? 'MAD' : 'درهم';
+                document.getElementById('currentPrice').textContent = product.price.toFixed(2) + ' ' + currency;
                 
                 if (product.oldPrice) {
-                    document.getElementById('oldPrice').textContent = product.oldPrice.toFixed(2) + ' درهم';
+                    document.getElementById('oldPrice').textContent = product.oldPrice.toFixed(2) + ' ' + currency;
                     document.getElementById('oldPrice').style.display = 'block';
                 } else {
                     document.getElementById('oldPrice').style.display = 'none';
@@ -1943,10 +1848,8 @@ overflow-y: visible;
                         specItem.className = 'spec-item';
                         specItem.innerHTML = `
                             <div class="spec-icon"><i class="fas fa-check-circle"></i></div>
-                            <div class="spec-text">
-                                <div class="spec-name">${spec.name}</div>
-                                <div class="spec-value">${spec.value}</div>
-                            </div>
+                            <div class="spec-name">${spec.name}</div>
+                            <div class="spec-value">${spec.value}</div>
                         `;
                         specGrid.appendChild(specItem);
                     });
@@ -2070,6 +1973,7 @@ overflow-y: visible;
             renderCustomizationOptions(product) {
                 // تعيين السعر الأساسي
                 this.basePrice = product.price;
+                const currency = window.currentLang === 'en' ? 'MAD' : 'درهم';
                 
                 // عرض خيارات الحجم
                 const sizeOptionsContainer = document.getElementById('sizeOptions');
@@ -2084,7 +1988,7 @@ overflow-y: visible;
                         sizeElement.innerHTML = `
                             <div class="size-name">${size.name}</div>
                             <div class="size-dimensions">${size.dimensions || ''}</div>
-                            <span class="size-price">+${size.price.toFixed(2)} درهم</span>
+                            <span class="size-price">+${size.price.toFixed(2)} ${currency}</span>
                         `;
                         
                         sizeElement.addEventListener('click', () => {
@@ -2125,7 +2029,7 @@ overflow-y: visible;
                                 }
                             </div>
                             <div class="frame-name">${frame.name}</div>
-                            <span class="frame-price">+${frame.price.toFixed(2)} درهم</span>
+                            <span class="frame-price">+${frame.price.toFixed(2)} ${currency}</span>
                         `;
                         
                         frameElement.addEventListener('click', () => {
@@ -2166,7 +2070,7 @@ overflow-y: visible;
                             <div class="addon-details">
                                 <div class="addon-name">${addon.name}</div>
                                 <div class="addon-description">${addon.description || ''}</div>
-                                <span class="addon-price">+${addon.price.toFixed(2)} درهم</span>
+                                <span class="addon-price">+${addon.price.toFixed(2)} ${currency}</span>
                             </div>
                         `;
                         
@@ -2212,6 +2116,8 @@ overflow-y: visible;
                     product => product.category === currentProduct.category && product.id !== currentProduct.id
                 ).slice(0, 4);
                 
+                const currency = window.currentLang === 'en' ? 'MAD' : 'درهم';
+                
                 if (relatedProducts.length === 0) {
                     relatedGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 20px;">لا توجد منتجات ذات صلة</p>';
                     return;
@@ -2226,7 +2132,7 @@ overflow-y: visible;
                         </div>
                         <div class="related-product-info">
                             <h3 class="related-product-name">${product.name}</h3>
-                            <div class="related-product-price">${product.price.toFixed(2)} درهم</div>
+                            <div class="related-product-price">${product.price.toFixed(2)} ${currency}</div>
                         </div>
                     `;
                     
@@ -2354,7 +2260,8 @@ overflow-y: visible;
                 });
                 
                 // عرض رسالة التأكيد
-                this.showToast(`تمت إضافة ${this.quantity} من "${product.name}" إلى السلة - ${totalPrice.toFixed(2)} درهم`, 'success');
+                const currency = window.currentLang === 'en' ? 'MAD' : 'درهم';
+                this.showToast(`تمت إضافة ${this.quantity} من "${product.name}" إلى السلة - ${totalPrice.toFixed(2)} ${currency}`, 'success');
                 
                 // اهتزاز أيقونة السلة
                 const cartIcon = document.querySelector('.cart-icon');
@@ -2435,16 +2342,107 @@ overflow-y: visible;
                 container.innerHTML = `
                     <div class="error-message" style="text-align: center; padding: 50px 20px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #e74c3c; margin-bottom: 20px;"></i>
-                        <h2 style="color: #f8d568; margin-bottom: 15px;">حدث خطأ</h2>
-                        <p style="font-size: 1.2rem; margin-bottom: 30px;">${message}</p>
-                        <a href="pdc.html" class="continue-shopping-btn" style="display: inline-block; padding: 12px 30px; border-radius: 30px; background: linear-gradient(to right, green, lightgreen); color: #1a1a2e; text-decoration: none; font-weight: bold;">العودة إلى المتجر</a>
+                        <h2 style="color: var(--gold-deep); margin-bottom: 15px;">حدث خطأ</h2>
+                        <p style="font-size: 1.2rem; margin-bottom: 30px; color: var(--text-muted);">${message}</p>
+                        <a href="pdc.html" class="continue-shopping-btn" style="display: inline-block; padding: 12px 30px; border-radius: 30px; background: var(--gradient-gold); color: #fff; text-decoration: none; font-weight: bold;">العودة إلى المتجر</a>
                     </div>
                 `;
             }
         };
 
-        // تهيئة صفحة تفاصيل المنتج عند تحميل الصفحة
+        // نظام الترجمة
+        window.currentLang = localStorage.getItem('pitsiky_lang') || 'ar';
+        
+        const translations = {
+            ar: {
+                page_title: "🔎 تفاصيل المنتج",
+                specifications: "مواصفات المنتج",
+                customization_title: "خيارات التخصيص",
+                choose_size: "اختر الحجم",
+                size_hint: "الأسعار تختلف حسب الحجم",
+                choose_frame: "اختر نوع الإطار",
+                frame_hint: "انقر على الإطار المفضل",
+                addons_title: "إضافات اختيارية",
+                addons_hint: "انقر للتفعيل/الإلغاء",
+                base_price_label: "السعر الأساسي:",
+                size_price_label: "الحجم الإضافي:",
+                frame_price_label: "الإطار:",
+                addons_price_label: "الإضافات:",
+                total_price_label: "المجموع الكلي:",
+                add_to_cart: "أضف إلى السلة",
+                related_title: "منتجات قد تعجبك",
+                footer_desc: "وجهتك الجديدة والصحيحة لترقية جدارك إلى مستوى يناسب ذوقك.",
+                footer_quick_links: "روابط سريعة",
+                footer_contact: "تواصل معنا"
+            },
+            en: {
+                page_title: "🔎 Product Details",
+                specifications: "Product Specifications",
+                customization_title: "Customization Options",
+                choose_size: "Choose Size",
+                size_hint: "Prices vary by size",
+                choose_frame: "Choose Frame Type",
+                frame_hint: "Click your preferred frame",
+                addons_title: "Optional Add-ons",
+                addons_hint: "Click to activate/deactivate",
+                base_price_label: "Base Price:",
+                size_price_label: "Size Upgrade:",
+                frame_price_label: "Frame:",
+                addons_price_label: "Add-ons:",
+                total_price_label: "Total:",
+                add_to_cart: "Add to Cart",
+                related_title: "You May Also Like",
+                footer_desc: "Your destination to upgrade your wall to a level that suits your taste.",
+                footer_quick_links: "Quick Links",
+                footer_contact: "Contact Us"
+            }
+        };
+
+        function applyLanguage(lang) {
+            window.currentLang = lang;
+            localStorage.setItem('pitsiky_lang', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            
+            const langSwitch = document.getElementById('langSwitch');
+            if (langSwitch) {
+                langSwitch.querySelector('span').textContent = lang === 'ar' ? 'EN' : 'AR';
+            }
+            
+            const addBtn = document.getElementById('addToCartBtn');
+            if (addBtn) {
+                addBtn.innerHTML = `<i class="fas fa-shopping-cart"></i> ${translations[lang].add_to_cart}`;
+            }
+            
+            // تحديث العملة في الصفحة
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            if (productId && window.productsData) {
+                const product = window.productsData.find(p => p.id === productId);
+                if (product) {
+                    ProductDetailManager.renderProductDetails(product);
+                    ProductDetailManager.renderRelatedProducts(product);
+                    ProductDetailManager.updateTotalPrice();
+                }
+            }
+        }
+
+        document.getElementById('langSwitch').addEventListener('click', () => {
+            const newLang = window.currentLang === 'ar' ? 'en' : 'ar';
+            applyLanguage(newLang);
+        });
+
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
+            applyLanguage(window.currentLang);
+            
             console.log('📄 تم تحميل صفحة تفاصيل المنتج');
             
             // التحقق من توفر بيانات المنتجات
@@ -2477,55 +2475,50 @@ overflow-y: visible;
         };
     </script>
     <script>
-// سكريبت بسيط لتنسيق النصوص المميزة
-document.addEventListener('DOMContentLoaded', function() {
-    // انتظر حتى يتم تحميل صفحة المنتج
-    setTimeout(function() {
-        formatProductDescriptions();
-    }, 500);
-});
-
-function formatProductDescriptions() {
-    // احصل على جميع عناصر وصف المنتج
-    const descriptions = document.querySelectorAll('.product-description');
-    
-    descriptions.forEach(desc => {
-        let text = desc.innerHTML;
-        
-        // استبدال العلامات البسيطة بالفئات المناسبة
-        const replacements = [
-            { pattern: /\[em1\](.*?)\[\/em1\]/g, replacement: '<span class="text-emphasis-1">$1</span>' },
-            { pattern: /\[em2\](.*?)\[\/em2\]/g, replacement: '<span class="text-emphasis-2">$1</span>' },
-            { pattern: /\[em3\](.*?)\[\/em3\]/g, replacement: '<span class="text-emphasis-3">$1</span>' },
-            { pattern: /\[em4\](.*?)\[\/em4\]/g, replacement: '<span class="text-emphasis-4">$1</span>' },
-            { pattern: /\[em5\](.*?)\[\/em5\]/g, replacement: '<span class="text-emphasis-5">$1</span>' },
-            { pattern: /\[em6\](.*?)\[\/em6\]/g, replacement: '<span class="text-emphasis-6">$1</span>' },
-            { pattern: /\[cta\](.*?)\[\/cta\]/g, replacement: '<span class="call-to-action">$1</span>' },
-            { pattern: /\[title\](.*?)\[\/title\]/g, replacement: '<span class="important-title">$1</span>' },
-            { pattern: /\[offer\](.*?)\[\/offer\]/g, replacement: '<span class="limited-offer">$1</span>' },
-            { pattern: /\[feature\](.*?)\[\/feature\]/g, replacement: '<span class="feature-point">$1</span>' }
-        ];
-        
-        replacements.forEach(rep => {
-            text = text.replace(rep.pattern, rep.replacement);
+        // سكريبت بسيط لتنسيق النصوص المميزة
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                formatProductDescriptions();
+            }, 500);
         });
-        
-        // الاحتفاظ بفواصل الأسطر
-        text = text.replace(/\n/g, '<br>');
-        
-        desc.innerHTML = text;
-    });
-}
 
-// دالة سريعة لتنسيق أي نص
-function quickFormat(text) {
-    let formatted = text;
-    formatted = formatted.replace(/\[em1\](.*?)\[\/em1\]/g, '<span class="text-emphasis-1">$1</span>');
-    formatted = formatted.replace(/\[em2\](.*?)\[\/em2\]/g, '<span class="text-emphasis-2">$1</span>');
-    formatted = formatted.replace(/\[em3\](.*?)\[\/em3\]/g, '<span class="text-emphasis-3">$1</span>');
-    formatted = formatted.replace(/\[cta\](.*?)\[\/cta\]/g, '<span class="call-to-action">$1</span>');
-    return formatted.replace(/\n/g, '<br>');
-}
-</script>
+        function formatProductDescriptions() {
+            const descriptions = document.querySelectorAll('.product-description');
+            
+            descriptions.forEach(desc => {
+                let text = desc.innerHTML;
+                
+                const replacements = [
+                    { pattern: /\[em1\](.*?)\[\/em1\]/g, replacement: '<span class="text-emphasis-1">$1</span>' },
+                    { pattern: /\[em2\](.*?)\[\/em2\]/g, replacement: '<span class="text-emphasis-2">$1</span>' },
+                    { pattern: /\[em3\](.*?)\[\/em3\]/g, replacement: '<span class="text-emphasis-3">$1</span>' },
+                    { pattern: /\[em4\](.*?)\[\/em4\]/g, replacement: '<span class="text-emphasis-4">$1</span>' },
+                    { pattern: /\[em5\](.*?)\[\/em5\]/g, replacement: '<span class="text-emphasis-5">$1</span>' },
+                    { pattern: /\[em6\](.*?)\[\/em6\]/g, replacement: '<span class="text-emphasis-6">$1</span>' },
+                    { pattern: /\[cta\](.*?)\[\/cta\]/g, replacement: '<span class="call-to-action">$1</span>' },
+                    { pattern: /\[title\](.*?)\[\/title\]/g, replacement: '<span class="important-title">$1</span>' },
+                    { pattern: /\[offer\](.*?)\[\/offer\]/g, replacement: '<span class="limited-offer">$1</span>' },
+                    { pattern: /\[feature\](.*?)\[\/feature\]/g, replacement: '<span class="feature-point">$1</span>' }
+                ];
+                
+                replacements.forEach(rep => {
+                    text = text.replace(rep.pattern, rep.replacement);
+                });
+                
+                text = text.replace(/\n/g, '<br>');
+                
+                desc.innerHTML = text;
+            });
+        }
+
+        window.quickFormat = function(text) {
+            let formatted = text;
+            formatted = formatted.replace(/\[em1\](.*?)\[\/em1\]/g, '<span class="text-emphasis-1">$1</span>');
+            formatted = formatted.replace(/\[em2\](.*?)\[\/em2\]/g, '<span class="text-emphasis-2">$1</span>');
+            formatted = formatted.replace(/\[em3\](.*?)\[\/em3\]/g, '<span class="text-emphasis-3">$1</span>');
+            formatted = formatted.replace(/\[cta\](.*?)\[\/cta\]/g, '<span class="call-to-action">$1</span>');
+            return formatted.replace(/\n/g, '<br>');
+        };
+    </script>
 </body>
 </html>
