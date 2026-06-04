@@ -10,42 +10,53 @@ const StoreManager = {
     cart: [],
     
     // تهيئة المتجر
-    initStore() {
-        console.log('🚀 تهيئة المتجر...');
-        
-        // تحميل السلة من localStorage
-        this.loadCartFromStorage();
-        
-        // تحديث عداد السلة
-        this.updateCartCount();
-        
-        // تحميل الفئة المختارة من localStorage
-        const selectedCategory = localStorage.getItem('selectedCategory');
-        
-        // إذا كانت هناك فئة محددة، تطبيق التصفية
-        if (selectedCategory) {
-            // تعيين قيمة الفئة في القائمة المنسدلة
-            document.getElementById('categoryFilter').value = selectedCategory;
+    // داخل StoreManager
+initStore() {
+  console.log('🚀 تهيئة المتجر...');
   
-// اجعلها كذا:
-const filteredProducts = productsData.filter(product =>
-  product.categories && product.categories.includes(selectedCategory)
-);
-            
-            this.renderProducts(filteredProducts);
-            
-            // حذف الفئة من localStorage بعد استخدامها
-            localStorage.removeItem('selectedCategory');
-        } else {
-            // عرض جميع المنتجات
-            this.renderProducts(productsData);
-        }
-        
-        // إعداد مستمعي الأحداث
-        this.setupEventListeners();
-        
-        console.log('✅ تم تهيئة المتجر بنجاح');
-    },
+  // تحميل السلة من localStorage
+  this.loadCartFromStorage();
+  
+  // تحديث عداد السلة
+  this.updateCartCount();
+  
+  // تحميل الفئة المختارة من localStorage
+  const selectedCategory = localStorage.getItem('selectedCategory');
+  
+  if (selectedCategory) {
+    // البحث عن الخيار المطابق في القائمة المنسدلة (مع تجاهل حالة الأحرف)
+    const select = document.getElementById('categoryFilter');
+    const matchedOption = Array.from(select.options).find(
+      opt => opt.value.toUpperCase() === selectedCategory.toUpperCase()
+    );
+    if (matchedOption) {
+      select.value = matchedOption.value;
+    }
+    
+    // فلترة المنتجات باستخدام نفس منطق handleCategoryFilter (يدعم category و categories)
+    const filteredProducts = productsData.filter(product => {
+      // التعامل مع المصفوفة categories إن وجدت
+      if (product.categories && Array.isArray(product.categories)) {
+        return product.categories.some(cat => cat.toUpperCase() === selectedCategory.toUpperCase());
+      }
+      // التعامل مع النص المفرد category
+      return product.category && product.category.toUpperCase() === selectedCategory.toUpperCase();
+    });
+    
+    this.renderProducts(filteredProducts);
+    
+    // إزالة القيمة المخزنة بعد الاستخدام
+    localStorage.removeItem('selectedCategory');
+  } else {
+    // عرض جميع المنتجات
+    this.renderProducts(productsData);
+  }
+  
+  // إعداد مستمعي الأحداث (يبقى كما هو)
+  this.setupEventListeners();
+  
+  console.log('✅ تم تهيئة المتجر بنجاح');
+},
     
     // تحميل السلة من localStorage
     loadCartFromStorage() {
