@@ -298,15 +298,15 @@
         <span id="toastMessage">تمت إضافة المنتج إلى السلة</span>
     </div>
 
-    <!-- ملفات الجافاسكريبت الأصلية (لا تحذفها ولا تغيرها) -->
+    <!-- ملفات الجافاسكريبت الأصلية -->
     <script src="./js/prd.js" type="text/javascript" charset="utf-8"></script>
     <script src="./js/pdc.js"></script>
 
-    <!-- كود العرض والتصفية مع دعم استقبال الفئة من الصفحة الرئيسية (إصدار محسن) -->
+    <!-- كود تحسينات البحث والعرض (بالإعتماد على productsData من الملفات السابقة) -->
     <script>
         "use strict";
 
-        // ========== دعم اللغة ==========
+        // دعم اللغة
         const i18n = {
             ar: {
                 page_title: "منتجاتنا الفنية",
@@ -341,8 +341,6 @@
         };
 
         let currentLang = localStorage.getItem('pitsiky_lang') || 'ar';
-        // المتغير المستقل للفئة المختارة (يُحدَّث عند التغيير اليدوي أو عند الاستقبال من الصفحة الرئيسية)
-        let currentCategory = 'all';
 
         function t(key) { return i18n[currentLang]?.[key] || key; }
 
@@ -362,33 +360,26 @@
             applyLanguage();
         });
 
-        // ========== المنتجات ==========
+        // الاعتماد على productsData من الملفات الخارجية
         function getProducts() { return window.productsData || []; }
 
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             const products = getProducts();
             const search = document.getElementById('searchInput').value.trim().toLowerCase();
-            const cat = currentCategory; // استخدم المتغير المستقل
+            const cat = document.getElementById('categoryFilter').value;
 
             let filtered = products;
-            if (cat !== 'all') {
-                filtered = filtered.filter(p => p.category === cat);
-            }
-            if (search) {
-                filtered = filtered.filter(p => 
-                    p.name?.toLowerCase().includes(search) ||
-                    p.description?.toLowerCase().includes(search) ||
-                    p.category?.toLowerCase().includes(search)
-                );
-            }
+            if (cat !== 'all') filtered = filtered.filter(p => p.category === cat);
+            if (search) filtered = filtered.filter(p => 
+                p.name?.toLowerCase().includes(search) ||
+                p.description?.toLowerCase().includes(search) ||
+                p.category?.toLowerCase().includes(search)
+            );
 
             grid.innerHTML = '';
             if (filtered.length === 0) {
-                grid.innerHTML = `<div style="text-align:center;grid-column:1/-1;padding:40px;color:var(--text-muted);">
-                    <i class="fas fa-search" style="font-size:2rem;opacity:0.3;"></i>
-                    <p>${t('no_results')}</p>
-                </div>`;
+                grid.innerHTML = `<div style="text-align:center;grid-column:1/-1;padding:40px;color:var(--text-muted);"><i class="fas fa-search" style="font-size:2rem;opacity:0.3;"></i><p>${t('no_results')}</p></div>`;
                 return;
             }
 
@@ -411,53 +402,23 @@
                     if (typeof addToCart === 'function') addToCart(p.id, 1, btn);
                 });
                 card.addEventListener('click', () => {
-                    window.location.href = `pdcdtl.html?id=${p.id}`;
+                    if (typeof window.location !== 'undefined') window.location.href = `pdcdtl.html?id=${p.id}`;
                 });
                 grid.appendChild(card);
             });
-
-            // مزامنة شكل القائمة المنسدلة (حتى لو تغيرت خارجياً)
-            if (document.getElementById('categoryFilter').value !== currentCategory) {
-                document.getElementById('categoryFilter').value = currentCategory;
-            }
         }
 
-        // ========== أحداث البحث والتصفية ==========
         document.getElementById('searchInput').addEventListener('input', renderProducts);
-        document.getElementById('categoryFilter').addEventListener('change', function() {
-            currentCategory = this.value;  // حدّث المتغير المستقل
-            renderProducts();
-        });
+        document.getElementById('categoryFilter').addEventListener('change', renderProducts);
 
-        // ========== شريط التمرير ==========
         window.addEventListener('scroll', () => {
             document.getElementById('header').classList.toggle('scrolled', window.scrollY > 55);
         }, { passive: true });
 
-        // ========== التهيئة النهائية بعد تحميل كل شيء ==========
-        // نستخدم window.onload لضمان تنفيذ أي كود خارجي أولاً
-        window.addEventListener('load', function() {
-            // قراءة الفئة المخزنة من الصفحة الرئيسية
-            const storedCat = localStorage.getItem('selectedCategory');
-            if (storedCat) {
-                const select = document.getElementById('categoryFilter');
-                if ([...select.options].some(opt => opt.value === storedCat)) {
-                    currentCategory = storedCat;
-                    select.value = storedCat;
-                }
-                localStorage.removeItem('selectedCategory');
-            }
-
-            // تطبيق اللغة (ستستدعي renderProducts التي تعتمد على currentCategory)
+        document.addEventListener('DOMContentLoaded', () => {
             applyLanguage();
-
-            // إظهار الصفحة
+            renderProducts();
             setTimeout(() => document.body.classList.add('loaded'), 80);
-
-            // حماية إضافية: أي تغيير لاحق على الـ select من ملفات خارجية سيُهمل
-            // لأننا نراقب currentCategory فقط، وفي renderProducts نزامن القائمة
-            // ولن نسمح لأي كود خارجي بتغيير الفلتر بدون المرور عبر event handler الخاص بنا
-            // ولكن إذا غيرت الملفات الخارجية select.value مباشرة، سنعيد تعيينه في renderProducts
         });
     </script>
 </body>
