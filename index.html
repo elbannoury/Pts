@@ -477,23 +477,37 @@
     }
 
     /* Hero */
-    .hero-section {
-        position: relative;
-        min-height: 85vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 16px 18px 0;
-        border-radius: var(--radius-lg);
-        overflow: hidden;
-        border: 1px solid var(--border-gold);
-        background: url('gif/publer-1759013197758.jpg') no-repeat center center/cover;
-        box-shadow: var(--shadow-lg);
-    }
+   .hero-section {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 18px 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-gold);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
     .hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(250,248,245,0.5) 100%);
+        background: linear-gradient();
     }
     .hero-label {
         position: absolute;
@@ -1453,9 +1467,14 @@
 <main class="main-content">
     <!-- HERO -->
     <section class="hero-section">
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="gif/Votre texte de paragraphe_20260308_003254_0000.mp4" type="video/mp4">
+  </video>
+  
+
         <div class="hero-overlay"></div>
         <div class="hero-label">PITSIKY</div>
-        <div class="hero-content">
+    <!--    <div class="hero-content">
             <div class="hero-badge"><i class="fas fa-star"></i> <span data-i18n="hero_badge">تصاميم حصرية — مخصصة لك</span></div>
             <h1 class="hero-title" data-i18n="hero_title">ارتقِ بجدارك<br>إلى مستوى الفن</h1>
             <p class="hero-subtitle">
@@ -1469,7 +1488,7 @@
                     <i class="fas fa-pencil-alt"></i> <span data-i18n="custom_order" style="color:black">اطلب تصميم مخصص</span>
                 </a>
             </div>
-        </div>
+        </div>-->
     </section>
 
     <!-- Subtitle -->
@@ -1537,7 +1556,7 @@
             <h2 data-i18n="categories_heading">تصفح حسب التصنيف</h2>
         </div>
         <div class="cat-grid stagger">
-            <div class="cat-card featured" data-category="BMW"><div class="cat-icon-wrap"><img src="./images/frst/Bmwlogo.png" alt="BMW"></div><span class="cat-name">BMW</span></div>
+            <div class="cat-card featured" data-category="BMW"><div class="cat-icon-wrap"><img src="./images/frst/Bmwlogo." alt="BMW"></div><span class="cat-name">BMW</span></div>
             <div class="cat-card" data-category="MERCEDES"><div class="cat-icon-wrap"><img src="../images/frst/Mercedeslogo.png" alt="Mercedes"></div><span class="cat-name">Mercedes</span></div>
             <div class="cat-card" data-category="FERRARI"><div class="cat-icon-wrap"><img src="./cars/ferrari.png" alt="Ferrari"></div><span class="cat-name">Ferrari</span></div>
             <div class="cat-card" data-category="LAMBORGHINI"><div class="cat-icon-wrap"><img src="./cars/lamborghini.png" alt="Lamborghini"></div><span class="cat-name">Lambo</span></div>
@@ -2131,4 +2150,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </body>
-</html>
+                                                                                </html>
